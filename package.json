@@ -1,5 +1,5 @@
 {
-  "name": "<PACKAGE_NAME>",
+  "name": "@deep-foundation/npm-releasee",
   "keywords": [
     "deep-package"
   ],
@@ -9,25 +9,29 @@
     "type": "git",
     "url": "<REPO_URL>"
   },
+  "bin": {
+    "npm-publish": "./dist/publish.js",
+    "npm-pull": "./dist/npm-pull.js"
+  },
   "scripts": {
-    "npm-pull": "(git diff --quiet || (echo 'You have unstaged changes. Stash them (git stash) or commit them (git commit)'; exit 1)) && npm install ${npm_package_name}@latest --no-save && mv --force node_modules/${npm_package_name}/* ./",
-    "sync-versions": "npx ts-node ./automation/sync-versions.ts",
     "build": "tsc"
   },
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "files": [
-    "/dist",
-    "./deep.json"
+    "/dist"
   ],
   "license": "Unlicense",
   "dependencies": {
-    "@deep-foundation/core": "^0.0.2"
+    "@deep-foundation/core": "^0.0.2",
+    "@simplyhexagonal/exec": "^2.0.2",
+    "commander": "^10.0.1"
   },
   "peerDependencies": {
     "@deep-foundation/deeplinks": "~0.0.164"
   },
   "devDependencies": {
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   }
 }
