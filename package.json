@@ -7,7 +7,7 @@
   "description": "A package that will help you to release your deep package to npm.",
   "repository": {
     "type": "git",
-    "url": "<REPO_URL>"
+    "url": "https://github.com/deep-foundation/npm-release"
   },
   "bin": {
     "npm-publish": "./dist/publish.js",
