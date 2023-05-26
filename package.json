@@ -4,7 +4,7 @@
     "deep-package"
   ],
   "version": "0.0.1",
-  "description": "A package that will help you to publish your deep package to npm.",
+  "description": "A package that will help you to release your deep package to npm.",
   "repository": {
     "type": "git",
     "url": "<REPO_URL>"
