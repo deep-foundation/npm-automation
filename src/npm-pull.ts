@@ -13,7 +13,7 @@ async function main() {
    
    Before pulling, if there are unstaged changes, it throws an error that tells you to stash (git stash) or commit (git commit) your changes.`)
 
-  program.option('--package-name @deep-foundation/npm-releasee', 'Package name');
+  program.option('--package-name @deep-foundation/npm-release', 'Package name');
 
   program.parse(process.argv);
 
