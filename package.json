@@ -4,7 +4,7 @@
     "deep-package"
   ],
   "version": "0.0.1",
-  "description": "A deep package",
+  "description": "A package that will help you to publish your deep package to npm.",
   "repository": {
     "type": "git",
     "url": "<REPO_URL>"
@@ -23,12 +23,8 @@
   ],
   "license": "Unlicense",
   "dependencies": {
-    "@deep-foundation/core": "^0.0.2",
     "@simplyhexagonal/exec": "^2.0.2",
     "commander": "^10.0.1"
-  },
-  "peerDependencies": {
-    "@deep-foundation/deeplinks": "~0.0.164"
   },
   "devDependencies": {
     "ts-node": "^10.9.1",
