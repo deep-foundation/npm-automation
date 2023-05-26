@@ -1,0 +1,38 @@
+name: Main CI & CD workflow
+
+on:
+  push:
+    branches: main
+    paths:
+     - package.json
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: 18
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VERSION}}
+      - run: npm i
+      - run: npm run build
+      - run: npm test
+
+  publish-npm:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VERSION}}
+          registry-url: https://registry.npmjs.org/
+      - run: npm i
+      - run: npm run build
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

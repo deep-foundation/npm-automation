@@ -1,0 +1,1 @@
+export const <PACKAGE_NAME>_PACKAGE_NAME=`<PACKAGE_NAME>`

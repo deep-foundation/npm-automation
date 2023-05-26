@@ -1,0 +1,33 @@
+{
+  "name": "<PACKAGE_NAME>",
+  "keywords": [
+    "deep-package"
+  ],
+  "version": "0.0.1",
+  "description": "A deep package",
+  "repository": {
+    "type": "git",
+    "url": "<REPO_URL>"
+  },
+  "scripts": {
+    "npm-pull": "(git diff --quiet || (echo 'You have unstaged changes. Stash them (git stash) or commit them (git commit)'; exit 1)) && npm install ${npm_package_name}@latest --no-save && mv --force node_modules/${npm_package_name}/* ./",
+    "sync-versions": "npx ts-node ./automation/sync-versions.ts",
+    "build": "tsc"
+  },
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "files": [
+    "/dist",
+    "./deep.json"
+  ],
+  "license": "Unlicense",
+  "dependencies": {
+    "@deep-foundation/core": "^0.0.2"
+  },
+  "peerDependencies": {
+    "@deep-foundation/deeplinks": "~0.0.164"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}
