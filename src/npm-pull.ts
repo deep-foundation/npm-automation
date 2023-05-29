@@ -1,6 +1,6 @@
 import exec from '@simplyhexagonal/exec';
 import { lstat, move, pathExists } from 'fs-extra';
-import { resolve } from 'path';
+import path from 'path';
 import fs from 'fs';
 import { glob } from 'glob';
 
@@ -21,20 +21,21 @@ export async function npmPull({ packageName }: NpmPullParam) {
     throw new Error(npmInstallResult.stderrOutput.trim());
   }
 
-  const rootFolderPath = resolve(`./`);
-  const nodeModulePath = resolve(`node_modules/${packageName}`);
+  const rootFolderPath = path.resolve(`./`);
+  const nodeModulePath = path.resolve(`node_modules/${packageName}`);
   const nodeModuleFilePaths = await glob(`${nodeModulePath}/**/*`, {
-    absolute: true,
     ignore: [`dist`, `node_modules`],
+    withFileTypes: true,
   });
   await Promise.all(
     nodeModuleFilePaths.map(async (nodeModuleFilePath) => {
-      if (
-        await lstat(nodeModuleFilePath).then((stats) => stats.isDirectory())
-      ) {
+      if (nodeModuleFilePath.isDirectory()) {
         return;
       }
-      return await move(nodeModuleFilePath, rootFolderPath);
+      return await move(
+        nodeModuleFilePath.path,
+        path.join(rootFolderPath, nodeModuleFilePath.name)
+      );
     })
   );
 }
