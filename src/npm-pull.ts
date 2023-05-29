@@ -1,5 +1,5 @@
 import exec from '@simplyhexagonal/exec';
-import { move } from 'fs-extra';
+import { move, pathExists } from 'fs-extra';
 import { resolve } from 'path';
 
 export async function npmPull({ packageName }: NpmPullParam) {
@@ -19,7 +19,11 @@ export async function npmPull({ packageName }: NpmPullParam) {
     throw new Error(npmInstallResult.stderrOutput.trim());
   }
 
-  await move(resolve(`node_modules/${packageName}`), resolve(`./`), {
+  const nodeModulePath = resolve(`node_modules/${packageName}`);
+  if (!await pathExists(nodeModulePath)) {
+    throw new Error(`Path ${nodeModulePath} does not exist`);
+  }
+  await move(nodeModulePath, resolve(`./`), {
     overwrite: true,
   });
 }
