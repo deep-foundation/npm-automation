@@ -21,12 +21,13 @@ async function main() {
 
   program.parse(process.argv);
 
-  const { packageName } = program.opts();
-  if (!packageName) {
-    throw new Error('Package name is required');
-  }
+  let {
+    packageName = await import(path.resolve('package.json')).then(
+      (pkg) => pkg.name
+    ),
+  } = program.opts();
 
   await npmPull({
-    packageName
-  })
+    packageName,
+  });
 }
