@@ -30,9 +30,10 @@
     "@atao60/fse-cli": "^0.1.7",
     "@freephoenix888/prepend-file": "^1.0.0",
     "@types/fs-extra": "^11.0.1",
-    "fs-extra": "^11.1.1",
-    "prepend-file": "^2.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
+  },
+  "peerDependencies": {
+    "fs-extra": "^11.1.1"
   }
 }
