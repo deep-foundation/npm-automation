@@ -3,7 +3,7 @@
   "keywords": [
     "deep-package"
   ],
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A package that will help you to release your deep package to npm.",
   "repository": {
     "type": "git",
