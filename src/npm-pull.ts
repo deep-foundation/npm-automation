@@ -1,7 +1,8 @@
 import exec from '@simplyhexagonal/exec';
-import { move, pathExists } from 'fs-extra';
+import { lstat, move, pathExists } from 'fs-extra';
 import { resolve } from 'path';
-import fs from 'fs'
+import fs from 'fs';
+import { glob } from 'glob';
 
 export async function npmPull({ packageName }: NpmPullParam) {
   const { execPromise: gitDiffExecPromise } = exec(`git diff`);
@@ -20,11 +21,22 @@ export async function npmPull({ packageName }: NpmPullParam) {
     throw new Error(npmInstallResult.stderrOutput.trim());
   }
 
+  const rootFolderPath = resolve(`./`);
   const nodeModulePath = resolve(`node_modules/${packageName}`);
-  if (!await pathExists(nodeModulePath)) {
-    throw new Error(`Path ${nodeModulePath} does not exist`);
-  }
-  fs.renameSync(nodeModulePath, resolve(`./`));
+  const nodeModuleFilePaths = await glob(`${nodeModulePath}/**/*`, {
+    absolute: true,
+    ignore: [`dist`, `node_modules`],
+  });
+  await Promise.all(
+    nodeModuleFilePaths.map(async (nodeModuleFilePath) => {
+      if (
+        await lstat(nodeModuleFilePath).then((stats) => stats.isDirectory())
+      ) {
+        return;
+      }
+      return await move(nodeModuleFilePath, rootFolderPath);
+    })
+  );
 }
 
 export interface NpmPullParam {
