@@ -21,11 +21,10 @@ async function main() {
 
   program.parse(process.argv);
 
-  let {
-    packageName = await import(path.resolve('package.json')).then(
-      (pkg) => pkg.name
-    ),
-  } = program.opts();
+  let options = program.opts();
+  const packageName = options.packageName ?? await import(path.resolve('package.json')).then(
+    (pkg) => pkg.name
+  );
 
   await npmPull({
     packageName,
