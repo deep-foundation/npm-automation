@@ -10,11 +10,11 @@
     "url": "https://github.com/deep-foundation/npm-release"
   },
   "bin": {
-    "npm-publish": "./dist/publish.js",
-    "npm-pull": "./dist/npm-pull.js"
+    "npm-release": "./dist/npm-release-cli.js",
+    "npm-pull": "./dist/npm-pull-cli.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "npx fse remove dist --quiet && tsc && (npx prepend-file --file-path='./dist/npm-pull.js' --content='#!/usr/bin/env node') &&(npx prepend-file --file-path='./dist/npm-release.js' --content='#!/usr/bin/env node')"
   },
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
@@ -27,6 +27,11 @@
     "commander": "^10.0.1"
   },
   "devDependencies": {
+    "@atao60/fse-cli": "^0.1.7",
+    "@freephoenix888/prepend-file": "^1.0.0",
+    "@types/fs-extra": "^11.0.1",
+    "fs-extra": "^11.1.1",
+    "prepend-file": "^2.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }

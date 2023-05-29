@@ -1,28 +1,8 @@
 import exec from '@simplyhexagonal/exec';
-import { program } from 'commander';
-import fs from 'fs';
-import path from 'path';
+import { rename } from 'fs-extra';
+import { resolve } from 'path';
 
-main();
-
-async function main() {
-   program
-   .name('npm-pull')
-   .description('Pull latest version of a package from npm')
-   .addHelpText('after', `
-   
-   Before pulling, if there are unstaged changes, it throws an error that tells you to stash (git stash) or commit (git commit) your changes.`)
-
-  program.option('--package-name @deep-foundation/npm-release', 'Package name');
-
-  program.parse(process.argv);
-
-  const { packageName } = program.opts();
-  if (!packageName) {
-    throw new Error('Package name is required');
-  }
-
-
+export async function npmPull({ packageName }: NpmPullParam) {
   const { execPromise: gitDiffExecPromise } = exec(`git diff`);
   const gitDiffResult = await gitDiffExecPromise;
   if (gitDiffResult.stdoutOutput) {
@@ -39,8 +19,9 @@ async function main() {
     throw new Error(npmInstallResult.stderrOutput.trim());
   }
 
-  fs.renameSync(
-    path.resolve(`node_modules/${packageName}`),
-    path.resolve(`./`)
-  );
+  await rename(resolve(`node_modules/${packageName}`), resolve(`./`));
+}
+
+export interface NpmPullParam {
+  packageName: string;
 }
