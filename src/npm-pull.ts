@@ -32,7 +32,10 @@ export async function npmPull({ packageName }: NpmPullParam) {
       if (!nodeModuleFilePath.isFile()) return;
       return await move(
         nodeModuleFilePath.fullpath(),
-        path.join(rootFolderPath, nodeModuleFilePath.name)
+        path.join(rootFolderPath, nodeModuleFilePath.name),
+        {
+          overwrite: true
+        }
       );
     })
   );
