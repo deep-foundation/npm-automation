@@ -1,6 +1,7 @@
 import exec from '@simplyhexagonal/exec';
 import { move, pathExists } from 'fs-extra';
 import { resolve } from 'path';
+import fs from 'fs'
 
 export async function npmPull({ packageName }: NpmPullParam) {
   const { execPromise: gitDiffExecPromise } = exec(`git diff`);
@@ -23,9 +24,7 @@ export async function npmPull({ packageName }: NpmPullParam) {
   if (!await pathExists(nodeModulePath)) {
     throw new Error(`Path ${nodeModulePath} does not exist`);
   }
-  await move(nodeModulePath, resolve(`./`), {
-    overwrite: true,
-  });
+  fs.renameSync(nodeModulePath, resolve(`./`));
 }
 
 export interface NpmPullParam {
