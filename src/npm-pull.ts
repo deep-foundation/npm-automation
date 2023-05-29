@@ -1,5 +1,5 @@
 import exec from '@simplyhexagonal/exec';
-import { rename } from 'fs-extra';
+import { move } from 'fs-extra';
 import { resolve } from 'path';
 
 export async function npmPull({ packageName }: NpmPullParam) {
@@ -19,7 +19,9 @@ export async function npmPull({ packageName }: NpmPullParam) {
     throw new Error(npmInstallResult.stderrOutput.trim());
   }
 
-  await rename(resolve(`node_modules/${packageName}`), resolve(`./`));
+  await move(resolve(`node_modules/${packageName}`), resolve(`./`), {
+    overwrite: true,
+  });
 }
 
 export interface NpmPullParam {
