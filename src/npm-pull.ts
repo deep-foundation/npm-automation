@@ -29,11 +29,9 @@ export async function npmPull({ packageName }: NpmPullParam) {
   });
   await Promise.all(
     nodeModuleFilePaths.map(async (nodeModuleFilePath) => {
-      if (nodeModuleFilePath.isDirectory()) {
-        return;
-      }
+      if (!nodeModuleFilePath.isFile()) return;
       return await move(
-        nodeModuleFilePath.path,
+        nodeModuleFilePath.fullpath(),
         path.join(rootFolderPath, nodeModuleFilePath.name)
       );
     })
