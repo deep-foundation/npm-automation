@@ -22,6 +22,10 @@ export async function npmPull({ packageName }: NpmPullParam) {
   }
 
   const rootFolderPath = path.resolve(`./`);
+  const nodeModuleDirectoryPath = path.join(
+    path.resolve(`node_modules`),
+    packageName
+  );
   const nodeModulePath = path.resolve(`node_modules/${packageName}`);
   const nodeModuleFilePaths = await glob(`${nodeModulePath}/**/*`, {
     ignore: [`dist`, `node_modules`],
@@ -32,9 +36,12 @@ export async function npmPull({ packageName }: NpmPullParam) {
       if (!nodeModuleFilePath.isFile()) return;
       return await move(
         nodeModuleFilePath.fullpath(),
-        path.join(rootFolderPath, nodeModuleFilePath.name),
+        path.join(
+          rootFolderPath,
+          nodeModuleFilePath.fullpath().replace(nodeModuleDirectoryPath, '')
+        ),
         {
-          overwrite: true
+          overwrite: true,
         }
       );
     })
