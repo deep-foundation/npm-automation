@@ -27,7 +27,7 @@ export async function npmRelease({
       command: `npm version --allow-same-version ${newVersion}`,
     });
     await updateDeepJsonVersion({
-      version: npmVersionStdoutOutput,
+      version: npmVersionStdoutOutput.trimEnd(),
       filePath: deepJsonFilePath,
     });
   }
