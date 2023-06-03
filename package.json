@@ -25,12 +25,14 @@
   "dependencies": {
     "@simplyhexagonal/exec": "^2.0.2",
     "commander": "^10.0.1",
-    "glob": "^10.2.6"
+    "glob": "^10.2.6",
+    "yargs": "github:yargs/yargs"
   },
   "devDependencies": {
-    "@atao60/fse-cli": "^0.1.7",
+    "@atao60/fse-cli": "~0.1.7",
     "@freephoenix888/prepend-file": "^1.0.0",
     "@types/fs-extra": "^11.0.1",
+    "@types/yargs": "^17.0.24",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
