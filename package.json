@@ -31,7 +31,6 @@
     "@atao60/fse-cli": "~0.1.7",
     "@freephoenix888/prepend-file": "^1.0.0",
     "@types/fs-extra": "^11.0.1",
-    "@types/yargs": "^17.0.24",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
