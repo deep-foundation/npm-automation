@@ -25,8 +25,7 @@
   "dependencies": {
     "@simplyhexagonal/exec": "^2.0.2",
     "commander": "^10.0.1",
-    "glob": "^10.2.6",
-    "yargs": "github:yargs/yargs"
+    "glob": "^10.2.6"
   },
   "devDependencies": {
     "@atao60/fse-cli": "~0.1.7",
