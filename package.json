@@ -1,13 +1,13 @@
 {
-  "name": "@deep-foundation/npm-release",
+  "name": "@deep-foundation/npm-automation",
   "keywords": [
     "deep-package"
   ],
-  "version": "0.0.16",
+  "version": "1.0.0",
   "description": "A package that will help you to release your deep package to npm.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/deep-foundation/npm-release"
+    "url": "https://github.com/deep-foundation/npm-automation"
   },
   "bin": {
     "npm-release": "./dist/npm-release-cli.js",
