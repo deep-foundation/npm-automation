@@ -5,25 +5,14 @@ on:
     branches: main
     paths:
      - package.json
+     - .github/workflows/main.yml 
   workflow_dispatch:
 
 env:
   NODE_VERSION: 18
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: ${{env.NODE_VERSION}}
-      - run: npm i
-      - run: npm run build
-      - run: npm test
-
-  publish-npm:
-    needs: build-and-test
+  main:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -31,8 +20,23 @@ jobs:
         with:
           node-version: ${{env.NODE_VERSION}}
           registry-url: https://registry.npmjs.org/
-      - run: npm i
+      - name: Run npm install and push changes
+        run: npm install
+      - name: "Configure git"
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+      - name: "Push package.lock json"
+        run: |
+          git add package-lock.json
+          git commit -m "update package-lock.json" || echo "No changes to commit"
+          git push origin main
       - run: npm run build
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      - run: npm test --if-present
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+      - name: "npm version"
+        run: npm version --allow-same-version $(node -p "require('./package.json').version")
+      - name: "Push new version commit and tag"
+        run: (git push --tags && git push) || echo "Tag to the current version already exists"
