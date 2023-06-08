@@ -4,7 +4,7 @@ export async function updateDeepJsonVersion({
   version,
   filePath,
 }: UpdateDeepJsonVersionParam) {
-  const json = await import(filePath);
+  const {default: json} = await import(filePath);
   json.package.version = version;
 
   await writeFile(filePath, JSON.stringify(json, null, 2));
