@@ -20,24 +20,23 @@ jobs:
         with:
           node-version: ${{env.NODE_VERSION}}
           registry-url: https://registry.npmjs.org/
-      - name: Run npm install and push changes
-        run: npm install
+      - run: npm i -g npm@latest
+      - run: npm clean-install
       - name: "Configure git"
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-      - name: "Push package.lock json"
-        run: |
-          git add package-lock.json
-          git commit -m "update package-lock.json" || echo "No changes to commit"
-          git push origin main
       - run: npm run build
       - run: npm test --if-present
       - uses: JS-DevTools/npm-publish@v1
+        id: publish
         with:
           token: ${{ secrets.NPM_TOKEN }}
           access: "public"
       - name: "npm version"
+        if: ${{ steps.publish.outputs.type }}
         run: npm version --allow-same-version $(node -p "require('./package.json').version")
       - name: "Push new version commit and tag"
+        if: ${{ steps.publish.outputs.type }}
         run: (git push --tags && git push) || echo "Tag to the current version already exists"
+
