@@ -27,7 +27,7 @@ export async function npmRelease({
     const {
       execResult: { stdoutOutput: npmVersionStdoutOutput },
     } = await execWrapped({
-      command: `npm version --allow-same-version ${newVersion}`,
+      command: `npm version --allow-same-version --no-git-tag-version ${newVersion}`,
     });
     await updateDeepJsonVersion({
       version: npmVersionStdoutOutput.trimEnd().slice(1),
