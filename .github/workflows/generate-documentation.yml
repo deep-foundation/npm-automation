@@ -1,0 +1,12 @@
+name: Generate Documentation
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  main:
+    uses: deep-foundation/workflows/.github/workflows/generate-documentation.yml@main
+    with:
+      entry-point: "src/main.ts"
