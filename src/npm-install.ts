@@ -51,8 +51,20 @@ export async function npmInstall(param: NpmInstallParam) {
 }
 
 export interface NpmInstallParam {
+   /**
+    * Package name to install
+    */
   name: string;
+  /**
+   * Path to package.json
+   */
   packageJsonFilePath: string;
+  /**
+   * Path to deep.json
+   */
   deepJsonFilePath: string;
+  /**
+   * Version to install
+   */
   version: string | undefined;
 }
