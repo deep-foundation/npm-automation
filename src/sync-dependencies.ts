@@ -18,8 +18,6 @@ export interface SyncDependenciesParam {
 /**
  * Syncronizes dependencies between {@link SyncDependenciesParam.deepJsonFilePath} and {@link SyncDependenciesParam.packageJsonFilePath}
  * 
- * @async
- * @function
  */
 export async function syncDependencies({
   deepJsonFilePath,

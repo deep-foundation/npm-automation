@@ -17,8 +17,6 @@ await npmPull({
 })
 ```
  * 
- * @async
- * @function
  */
 export async function npmPull({ packageName }: NpmPullParam) {
   const { execPromise: gitDiffExecPromise } = exec(`git diff`);

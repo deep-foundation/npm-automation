@@ -15,8 +15,6 @@ await npmRelease({
 })
 ```
  * 
- * @async
- * @function
  */
 export async function npmRelease({
   deepJsonFilePath,
