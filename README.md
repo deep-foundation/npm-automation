@@ -19,13 +19,22 @@ npx npm-pull
 ```
 
 ```
-npx npm-release [--new-version=<NEW_VERSION>] [--package-json-file-path=<PACKAGE_JSON_FILE_PATH>] [--deep-json-file-path=<DEEP_JSON_FILE_PATH>]
+npx npm-release 
+[--new-version=<NEW_VERSION>] 
+[--package-json-file-path=<PACKAGE_JSON_FILE_PATH>] 
+[--deep-json-file-path=<DEEP_JSON_FILE_PATH>]
 ```
 
 ```
-npx npm-install --name=<NAME> --version=<VERSION> [--package-json-file-path=<PACKAGE_JSON_FILE_PATH>] [--deep-json-file-path=<DEEP_JSON_FILE_PATH>]
+npx npm-install 
+--name=<NAME> 
+--version=<VERSION> 
+[--package-json-file-path=<PACKAGE_JSON_FILE_PATH>] 
+[--deep-json-file-path=<DEEP_JSON_FILE_PATH>]
 ```
 
 ```
-npx sync-dependencies [--package-json-file-path=<PACKAGE_JSON_FILE_PATH>] [--deep-json-file-path=<DEEP_JSON_FILE_PATH>]
+npx sync-dependencies 
+[--package-json-file-path=<PACKAGE_JSON_FILE_PATH>] 
+[--deep-json-file-path=<DEEP_JSON_FILE_PATH>]
 ```
