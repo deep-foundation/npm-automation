@@ -4,7 +4,7 @@
     "deep-package"
   ],
   "version": "1.0.3",
-  "description": "A package that will help you to release your deep package to npm.",
+  "description": "A package that will help you to automate actions related to npm and your deep package.",
   "repository": {
     "type": "git",
     "url": "https://github.com/deep-foundation/npm-automation"
