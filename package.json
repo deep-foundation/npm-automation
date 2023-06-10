@@ -11,10 +11,11 @@
   },
   "bin": {
     "npm-release": "./dist/npm-release-cli.js",
-    "npm-pull": "./dist/npm-pull-cli.js"
+    "npm-pull": "./dist/npm-pull-cli.js",
+    "npm-install": "./dist/npm-install-cli.js"
   },
   "scripts": {
-    "build": "npx fse remove dist --quiet && tsc && (npx prepend-file --file-path='./dist/npm-pull-cli.js' --content='#!/usr/bin/env node\n') &&(npx prepend-file --file-path='./dist/npm-release-cli.js' --content='#!/usr/bin/env node\n')"
+    "build": "npx fse remove dist --quiet && tsc && (npx prepend-file --file-path='./dist/npm-pull-cli.js' --content='#!/usr/bin/env node\n') &&(npx prepend-file --file-path='./dist/npm-release-cli.js' --content='#!/usr/bin/env node\n') && (npx prepend-file --file-path='./dist/npm-install-cli.js' --content='#!/usr/bin/env node\n')"
   },
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
