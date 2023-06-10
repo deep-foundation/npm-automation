@@ -1,37 +1,27 @@
 import fsExtra from 'fs-extra';
 
-interface Dependency {
-  name: string;
-  version: string;
-}
-
 export interface CheckDependenciesParam {
   deepJsonFilePath: string;
   packageJsonPath: string;
 }
 
+type Dependency = Record<string, string>;
+
 export async function syncDependencies({
   deepJsonFilePath,
   packageJsonPath,
 }: CheckDependenciesParam) {
-  const deepJson = await fsExtra.readJson(deepJsonFilePath);
-  const packageJson = await fsExtra.readJson(packageJsonPath);
+  const {default: deepJson} = await import(deepJsonFilePath, {assert: {type: 'json'}}) ;
+  const {default: packageJson} = await import(packageJsonPath, {assert: {type: 'json'}});
 
-  let updated = false;
+  const missingDependenciesFromDeepJson: Array<Dependency> = deepJson.dependencies.filter((dependency: Dependency) => !!packageJson.dependencies[dependency.name]);
+  missingDependenciesFromDeepJson.forEach((dependency: Dependency) => {
+    const transformedDependency = {[dependency.name]: `~${dependency.version}`};
+    packageJson.dependencies = {...packageJson.dependencies, ...transformedDependency};
+  })
 
-  for (const dependency of deepJson.dependencies) {
-    if (!packageJson.dependencies[dependency.name]) {
-      const transformedDependency = {[dependency.name]: `~${dependency.version}`};
-      packageJson.dependencies = {...packageJson.dependencies, ...transformedDependency};
-
-      updated = true;
-    }
-  }
-
-  if (updated) {
+  if (missingDependenciesFromDeepJson.length > 0) {
     await fsExtra.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
-    console.log('Updated package.json with missing dependencies from deep.json');
-  } else {
-    console.log('No missing dependencies found');
+    console.log(`${missingDependenciesFromDeepJson.map((dependency: Dependency) => dependency.name).join(', ')} added to package.json because they exist in deep.json`);
   }
 }
