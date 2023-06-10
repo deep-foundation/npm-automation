@@ -5,10 +5,19 @@ import { type PackageJson } from 'types-package-json';
 
 
 export interface CheckDependenciesParam {
+  /**
+   * Path to deep.json
+   */
   deepJsonFilePath: string;
+  /**
+   * Path to package.json
+   */
   packageJsonPath: string;
 }
 
+/**
+ * Syncronizes dependencies between {@link CheckDependenciesParam.deepJsonFilePath} and {@link CheckDependenciesParam.packageJsonPath}
+ */
 export async function syncDependencies({
   deepJsonFilePath,
   packageJsonPath,
