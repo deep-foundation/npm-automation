@@ -19,10 +19,11 @@ export interface SyncDependenciesParam {
  * Syncronizes dependencies between {@link SyncDependenciesParam.deepJsonFilePath} and {@link SyncDependenciesParam.packageJsonFilePath}
  * 
  */
-export async function syncDependencies({
-  deepJsonFilePath,
-  packageJsonFilePath: packageJsonPath,
-}: SyncDependenciesParam) {
+export async function syncDependencies(param: SyncDependenciesParam) {
+  const {
+    deepJsonFilePath,
+    packageJsonFilePath: packageJsonPath,
+  } = param;
   const {default: deepJson}: {default: DeepJson} = await import(deepJsonFilePath, {assert: {type: 'json'}}) ;
   const {default: packageJson}: {default: Partial<PackageJson>} = await import(packageJsonPath, {assert: {type: 'json'}});
 

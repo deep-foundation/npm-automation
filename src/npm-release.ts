@@ -16,11 +16,12 @@ await npmRelease({
 ```
  * 
  */
-export async function npmRelease({
-  deepJsonFilePath,
-  newVersion,
-  packageJsonFilePath: packageJsonPath,
-}: NpmReleaseParam) {
+export async function npmRelease(param: NpmReleaseParam) {
+  const {
+    deepJsonFilePath,
+    newVersion,
+    packageJsonFilePath: packageJsonPath,
+  } = param;
   await syncDependencies({ deepJsonFilePath, packageJsonFilePath: packageJsonPath });
   
   const packageJson = await import(packageJsonPath);
