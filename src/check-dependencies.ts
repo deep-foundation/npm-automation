@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs';
+import fsExtra from 'fs-extra';
 
 interface Dependency {
   name: string;
@@ -14,8 +14,8 @@ export async function syncDependencies({
   deepJsonFilePath,
   packageJsonPath,
 }: CheckDependenciesParam) {
-  const deepJson = JSON.parse(await fs.readFile(deepJsonFilePath, 'utf8'));
-  const packageJson = JSON.parse(await fs.readFile(packageJsonPath, 'utf8'));
+  const deepJson = JSON.parse(await fsExtra.readFile(deepJsonFilePath, 'utf8'));
+  const packageJson = JSON.parse(await fsExtra.readFile(packageJsonPath, 'utf8'));
 
   let updated = false;
 
@@ -29,7 +29,7 @@ export async function syncDependencies({
   }
 
   if (updated) {
-    await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
+    await fsExtra.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
     console.log('Updated package.json with missing dependencies from deep.json');
   } else {
     console.log('No missing dependencies found');
