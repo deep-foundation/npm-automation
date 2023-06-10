@@ -9,4 +9,4 @@ jobs:
   main:
     uses: deep-foundation/workflows/.github/workflows/generate-documentation.yml@main
     with:
-      entry-point: "src/main.ts"
+      generate-documentation-command: "npx --yes typedoc src/main.ts"
