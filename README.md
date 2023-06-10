@@ -4,6 +4,7 @@
 
 # How to use?
 ## Prereqisitions
+1. Install package
 ```
 npm install --save-dev @deep-foundation/npm-automation
 ```
