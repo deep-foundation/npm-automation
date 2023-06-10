@@ -4,7 +4,19 @@ import { updateDeepJsonVersion } from './update-version-in-json-object';
 import { syncDependencies } from './sync-dependencies';
 
 /**
- * Releases a new version of the deep npm package and syncronizes the version and dependencies between deep.json and package.json
+ * Releases a new version of the deep npm package and syncronizes the version and dependencies between {@link NpmReleaseParam.deepJsonFilePath} and {@link NpmReleaseParam.packageJsonFilePath}
+ * 
+ * @example
+```typescript
+await npmRelease({
+  newVersion: '1.0.0',
+  packageJsonFilePath: 'package.json',
+  deepJsonFilePath: 'deep.json',
+})
+```
+ * 
+ * @async
+ * @function
  */
 export async function npmRelease({
   deepJsonFilePath,

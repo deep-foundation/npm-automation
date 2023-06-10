@@ -8,6 +8,17 @@ import { glob } from 'glob';
  * Pulls the latest version of the npm package and copies it to the root folder
  * 
  * @throws {@link Error} if there are not commited changes 
+ * @throws {@link Error} if the exit code of npm install is not 0
+ * 
+ * @example
+```typescript
+await npmPull({
+  packageName: '@deep-foundation/deep-memo',
+})
+```
+ * 
+ * @async
+ * @function
  */
 export async function npmPull({ packageName }: NpmPullParam) {
   const { execPromise: gitDiffExecPromise } = exec(`git diff`);

@@ -9,6 +9,18 @@ import { type PackageJson } from 'types-package-json';
  *
  * @throws {@link Error} if the version is invalid
  * @throws {@link Error} if the exit code of npm install is not 0
+ * 
+ * @async
+ * @function
+ * @example
+```typescript
+await npmInstall({
+   packageName: 'typescript',
+   version: 'latest',
+   deepJsonFilePath,
+   packageJsonFilePath,
+})
+```
  */
 export async function npmInstall(param: NpmInstallParam) {
   const { packageName, version, deepJsonFilePath, packageJsonFilePath } = param;

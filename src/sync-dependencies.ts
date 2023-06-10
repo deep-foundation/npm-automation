@@ -17,6 +17,9 @@ export interface CheckDependenciesParam {
 
 /**
  * Syncronizes dependencies between {@link CheckDependenciesParam.deepJsonFilePath} and {@link CheckDependenciesParam.packageJsonFilePath}
+ * 
+ * @async
+ * @function
  */
 export async function syncDependencies({
   deepJsonFilePath,
