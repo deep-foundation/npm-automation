@@ -10,7 +10,7 @@ export interface CheckDependenciesParam {
   packageJsonPath: string;
 }
 
-export async function checkDependencies({
+export async function syncDependencies({
   deepJsonFilePath,
   packageJsonPath,
 }: CheckDependenciesParam) {

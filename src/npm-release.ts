@@ -1,14 +1,14 @@
 import exec from '@simplyhexagonal/exec';
 import { execWrapped } from './exec-wrapped';
 import { updateDeepJsonVersion } from './update-version-in-json-object';
-import { checkDependencies } from './check-dependencies';
+import { syncDependencies } from './check-dependencies';
 
 export async function npmRelease({
   deepJsonFilePath,
   newVersion,
   packageJsonPath,
 }: NpmReleaseParam) {
-  await checkDependencies({ deepJsonFilePath, packageJsonPath });
+  await syncDependencies({ deepJsonFilePath, packageJsonPath });
   
   const packageJson = await import(packageJsonPath);
   const { execPromise } = exec(`npm view ${packageJson.name} version`);
