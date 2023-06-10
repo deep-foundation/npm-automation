@@ -25,9 +25,9 @@ export async function checkDependencies({
 
   let updated = false;
 
-  for (const dep of deepJson.dependencies) {
-    if (!packageJson.dependencies[dep.name]) {
-      const transformedDependency = transformDependency(dep);
+  for (const dependency of deepJson.dependencies) {
+    if (!packageJson.dependencies[dependency.name]) {
+      const transformedDependency = transformDependency(dependency);
       packageJson.dependencies = {...packageJson.dependencies, ...transformedDependency};
 
       updated = true;
