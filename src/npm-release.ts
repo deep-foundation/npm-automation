@@ -9,7 +9,7 @@ import { syncDependencies } from './sync-dependencies';
 export async function npmRelease({
   deepJsonFilePath,
   newVersion,
-  packageJsonPath,
+  packageJsonFilePath: packageJsonPath,
 }: NpmReleaseParam) {
   await syncDependencies({ deepJsonFilePath, packageJsonFilePath: packageJsonPath });
   
@@ -50,7 +50,7 @@ export interface NpmReleaseParam {
   /**
    * Path to package.json
    */
-  packageJsonPath: string;
+  packageJsonFilePath: string;
   /**
    * Path to deep.json
    */

@@ -40,6 +40,6 @@ async function main() {
   await npmRelease({
     deepJsonFilePath,
     newVersion,
-    packageJsonPath,
+    packageJsonFilePath: packageJsonPath,
   });
 }
