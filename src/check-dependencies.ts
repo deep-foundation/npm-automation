@@ -10,12 +10,6 @@ export interface CheckDependenciesParam {
   packageJsonPath: string;
 }
 
-function transformDependency(dependency: Dependency): Record<string, string> {
-    let result: Record<string, string> = {};
-    result[dependency.name] = `~${dependency.version}`;
-    return result;
-}
-
 export async function checkDependencies({
   deepJsonFilePath,
   packageJsonPath,
@@ -27,7 +21,7 @@ export async function checkDependencies({
 
   for (const dependency of deepJson.dependencies) {
     if (!packageJson.dependencies[dependency.name]) {
-      const transformedDependency = transformDependency(dependency);
+      const transformedDependency = {[dependency.name]: `~${dependency.version}`}};
       packageJson.dependencies = {...packageJson.dependencies, ...transformedDependency};
 
       updated = true;
