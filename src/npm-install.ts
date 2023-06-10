@@ -66,5 +66,5 @@ export interface NpmInstallParam {
   /**
    * Version to install
    */
-  version: string | undefined;
+  version: string;
 }
