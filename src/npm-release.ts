@@ -3,6 +3,9 @@ import { execWrapped } from './exec-wrapped';
 import { updateDeepJsonVersion } from './update-version-in-json-object';
 import { syncDependencies } from './sync-dependencies';
 
+/**
+ * Releases a new version of the deep npm package and syncronizes the version and dependencies between deep.json and package.json
+ */
 export async function npmRelease({
   deepJsonFilePath,
   newVersion,
@@ -37,7 +40,19 @@ export async function npmRelease({
 }
 
 export interface NpmReleaseParam {
+  /**
+   * New version to release
+   * 
+   * @remarks
+   * You can also use 'patch', 'minor' or 'major' to increase the version as you do with `npm version`
+   */
   newVersion: string;
+  /**
+   * Path to package.json
+   */
   packageJsonPath: string;
+  /**
+   * Path to deep.json
+   */
   deepJsonFilePath: string;
 }
