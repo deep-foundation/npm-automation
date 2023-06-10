@@ -23,10 +23,10 @@ await npmInstall({
 ```
  */
 export async function npmInstall(param: NpmInstallParam) {
-  const { packageName, version, deepJsonFilePath, packageJsonFilePath } = param;
+  const { name: name, version, deepJsonFilePath, packageJsonFilePath } = param;
   if (version && !semver.valid(version))
     throw new Error(`Invalid version ${version}`);
-  let npmInstallCommand = `npm install ${packageName}`;
+  let npmInstallCommand = `npm install ${name}`;
   if (version) {
     npmInstallCommand += `@${version}`;
   }
@@ -36,7 +36,7 @@ export async function npmInstall(param: NpmInstallParam) {
 
   const { default: packageJson }: { default: Partial<PackageJson> } =
     await import(packageJsonFilePath, { assert: { type: 'json' } });
-  const packageJsonDependencyVersion = packageJson.dependencies![packageName];
+  const packageJsonDependencyVersion = packageJson.dependencies![name];
 
   const { default: deepJson }: { default: DeepJson } = await import(
     deepJsonFilePath,
@@ -44,14 +44,14 @@ export async function npmInstall(param: NpmInstallParam) {
   );
 
   const deepJsonDependencyIndex = deepJson.dependencies.findIndex(
-    (dependency) => dependency.name === packageName
+    (dependency) => dependency.name === name
   );
   deepJson.dependencies[deepJsonDependencyIndex].version =
     packageJsonDependencyVersion;
 }
 
 export interface NpmInstallParam {
-  packageName: string;
+  name: string;
   packageJsonFilePath: string;
   deepJsonFilePath: string;
   version: string | undefined;

@@ -38,7 +38,7 @@ async function main() {
   } = program.opts();
 
   await npmInstall({
-    packageName: name,
+    name: name,
     version,
     packageJsonFilePath,
     deepJsonFilePath
