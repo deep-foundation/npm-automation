@@ -14,8 +14,8 @@ export async function syncDependencies({
   deepJsonFilePath,
   packageJsonPath,
 }: CheckDependenciesParam) {
-  const deepJson = JSON.parse(await fsExtra.readFile(deepJsonFilePath, 'utf8'));
-  const packageJson = JSON.parse(await fsExtra.readFile(packageJsonPath, 'utf8'));
+  const deepJson = await fsExtra.readJson(deepJsonFilePath, 'utf8');
+  const packageJson = await fsExtra.readJson(packageJsonPath, 'utf8');
 
   let updated = false;
 
