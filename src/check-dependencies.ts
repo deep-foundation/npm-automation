@@ -10,8 +10,8 @@ export interface CheckDependenciesParam {
   packageJsonPath: string;
 }
 
-function transformDependency(dependency: Dependency): {[key: string]: string} {
-    let result: {[key: string]: string} = {};
+function transformDependency(dependency: Dependency): Record<string, string> {
+    let result: Record<string, string> = {};
     result[dependency.name] = `~${dependency.version}`;
     return result;
 }
