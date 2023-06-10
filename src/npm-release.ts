@@ -6,6 +6,8 @@ import { syncDependencies } from './sync-dependencies';
 /**
  * Releases a new version of the deep npm package and syncronizes the version and dependencies between {@link NpmReleaseParam.deepJsonFilePath} and {@link NpmReleaseParam.packageJsonFilePath}
  * 
+ * @throws {@link Error} if the version in {@link NpmReleaseParam.packageJsonFilePath} is outdated
+ * 
  * @example
 ```typescript
 await npmRelease({
