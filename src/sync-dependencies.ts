@@ -47,7 +47,7 @@ export async function syncDependencies({
     if(isDeepJsonVersionGreater) {
       packageJson.dependencies![dependency.name] = `~${dependency.version}`;
     } else {
-      deepJson.dependencies = {...deepJson.dependencies, [dependency.name]: `~${dependency.version}`};
+      deepJson.dependencies = {...deepJson.dependencies, [dependency.name]: `${dependency.version}`};
     }
   })
 
@@ -56,7 +56,7 @@ export async function syncDependencies({
     if(!deepJsonDependency) return;
     const isPackageJsonVersionGreater = semver.gt(dependencyVersion, deepJson.dependencies.find(dependency => dependency.name === dependency.name)!.version);
     if(isPackageJsonVersionGreater) {
-      deepJson.dependencies = {...deepJson.dependencies, [dependencyName]: `~${dependencyVersion}`};
+      deepJson.dependencies = {...deepJson.dependencies, [dependencyName]: `${dependencyVersion}`};
     } else {
       packageJson.dependencies![dependencyName] = `~${deepJsonDependency.version}`;
     }
