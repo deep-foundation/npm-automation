@@ -2,7 +2,7 @@ import path from 'path';
 import exec from '@simplyhexagonal/exec';
 import { program } from 'commander';
 import fsExtra from 'fs-extra';
-import { execWrapped } from './exec-wrapped';
+import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error';
 import { npmRelease } from './npm-release';
 
 main();

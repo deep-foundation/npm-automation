@@ -1,5 +1,5 @@
 import exec from '@simplyhexagonal/exec';
-import { execWrapped } from './exec-wrapped';
+import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error';
 import { updateDeepJsonVersion } from './update-version-in-json-object';
 import { syncDependencies } from './sync-dependencies';
 
@@ -29,7 +29,7 @@ export async function npmRelease({
   if (npmLatestPackageJsonVersion <= packageJsonVersion) {
     const {
       execResult: { stdoutOutput: npmVersionStdoutOutput },
-    } = await execWrapped({
+    } = await execAndLogStdoutOrThrowError({
       command: `npm version --allow-same-version --no-git-tag-version ${newVersion}`,
     });
     await updateDeepJsonVersion({
