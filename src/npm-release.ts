@@ -8,7 +8,7 @@ export async function npmRelease({
   newVersion,
   packageJsonPath,
 }: NpmReleaseParam) {
-  await syncDependencies({ deepJsonFilePath, packageJsonPath });
+  await syncDependencies({ deepJsonFilePath, packageJsonFilePath: packageJsonPath });
   
   const packageJson = await import(packageJsonPath);
   const { execPromise } = exec(`npm view ${packageJson.name} version`);

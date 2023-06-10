@@ -12,15 +12,15 @@ export interface CheckDependenciesParam {
   /**
    * Path to package.json
    */
-  packageJsonPath: string;
+  packageJsonFilePath: string;
 }
 
 /**
- * Syncronizes dependencies between {@link CheckDependenciesParam.deepJsonFilePath} and {@link CheckDependenciesParam.packageJsonPath}
+ * Syncronizes dependencies between {@link CheckDependenciesParam.deepJsonFilePath} and {@link CheckDependenciesParam.packageJsonFilePath}
  */
 export async function syncDependencies({
   deepJsonFilePath,
-  packageJsonPath,
+  packageJsonFilePath: packageJsonPath,
 }: CheckDependenciesParam) {
   const {default: deepJson}: {default: DeepJson} = await import(deepJsonFilePath, {assert: {type: 'json'}}) ;
   const {default: packageJson}: {default: Partial<PackageJson>} = await import(packageJsonPath, {assert: {type: 'json'}});
