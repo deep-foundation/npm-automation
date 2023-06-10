@@ -4,7 +4,7 @@ import semver from 'semver'
 import { type PackageJson } from 'types-package-json';
 
 
-export interface CheckDependenciesParam {
+export interface SyncDependenciesParam {
   /**
    * Path to deep.json
    */
@@ -16,7 +16,7 @@ export interface CheckDependenciesParam {
 }
 
 /**
- * Syncronizes dependencies between {@link CheckDependenciesParam.deepJsonFilePath} and {@link CheckDependenciesParam.packageJsonFilePath}
+ * Syncronizes dependencies between {@link SyncDependenciesParam.deepJsonFilePath} and {@link SyncDependenciesParam.packageJsonFilePath}
  * 
  * @async
  * @function
@@ -24,7 +24,7 @@ export interface CheckDependenciesParam {
 export async function syncDependencies({
   deepJsonFilePath,
   packageJsonFilePath: packageJsonPath,
-}: CheckDependenciesParam) {
+}: SyncDependenciesParam) {
   const {default: deepJson}: {default: DeepJson} = await import(deepJsonFilePath, {assert: {type: 'json'}}) ;
   const {default: packageJson}: {default: Partial<PackageJson>} = await import(packageJsonPath, {assert: {type: 'json'}});
 
