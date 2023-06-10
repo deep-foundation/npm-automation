@@ -4,6 +4,11 @@ import path from 'path';
 import fs from 'fs';
 import { glob } from 'glob';
 
+/**
+ * Pulls the latest version of the npm package and copies it to the root folder
+ * 
+ * @throws {@link Error} if there are not commited changes 
+ */
 export async function npmPull({ packageName }: NpmPullParam) {
   const { execPromise: gitDiffExecPromise } = exec(`git diff`);
   const gitDiffResult = await gitDiffExecPromise;
@@ -49,5 +54,8 @@ export async function npmPull({ packageName }: NpmPullParam) {
 }
 
 export interface NpmPullParam {
+  /**
+   * Name of the npm package
+   */
   packageName: string;
 }
