@@ -19,11 +19,11 @@ async function main() {
       '--version <version>',
       'Version to install'
     )
-    .requiredOption(
+    .option(
       '--deep-json-file-path <deep_json_file_path>',
       'deep.json file path'
     )
-    .requiredOption(
+    .option(
       '--package-json-file-path <package_json_file_path>',
       'package.json file path'
     )
