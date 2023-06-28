@@ -4,6 +4,7 @@
     "deep-package"
   ],
   "version": "1.1.1",
+  "type": "module",
   "description": "A package that will help you to automate actions related to npm and your deep package.",
   "repository": {
     "type": "git",
