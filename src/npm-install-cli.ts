@@ -14,16 +14,16 @@ async function main() {
     .description('Installs a package and syncronizes deep.json and package.json dependencies')
 
   program
-    .option('--name <name>', 'Package name to install')
-    .option(
+    .requiredOption('--name <name>', 'Package name to install')
+    .requiredOption(
       '--version <version>',
       'Version to install'
     )
-    .option(
+    .requiredOption(
       '--deep-json-file-path <deep_json_file_path>',
       'deep.json file path'
     )
-    .option(
+    .requiredOption(
       '--package-json-file-path <package_json_file_path>',
       'package.json file path'
     )
