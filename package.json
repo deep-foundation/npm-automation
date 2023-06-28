@@ -3,7 +3,7 @@
   "keywords": [
     "deep-package"
   ],
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A package that will help you to automate actions related to npm and your deep package.",
   "repository": {
     "type": "git",
