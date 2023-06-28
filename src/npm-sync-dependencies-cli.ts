@@ -2,10 +2,10 @@ import path from 'path';
 import exec from '@simplyhexagonal/exec';
 import { program } from 'commander';
 import fsExtra from 'fs-extra';
-import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error';
-import { npmRelease } from './npm-release';
-import { npmInstall } from './npm-install';
-import { syncDependencies } from './sync-dependencies';
+import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error.js';
+import { npmRelease } from './npm-release.js';
+import { npmInstall } from './npm-install.js';
+import { syncDependencies } from './sync-dependencies.js';
 
 main();
 

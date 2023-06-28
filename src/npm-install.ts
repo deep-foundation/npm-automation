@@ -1,7 +1,7 @@
 import { SemVer } from 'semver';
 import semver from 'semver';
-import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error';
-import { DeepJson } from './deep-json';
+import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error.js';
+import { DeepJson } from './deep-json.js';
 import { type PackageJson } from 'types-package-json';
 
 /**

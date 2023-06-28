@@ -1,7 +1,7 @@
 import exec from '@simplyhexagonal/exec';
-import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error';
-import { updateDeepJsonVersion } from './update-version-in-json-object';
-import { syncDependencies } from './sync-dependencies';
+import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error.js';
+import { updateDeepJsonVersion } from './update-version-in-json-object.js';
+import { syncDependencies } from './sync-dependencies.js';
 
 /**
  * Releases a new version of the deep npm package and syncronizes the version and dependencies between {@link NpmReleaseParam.deepJsonFilePath} and {@link NpmReleaseParam.packageJsonFilePath}
