@@ -4,7 +4,9 @@ import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-err
 import { DeepJson } from './deep-json.js';
 import { type PackageJson } from 'types-package-json';
 import createDebugMessages from 'debug';
-const debug = createDebugMessages('@deep-foundation/npm-automation:npm-install');
+const debug = createDebugMessages(
+  '@deep-foundation/npm-automation:npm-install'
+);
 
 /**
  * Installs a package
@@ -23,47 +25,47 @@ await npmInstall({
 ```
  */
 export async function npmInstall(param: NpmInstallParam) {
-  debug({param})
+  debug({ param });
   const { name: name, version, deepJsonFilePath, packageJsonFilePath } = param;
 
   const isVersionValid = version && !semver.valid(version);
-  debug({isVersionValid})
-  if (isVersionValid){
+  debug({ isVersionValid });
+  if (isVersionValid) {
     throw new Error(`Invalid version ${version}`);
   }
   let npmInstallCommand = `npm install ${name}`;
   if (version) {
     npmInstallCommand += `@${version}`;
   }
-  debug({npmInstallCommand})
+  debug({ npmInstallCommand });
   await execAndLogStdoutOrThrowError({
     command: npmInstallCommand,
   });
 
   const { default: packageJson }: { default: Partial<PackageJson> } =
     await import(packageJsonFilePath, { assert: { type: 'json' } });
-    debug({packageJson})
+  debug({ packageJson });
   const packageJsonDependencyVersion = packageJson.dependencies![name];
-  debug({packageJsonDependencyVersion})
+  debug({ packageJsonDependencyVersion });
 
   const { default: deepJson }: { default: DeepJson } = await import(
     deepJsonFilePath,
     { assert: { type: 'json' } }
   );
-  debug({deepJson})
+  debug({ deepJson });
 
   const deepJsonDependencyIndex = deepJson.dependencies.findIndex(
     (dependency) => dependency.name === name
   );
-  debug({deepJsonDependencyIndex})
+  debug({ deepJsonDependencyIndex });
   deepJson.dependencies[deepJsonDependencyIndex].version =
     packageJsonDependencyVersion;
 }
 
 export interface NpmInstallParam {
-   /**
-    * Package name to install
-    */
+  /**
+   * Package name to install
+   */
   name: string;
   /**
    * Path to package.json
