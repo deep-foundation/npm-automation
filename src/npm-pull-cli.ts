@@ -21,7 +21,7 @@ async function main() {
   program.parse(process.argv);
 
   let options = program.opts();
-  const packageName = options.packageName ?? await import(path.resolve('package.json')).then(
+  const packageName = options.packageName ?? await import(path.resolve('package.json'), {assert: {type: 'json'}}).then(
     (pkg) => pkg.name
   );
 
