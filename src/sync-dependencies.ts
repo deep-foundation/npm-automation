@@ -1,4 +1,5 @@
-import fsExtra from 'fs-extra';
+
+import { writeFile } from 'fs/promises';
 import { DeepJson, DeepJsonDependency } from './deep-json.js';
 import semver from 'semver'
 import { type PackageJson } from 'types-package-json';
@@ -37,7 +38,7 @@ export async function syncDependencies(param: SyncDependenciesParam) {
   })
 
   if (missingDependenciesFromDeepJson.length > 0) {
-    await fsExtra.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
+    await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
     console.log(`${missingDependenciesFromDeepJson.map((dependency: DeepJsonDependency) => dependency.name).join(', ')} are added to package.json because they exist in deep.json`);
   }
 
