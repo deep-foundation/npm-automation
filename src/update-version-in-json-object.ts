@@ -1,4 +1,4 @@
-import { writeFile } from 'fs-extra';
+import { writeFile } from 'fs-extra/index.js';
 
 export async function updateDeepJsonVersion({
   version,

@@ -1,4 +1,4 @@
-import fsExtra from 'fs-extra';
+import fsExtra from 'fs-extra/index.js';
 import { DeepJson, DeepJsonDependency } from './deep-json.js';
 import semver from 'semver'
 import { type PackageJson } from 'types-package-json';
