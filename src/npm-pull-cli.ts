@@ -1,6 +1,6 @@
 import exec from '@simplyhexagonal/exec';
 import { program } from 'commander';
-import fsExtra from 'fs-extra/index.js';
+import fsExtra from 'fs-extra';
 import path from 'path';
 import { npmPull } from './npm-pull.js';
 

@@ -1,5 +1,5 @@
 import exec from '@simplyhexagonal/exec';
-import { lstat, move, pathExists } from 'fs-extra/index.js';
+import { lstat, move, pathExists } from 'fs-extra';
 import path from 'path';
 import fs from 'fs';
 import { glob } from 'glob';
