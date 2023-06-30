@@ -58,6 +58,9 @@ export async function npmInstall(param: NpmInstallParam) {
     (dependency) => dependency.name === name
   );
   debug({ deepJsonDependencyIndex });
+  if(deepJsonDependencyIndex === -1) {
+    throw new Error(`Could not find dependency ${name} in deep.json`);
+  }
   deepJson.dependencies[deepJsonDependencyIndex].version =
     packageJsonDependencyVersion;
 }
