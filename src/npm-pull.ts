@@ -1,9 +1,9 @@
 import exec from '@simplyhexagonal/exec/dist/exec.js';
-import { move, pathExists } from 'fs-extra/esm.mjs';
 import {lstat} from 'fs/promises';
 import path from 'path';
 import fs from 'fs';
 import { glob } from 'glob';
+import { move } from 'fs-extra';
 
 /**
  * Pulls the latest version of the npm package and copies it to the root folder
