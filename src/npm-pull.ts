@@ -51,9 +51,7 @@ export async function npmPull(param: NpmPullParam) {
     packageName
   );
   debug({nodeModuleDirectoryPath})
-  const nodeModulePath = path.resolve(dirname, `node_modules/${packageName}`);
-  debug({nodeModulePath})
-  const nodeModuleFilePaths = await glob(`${nodeModulePath}/**/*`, {
+  const nodeModuleFilePaths = await glob(`${nodeModuleDirectoryPath}/**/*`, {
     ignore: [`dist`, `node_modules`],
     withFileTypes: true,
   });
