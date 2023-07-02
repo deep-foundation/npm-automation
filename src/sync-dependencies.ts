@@ -3,7 +3,7 @@ import { writeFile } from 'fs/promises';
 import { DeepJson, DeepJsonDependency } from './deep-json.js';
 import semver from 'semver'
 import { type PackageJson } from 'types-package-json';
-
+import createDebugMessages from 'debug';
 
 export interface SyncDependenciesParam {
   /**
@@ -21,18 +21,25 @@ export interface SyncDependenciesParam {
  * 
  */
 export async function syncDependencies(param: SyncDependenciesParam) {
+  const debug = createDebugMessages(
+    '@deep-foundation/npm-automation:npm-pull'
+  );
+  debug({param})
   const {
     deepJsonFilePath,
     packageJsonFilePath: packageJsonPath,
   } = param;
   const {default: deepJson}: {default: DeepJson} = await import(deepJsonFilePath, {assert: {type: 'json'}}) ;
+  debug({deepJson})
   const {default: packageJson}: {default: Partial<PackageJson>} = await import(packageJsonPath, {assert: {type: 'json'}});
+  debug({packageJson})
 
   if(!packageJson.dependencies) {
     packageJson.dependencies = {};
   }
 
   const missingDependenciesFromDeepJson: Array<DeepJsonDependency> = deepJson.dependencies.filter((dependency: DeepJsonDependency) => !!packageJson.dependencies![dependency.name]);
+  debug({missingDependenciesFromDeepJson})
   missingDependenciesFromDeepJson.forEach((dependency: DeepJsonDependency) => {
     packageJson.dependencies = {...packageJson.dependencies, [dependency.name]: `~${dependency.version}`};
   })
