@@ -26,7 +26,7 @@ export async function npmPull(param: NpmPullParam) {
     '@deep-foundation/npm-automation:npm-pull'
   );
   debug({param})
-  const { packageName } = param;
+  const { packageName ,packageVersion = 'latest'} = param;
   const { execPromise: gitDiffExecPromise } = exec(`git diff`);
   const gitDiffResult = await gitDiffExecPromise;
   debug({gitDiffResult})
@@ -37,7 +37,7 @@ export async function npmPull(param: NpmPullParam) {
   }
 
   const { execPromise: npmInstallExecPromise } = exec(
-    `npm install ${packageName}@latest --no-save`
+    `npm install ${packageName}@${packageVersion} --no-save`
   );
   const npmInstallResult = await npmInstallExecPromise;
   if (npmInstallResult.exitCode !== 0) {
@@ -82,4 +82,10 @@ export interface NpmPullParam {
    * Name of the npm package
    */
   packageName: string;
+  /**
+   * Version of the npm package
+   * 
+   * @defaultValue `latest`
+   */
+  packageVersion?: string;
 }
