@@ -31,10 +31,16 @@ async function main() {
   const dirname = path.dirname(filename);
   const packageJsonFilePath = path.resolve(dirname,'package.json');
   debug({packageJsonFilePath})
-  const packageName = options.packageName ?? await import(packageJsonFilePath, {assert: {type: 'json'}}).then(
-    (pkg) => pkg.name
-  );
+  const {default: packageJson} = await import(packageJsonFilePath, {assert: {type: 'json'}});
+  debug({packageJson})
+  if(!options.packageName && !packageJson.name) {
+    throw new Error(`--package-name option is not provided and package.json file does not exist in ${packageJsonFilePath}`);
+  }
+  const packageName = options.packageName ?? packageJson.name;
   debug({packageName})
+  if(!packageName) {
+    throw new Error(`Failed to find package name in ${packageJsonFilePath}`);
+  }
 
   await npmPull({
     packageName,
