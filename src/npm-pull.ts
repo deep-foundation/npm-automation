@@ -44,10 +44,10 @@ export async function npmPull(param: NpmPullParam) {
     throw new Error(npmInstallResult.stderrOutput.trim());
   }
   debug({npmInstallResult})
-  const filename = fileURLToPath(import.meta.url);
-  const dirname = path.dirname(filename);
+  const currentDir = process.cwd();
+  debug({currentDir})
   const nodeModuleDirectoryPath = path.join(
-    path.resolve(dirname, `node_modules`),
+    path.resolve(currentDir, `node_modules`),
     packageName
   );
   debug({nodeModuleDirectoryPath})
@@ -59,12 +59,16 @@ export async function npmPull(param: NpmPullParam) {
   await Promise.all(
     nodeModuleFilePaths.map(async (nodeModuleFilePath) => {
       if (!nodeModuleFilePath.isFile()) return;
+      const moveSrc = nodeModuleFilePath.fullpath();
+      debug({moveSrc})
+      const moveDestination = path.join(
+        currentDir,
+        nodeModuleFilePath.fullpath().replace(nodeModuleDirectoryPath, '')
+      );
+      debug({moveDestination})
       return await move(
-        nodeModuleFilePath.fullpath(),
-        path.join(
-          dirname,
-          nodeModuleFilePath.fullpath().replace(nodeModuleDirectoryPath, '')
-        ),
+        moveSrc,
+        moveDestination,
         {
           overwrite: true,
         }
