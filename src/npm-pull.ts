@@ -45,7 +45,7 @@ export async function npmPull(param: NpmPullParam) {
   }
   debug({npmInstallResult})
   const filename = fileURLToPath(import.meta.url);
-  const dirname = path.dirname(__filename);
+  const dirname = path.dirname(filename);
   const nodeModuleDirectoryPath = path.join(
     path.resolve(dirname, `node_modules`),
     packageName
