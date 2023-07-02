@@ -44,14 +44,12 @@ export async function npmPull(param: NpmPullParam) {
   }
   debug({npmInstallResult})
 
-  const rootFolderPath = path.resolve(`./`);
-  debug({rootFolderPath})
   const nodeModuleDirectoryPath = path.join(
-    path.resolve(`node_modules`),
+    path.resolve(__dirname, `node_modules`),
     packageName
   );
   debug({nodeModuleDirectoryPath})
-  const nodeModulePath = path.resolve(`node_modules/${packageName}`);
+  const nodeModulePath = path.resolve(__dirname, `node_modules/${packageName}`);
   debug({nodeModulePath})
   const nodeModuleFilePaths = await glob(`${nodeModulePath}/**/*`, {
     ignore: [`dist`, `node_modules`],
@@ -64,7 +62,7 @@ export async function npmPull(param: NpmPullParam) {
       return await move(
         nodeModuleFilePath.fullpath(),
         path.join(
-          rootFolderPath,
+          __dirname,
           nodeModuleFilePath.fullpath().replace(nodeModuleDirectoryPath, '')
         ),
         {
