@@ -3,8 +3,6 @@ import exec from '@simplyhexagonal/exec';
 import { program } from 'commander';
 import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error.js';
 import { npmRelease } from './npm-release.js';
-import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
 
 main();
 
@@ -32,10 +30,11 @@ async function main() {
 
   program.parse(process.argv);
 
+  const currentDir = process.cwd();
   const {
     newVersion = 'patch',
-    packageJsonPath = require.resolve('package.json'),
-    deepJsonFilePath = require.resolve('deep.json'),
+    packageJsonPath = path.join(currentDir,'package.json'),
+    deepJsonFilePath = path.join(currentDir,'deep.json'),
   } = program.opts();
 
   await npmRelease({
