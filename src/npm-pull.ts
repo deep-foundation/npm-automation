@@ -5,6 +5,7 @@ import fs from 'fs';
 import { glob } from 'glob';
 import { move } from 'fs-extra';
 import createDebugMessages from 'debug';
+import {fileURLToPath} from 'url'
 
 /**
  * Pulls the latest version of the npm package and copies it to the root folder
@@ -43,13 +44,14 @@ export async function npmPull(param: NpmPullParam) {
     throw new Error(npmInstallResult.stderrOutput.trim());
   }
   debug({npmInstallResult})
-
+  const filename = fileURLToPath(import.meta.url);
+  const dirname = path.dirname(__filename);
   const nodeModuleDirectoryPath = path.join(
-    path.resolve(__dirname, `node_modules`),
+    path.resolve(dirname, `node_modules`),
     packageName
   );
   debug({nodeModuleDirectoryPath})
-  const nodeModulePath = path.resolve(__dirname, `node_modules/${packageName}`);
+  const nodeModulePath = path.resolve(dirname, `node_modules/${packageName}`);
   debug({nodeModulePath})
   const nodeModuleFilePaths = await glob(`${nodeModulePath}/**/*`, {
     ignore: [`dist`, `node_modules`],
@@ -62,7 +64,7 @@ export async function npmPull(param: NpmPullParam) {
       return await move(
         nodeModuleFilePath.fullpath(),
         path.join(
-          __dirname,
+          dirname,
           nodeModuleFilePath.fullpath().replace(nodeModuleDirectoryPath, '')
         ),
         {
