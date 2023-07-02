@@ -4,6 +4,8 @@ import path from 'path';
 import { npmPull } from './npm-pull.js';
 import  createDebugMessages from 'debug';
 import {fileURLToPath} from 'url'
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
 
 main();
@@ -27,9 +29,7 @@ async function main() {
   program.parse(process.argv);
 
   let options = program.opts();
-  const filename = fileURLToPath(import.meta.url);
-  const dirname = path.dirname(filename);
-  const packageJsonFilePath = path.resolve(dirname,'package.json');
+  const packageJsonFilePath = require.resolve('package.json');
   debug({packageJsonFilePath})
   const {default: packageJson} = await import(packageJsonFilePath, {assert: {type: 'json'}});
   debug({packageJson})

@@ -4,6 +4,8 @@ import { program } from 'commander';
 import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error.js';
 import { npmRelease } from './npm-release.js';
 import { npmInstall } from './npm-install.js';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
 main();
 
@@ -32,8 +34,8 @@ async function main() {
   const {
     name,
     version,
-    packageJsonFilePath = path.resolve('package.json'),
-    deepJsonFilePath = path.resolve('deep.json'),
+    packageJsonFilePath = require.resolve('package.json'),
+    deepJsonFilePath = require.resolve('deep.json'),
   } = program.opts();
 
   await npmInstall({
