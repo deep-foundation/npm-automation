@@ -52,12 +52,8 @@ export async function syncDependencies(param: SyncDependenciesParam) {
     packageJson
   })
   debug({syncDependenciesBasedOnDeepJsonResult})
-  deepJson.dependencies = [
-    ...syncDependenciesBasedOnDeepJsonResult.deepJsonDependencies, 
-  ]
-  packageJson.dependencies = {
-    ...syncDependenciesBasedOnDeepJsonResult.packageJsonDependencies, 
-  }
+  deepJson.dependencies = syncDependenciesBasedOnDeepJsonResult.deepJsonDependencies
+  packageJson.dependencies = syncDependenciesBasedOnDeepJsonResult.packageJsonDependencies
   debug({deepJsonDependenciesAfterMergingWithSyncDependenciesBasedOnDeepJsonResult: deepJson.dependencies});
   debug({packageJsonDependenciesAfterMergingWithSyncDependenciesBasedOnDeepJsonResult: packageJson.dependencies});
   const syncDependenciesBasedOnPackageJsonResult = await syncDependenciesBasedOnPackageJson({
@@ -65,12 +61,8 @@ export async function syncDependencies(param: SyncDependenciesParam) {
     packageJson
   })
   debug({syncDependenciesBasedOnPackageJsonResult})
-  deepJson.dependencies = [
-    ...syncDependenciesBasedOnPackageJsonResult.deepJsonDependencies
-  ];
-  packageJson.dependencies = {
-    ...syncDependenciesBasedOnPackageJsonResult.packageJsonDependencies
-  };
+  deepJson.dependencies = syncDependenciesBasedOnPackageJsonResult.deepJsonDependencies;
+  packageJson.dependencies = syncDependenciesBasedOnPackageJsonResult.packageJsonDependencies;
   debug({deepJsonDependenciesAfterMergingWithSyncDependenciesBasedOnPackageJsonResult: deepJson.dependencies});
   debug({packageJsonDependenciesAfterMergingWithSyncDependenciesBasedOnPackageJsonResult: packageJson.dependencies});
 
