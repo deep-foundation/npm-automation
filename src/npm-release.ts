@@ -26,7 +26,7 @@ export async function npmRelease(param: NpmReleaseParam) {
   } = param;
   await syncDependencies({ deepJsonFilePath, packageJsonFilePath: packageJsonPath });
   
-  const packageJson = await import(packageJsonPath);
+  const packageJson = await import(packageJsonPath, {assert: {type: 'json'}});
   const { execPromise } = exec(`npm view ${packageJson.name} version`);
   const execResult = await execPromise;
   if (execResult.exitCode !== 0) {
