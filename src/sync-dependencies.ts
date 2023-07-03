@@ -45,22 +45,36 @@ export async function syncDependencies(param: SyncDependenciesParam) {
   packageJsonMissingDependenciesFromDeepJson.forEach((dependency: DeepJsonDependency) => {
     packageJson.dependencies = {...packageJson.dependencies, [dependency.name]: `~${dependency.version}`};
   })
+  debug({packageJsonDependenciesAfterAddingMissingDependencies: packageJson.dependencies})
 
   const syncDependenciesBasedOnDeepJsonResult = await syncDependenciesBasedOnDeepJson({
     deepJson,
     packageJson
   })
   debug({syncDependenciesBasedOnDeepJsonResult})
-  
+  deepJson.dependencies = {
+    ...syncDependenciesBasedOnDeepJsonResult.deepJsonDependencies, 
+  }
+  packageJson.dependencies = {
+    ...syncDependenciesBasedOnDeepJsonResult.packageJsonDependencies, 
+  }
+  debug({deepJsonDependenciesAfterMergingWithSyncDependenciesBasedOnDeepJsonResult: deepJson.dependencies});
+  debug({packageJsonDependenciesAfterMergingWithSyncDependenciesBasedOnDeepJsonResult: packageJson.dependencies});
   const syncDependenciesBasedOnPackageJsonResult = await syncDependenciesBasedOnPackageJson({
     deepJson,
     packageJson
   })
   debug({syncDependenciesBasedOnPackageJsonResult})
+  deepJson.dependencies = {
+    ...syncDependenciesBasedOnPackageJsonResult.deepJsonDependencies
+  };
+  packageJson.dependencies = {
+    ...syncDependenciesBasedOnPackageJsonResult.packageJsonDependencies
+  };
+  debug({deepJsonDependenciesAfterMergingWithSyncDependenciesBasedOnPackageJsonResult: deepJson.dependencies});
+  debug({packageJsonDependenciesAfterMergingWithSyncDependenciesBasedOnPackageJsonResult: packageJson.dependencies});
 
-  deepJson.dependencies = {...syncDependenciesBasedOnDeepJsonResult.deepJsonDependencies, ...syncDependenciesBasedOnPackageJsonResult.deepJsonDependencies};
   debug({resultDeepJsonDependencies: deepJson.dependencies})
-  packageJson.dependencies = {...syncDependenciesBasedOnDeepJsonResult.packageJsonDependencies, ...syncDependenciesBasedOnPackageJsonResult.packageJsonDependencies};
   debug({resultPackageJsonDependencies: packageJson.dependencies})
 
   writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
