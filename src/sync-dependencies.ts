@@ -129,7 +129,7 @@ async function syncDependenciesBasedOnPackageJson(param: {deepJson: DeepJson, pa
     };
     const deepJsonDependencyIndex = deepJsonDependencies.findIndex(dependency => dependency.name === dependencyName);
     debug({deepJsonDependencyIndex})
-    if(!deepJsonDependencyIndex) return;
+    if(deepJsonDependencyIndex === -1) return;
     const deepJsonDependency = deepJsonDependencies[deepJsonDependencyIndex];
     debug({deepJsonDependency})
     const deepJsonDependencyVersionWithoutRange = semver.minVersion(deepJsonDependency.version)?.version;
