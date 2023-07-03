@@ -92,7 +92,10 @@ async function syncDependenciesBasedOnDeepJson(param: {deepJson: DeepJson, packa
     if(isDeepJsonVersionGreater) {
       packageJsonDependencies![dependency.name] = `~${deepJsonDependencyVersionWithoutRange}`;
     } else {
-      deepJsonDependencies = {...deepJson.dependencies, [dependency.name]: `${deepJsonDependencyVersionWithoutRange}`};
+      deepJsonDependencies = [...deepJson.dependencies, {
+        name: dependency.name,
+        version: deepJsonDependencyVersionWithoutRange
+      }];
     }
   })
   const result = {packageJsonDependencies, deepJsonDependencies};
@@ -125,7 +128,10 @@ async function syncDependenciesBasedOnPackageJson(param: {deepJson: DeepJson, pa
     };
     const isPackageJsonVersionGreater = semver.gt(packageJsonDependencyVersionWithoutRange, deepJsonDependencyVersionWithoutRange);
     if(isPackageJsonVersionGreater) {
-      deepJsonDependencies = {...deepJsonDependencies, [dependencyName]: `${packageJsonDependencyVersionWithoutRange}`};
+      deepJsonDependencies = [...deepJsonDependencies, {
+        name: dependencyName,
+        version: packageJsonDependencyVersionWithoutRange
+      }];
     } else {
       packageJsonDependencies![dependencyName] = `~${deepJsonDependencyVersionWithoutRange}`;
     }
