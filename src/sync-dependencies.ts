@@ -50,16 +50,18 @@ export async function syncDependencies(param: SyncDependenciesParam) {
     deepJson,
     packageJson
   })
+  debug({syncDependenciesBasedOnDeepJsonResult})
   
   const syncDependenciesBasedOnPackageJsonResult = await syncDependenciesBasedOnPackageJson({
     deepJson,
     packageJson
   })
+  debug({syncDependenciesBasedOnPackageJsonResult})
 
   deepJson.dependencies = {...syncDependenciesBasedOnDeepJsonResult.deepJsonDependencies, ...syncDependenciesBasedOnPackageJsonResult.deepJsonDependencies};
-  debug({deepJsonDependencies: deepJson.dependencies})
+  debug({resultDeepJsonDependencies: deepJson.dependencies})
   packageJson.dependencies = {...syncDependenciesBasedOnDeepJsonResult.packageJsonDependencies, ...syncDependenciesBasedOnPackageJsonResult.packageJsonDependencies};
-  debug({packageJsonDependencies: packageJson.dependencies})
+  debug({resultPackageJsonDependencies: packageJson.dependencies})
 
   writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
   writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
