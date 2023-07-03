@@ -119,7 +119,7 @@ async function syncDependenciesBasedOnDeepJson(param: {deepJson: DeepJson, packa
 
 async function syncDependenciesBasedOnPackageJson(param: {deepJson: DeepJson, packageJson: Partial<PackageJson>}) {
   const debug = createDebugMessages(
-    '@deep-foundation/npm-automation:syncDependenciesBasedOnDeepJson'
+    '@deep-foundation/npm-automation:syncDependenciesBasedOnPackageJson'
   );
   debug({param})
   const {deepJson, packageJson} = param;
