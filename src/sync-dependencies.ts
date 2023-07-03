@@ -83,7 +83,8 @@ async function syncDependenciesBasedOnDeepJson(param: {deepJson: DeepJson, packa
   debug({packageJsonDependencies})
   let deepJsonDependencies = deepJson.dependencies;
   debug({deepJsonDependencies})
-  deepJson.dependencies.forEach((dependency: DeepJsonDependency, i: number) => {
+  deepJson.dependencies.forEach((dependency: DeepJsonDependency, index: number) => {
+    debug({dependency, index})
     const deepJsonDependencyVersionWithoutRange = semver.minVersion(dependency.version)?.version;
     debug({dependencyVersionWithoutRange: deepJsonDependencyVersionWithoutRange})
     if(!deepJsonDependencyVersionWithoutRange) {
@@ -98,7 +99,7 @@ async function syncDependenciesBasedOnDeepJson(param: {deepJson: DeepJson, packa
     if(isDeepJsonVersionGreater) {
       packageJsonDependencies![dependency.name] = `~${deepJsonDependencyVersionWithoutRange}`;
     } else {
-      deepJsonDependencies[i] = {
+      deepJsonDependencies[index] = {
         name: dependency.name,
         version: deepJsonDependencyVersionWithoutRange
       };
@@ -120,14 +121,17 @@ async function syncDependenciesBasedOnPackageJson(param: {deepJson: DeepJson, pa
   let deepJsonDependencies = deepJson.dependencies;
   debug({deepJsonDependencies})
   Object.entries(packageJsonDependencies).forEach(([dependencyName, dependencyVersion]) => { 
+    debug({dependencyName, dependencyVersion})
     const packageJsonDependencyVersionWithoutRange = semver.minVersion(dependencyVersion)?.version;
     debug({dependencyVersionWithoutRange: packageJsonDependencyVersionWithoutRange})
     if(!packageJsonDependencyVersionWithoutRange) {
       return
     };
     const deepJsonDependencyIndex = deepJsonDependencies.findIndex(dependency => dependency.name === dependencyName);
+    debug({deepJsonDependencyIndex})
     if(!deepJsonDependencyIndex) return;
     const deepJsonDependency = deepJsonDependencies[deepJsonDependencyIndex];
+    debug({deepJsonDependency})
     const deepJsonDependencyVersionWithoutRange = semver.minVersion(deepJsonDependency.version)?.version;
     debug({deepJsonDependencyVersionWithoutRange})
     if(!deepJsonDependencyVersionWithoutRange) {
