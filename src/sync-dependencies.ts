@@ -46,11 +46,6 @@ export async function syncDependencies(param: SyncDependenciesParam) {
     packageJson.dependencies = {...packageJson.dependencies, [dependency.name]: `~${dependency.version}`};
   })
 
-  if (packageJsonMissingDependenciesFromDeepJson.length > 0) {
-    await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
-    console.log(`${packageJsonMissingDependenciesFromDeepJson.map((dependency: DeepJsonDependency) => dependency.name).join(', ')} are added to package.json because they exist in deep.json`);
-  }
-
   const syncDependenciesBasedOnDeepJsonResult = await syncDependenciesBasedOnDeepJson({
     deepJson,
     packageJson
@@ -65,6 +60,9 @@ export async function syncDependencies(param: SyncDependenciesParam) {
   debug({deepJsonDependencies: deepJson.dependencies})
   packageJson.dependencies = {...syncDependenciesBasedOnDeepJsonResult.packageJsonDependencies, ...syncDependenciesBasedOnPackageJsonResult.packageJsonDependencies};
   debug({packageJsonDependencies: packageJson.dependencies})
+
+  writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
+  writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
 }
 
 async function syncDependenciesBasedOnDeepJson(param: {deepJson: DeepJson, packageJson: Partial<PackageJson>}) {
