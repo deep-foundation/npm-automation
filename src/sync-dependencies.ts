@@ -52,9 +52,9 @@ export async function syncDependencies(param: SyncDependenciesParam) {
     packageJson
   })
   debug({syncDependenciesBasedOnDeepJsonResult})
-  deepJson.dependencies = {
+  deepJson.dependencies = [
     ...syncDependenciesBasedOnDeepJsonResult.deepJsonDependencies, 
-  }
+  ]
   packageJson.dependencies = {
     ...syncDependenciesBasedOnDeepJsonResult.packageJsonDependencies, 
   }
@@ -65,9 +65,9 @@ export async function syncDependencies(param: SyncDependenciesParam) {
     packageJson
   })
   debug({syncDependenciesBasedOnPackageJsonResult})
-  deepJson.dependencies = {
+  deepJson.dependencies = [
     ...syncDependenciesBasedOnPackageJsonResult.deepJsonDependencies
-  };
+  ];
   packageJson.dependencies = {
     ...syncDependenciesBasedOnPackageJsonResult.packageJsonDependencies
   };
