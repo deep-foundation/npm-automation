@@ -37,7 +37,7 @@ export async function npmRelease(param: NpmReleaseParam) {
   if(!packageJson.name) {
     throw new Error(`package.json does not have a name property`)
   }
-  const npmViewExecResult = await execa(`npm`, [`view`, `${packageJson.name} version`]);
+  const npmViewExecResult = await execa(`npm`, [`view`, `${packageJson.name}`, `version`]);
   debug({npmViewExecResult})
   if(!npmViewExecResult.stdout) {
     throw new Error(`${npmViewExecResult.command} output is empty`)
