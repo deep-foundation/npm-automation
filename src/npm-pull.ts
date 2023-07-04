@@ -35,7 +35,7 @@ export async function npmPull(param: NpmPullParam) {
     );
   }
 
-  const npmInstallExecResult = execa(
+  const npmInstallExecResult = await execa(
     `npm`, [`install`, `${packageName}@${packageVersion}`, `--no-save`]
   );
   debug({npmInstallExecResult})
