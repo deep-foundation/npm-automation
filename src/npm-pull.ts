@@ -1,4 +1,3 @@
-import exec from '@simplyhexagonal/exec/dist/exec.js';
 import {lstat} from 'fs/promises';
 import path from 'path';
 import fs from 'fs';
@@ -6,6 +5,7 @@ import { glob } from 'glob';
 import { move } from 'fs-extra';
 import createDebugMessages from 'debug';
 import {fileURLToPath} from 'url'
+import { execa } from 'execa';
 
 /**
  * Pulls the latest version of the npm package and copies it to the root folder
@@ -27,23 +27,18 @@ export async function npmPull(param: NpmPullParam) {
   );
   debug({param})
   const { packageName ,packageVersion = 'latest'} = param;
-  const { execPromise: gitDiffExecPromise } = exec(`git diff`);
-  const gitDiffResult = await gitDiffExecPromise;
-  debug({gitDiffResult})
-  if (gitDiffResult.stdoutOutput) {
+  const gitDiffExecResult = await execa(`git`, ['diff']);
+  debug({gitDiffExecResult})
+  if (gitDiffExecResult.stdout) {
     throw new Error(
       'You have unstaged changes. Stash (git stash) or commit (git commit) them'
     );
   }
 
-  const { execPromise: npmInstallExecPromise } = exec(
-    `npm install ${packageName}@${packageVersion} --no-save`
+  const npmInstallExecResult = execa(
+    `npm`, [`install`, `${packageName}@${packageVersion}`, `--no-save`]
   );
-  const npmInstallResult = await npmInstallExecPromise;
-  if (npmInstallResult.exitCode !== 0) {
-    throw new Error(npmInstallResult.stderrOutput.trim());
-  }
-  debug({npmInstallResult})
+  debug({npmInstallExecResult})
   const currentDir = process.cwd();
   debug({currentDir})
   const nodeModuleDirectoryPath = path.join(

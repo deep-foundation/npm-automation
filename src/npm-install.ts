@@ -1,9 +1,9 @@
 import { SemVer } from 'semver';
 import semver from 'semver';
-import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error.js';
 import { DeepJson } from './deep-json.js';
 import { type PackageJson } from 'types-package-json';
 import createDebugMessages from 'debug';
+import { execa } from 'execa';
 const debug = createDebugMessages(
   '@deep-foundation/npm-automation:npm-install'
 );
@@ -33,14 +33,14 @@ export async function npmInstall(param: NpmInstallParam) {
   if (!isVersionValid) {
     throw new Error(`Invalid version ${version}`);
   }
-  let npmInstallCommand = `npm install ${name}`;
+  let npmInstallCommandArgs = [`install`];
   if (version) {
-    npmInstallCommand += `@${version}`;
+    npmInstallCommandArgs.push(`${name}@${version}`);
+  } else {
+    npmInstallCommandArgs.push(name);
   }
-  debug({ npmInstallCommand });
-  await execAndLogStdoutOrThrowError({
-    command: npmInstallCommand,
-  });
+  debug({ npmInstallCommandArgs });
+  await execa(`npm`, npmInstallCommandArgs);
 
   const { default: packageJson }: { default: Partial<PackageJson> } =
     await import(packageJsonFilePath, { assert: { type: 'json' } });

@@ -1,8 +1,8 @@
-import exec from '@simplyhexagonal/exec';
-import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error.js';
 import { updateDeepJsonVersion } from './update-version-in-json-object.js';
 import { syncDependencies } from './sync-dependencies.js';
 import createDebugMessages from 'debug';
+import { execa } from 'execa';
+import { PackageJson } from 'types-package-json';
 
 /**
  * Releases a new version of the deep npm package and syncronizes the version and dependencies between {@link NpmReleaseParam.deepJsonFilePath} and {@link NpmReleaseParam.packageJsonFilePath}
@@ -31,16 +31,23 @@ export async function npmRelease(param: NpmReleaseParam) {
   } = param;
   await syncDependencies({ deepJsonFilePath, packageJsonFilePath: packageJsonFilePath });
   
-  const packageJson = await import(packageJsonFilePath, {assert: {type: 'json'}});
+  const {default: packageJson}: {default: Partial<PackageJson>} = await import(packageJsonFilePath, {assert: {type: 'json'}});
   debug({packageJson})
-  const { execPromise } = exec(`npm view ${packageJson.name} version`);
-  const npmViewExecResult = await execPromise;
-  debug({npmViewExecResult})
-  if (npmViewExecResult.exitCode !== 0) {
-    throw new Error(npmViewExecResult.stderrOutput.trim());
+
+  if(!packageJson.name) {
+    throw new Error(`package.json does not have a name property`)
   }
-  const npmLatestPackageJsonVersion = npmViewExecResult.stdoutOutput.toString().trim();
+  const npmViewExecResult = await execa(`npm`, [`view`, `${packageJson.name} version`]);
+  debug({npmViewExecResult})
+  if(!npmViewExecResult.stdout) {
+    throw new Error(`${npmViewExecResult.command} output is empty`)
+  }
+  const npmLatestPackageJsonVersion = npmViewExecResult.stdout.toString().trim();
   debug({npmLatestPackageJsonVersion})
+
+  if(!packageJson.version) {
+    throw new Error(`package.json does not have a version property`)
+  }
   const packageJsonVersion = packageJson.version;
   const isPackageJsonVersionOutdated = npmLatestPackageJsonVersion > packageJsonVersion;
   debug({isPackageJsonVersionOutdated})
@@ -49,17 +56,18 @@ export async function npmRelease(param: NpmReleaseParam) {
       `Version ${packageJson.version} in ${packageJsonFilePath} is outdated. Latest version in npm is ${npmLatestPackageJsonVersion}. Execute npm-pull`
     );
   } else {
-    const {
-      execResult: { stdoutOutput: npmVersionStdoutOutput },
-    } = await execAndLogStdoutOrThrowError({
-      command: `npm version --allow-same-version --no-git-tag-version ${newVersion}`,
-    });
-    debug({npmVersionStdoutOutput})
+    const npmVersionExecResult = await execa(`npm`,  [`version`, `--allow-same-version`, `--no-git-tag-version`, newVersion]);
+    debug({npmVersionExecResult})
+    if(!npmVersionExecResult.stdout) {
+      throw new Error(`${npmVersionExecResult.command} output is empty`)
+    }
+
     await updateDeepJsonVersion({
-      version: npmVersionStdoutOutput.trimEnd().slice(1),
+      version: npmVersionExecResult.stdout.trimEnd().slice(1),
       filePath: deepJsonFilePath,
     });
   }
+  
 }
 
 export interface NpmReleaseParam {

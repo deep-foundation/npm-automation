@@ -26,9 +26,9 @@
   ],
   "license": "Unlicense",
   "dependencies": {
-    "@simplyhexagonal/exec": "^2.0.2",
     "commander": "^10.0.1",
     "debug": "^4.3.4",
+    "execa": "^7.1.1",
     "glob": "^10.2.6",
     "semver": "^7.5.1"
   },

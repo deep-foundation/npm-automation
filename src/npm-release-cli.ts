@@ -1,7 +1,5 @@
 import path from 'path';
-import exec from '@simplyhexagonal/exec';
 import { program } from 'commander';
-import { execAndLogStdoutOrThrowError } from './exec-and-log-stdout-or-throw-error.js';
 import { npmRelease } from './npm-release.js';
 
 main();
