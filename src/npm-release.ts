@@ -1,7 +1,7 @@
-import { updateDeepJsonVersion } from './update-version-in-json-object.js';
 import { syncDependencies } from './sync-dependencies.js';
 import createDebugMessages from 'debug';
 import { execa } from 'execa';
+import { writeFile } from 'fs-extra';
 import { PackageJson } from 'types-package-json';
 
 /**
@@ -62,10 +62,9 @@ export async function npmRelease(param: NpmReleaseParam) {
       throw new Error(`${npmVersionExecResult.command} output is empty`)
     }
 
-    await updateDeepJsonVersion({
-      version: npmVersionExecResult.stdout.trimEnd().slice(1),
-      filePath: deepJsonFilePath,
-    });
+    const {default: deepJson} = await import(deepJsonFilePath, {assert: {type: 'json'}});
+    deepJson.package.version = npmVersionExecResult.stdout.trimEnd().slice(1);
+    await writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
   }
   
 }
