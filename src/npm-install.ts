@@ -7,6 +7,7 @@ const debug = createDebugMessages(
   '@deep-foundation/npm-automation:npm-install'
 );
 import { Package } from "@deep-foundation/deeplinks/imports/packager";
+import { writeFile } from 'fs-extra';
 
 
 /**
@@ -70,6 +71,8 @@ export async function npmInstall(param: NpmInstallParam) {
     deepJson.dependencies[deepJsonDependencyIndex].version =
     packageJsonDependencyVersion;
   }
+
+  await writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
 }
 
 export interface NpmInstallParam {
