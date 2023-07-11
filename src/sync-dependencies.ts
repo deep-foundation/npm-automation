@@ -72,8 +72,8 @@ export async function syncDependencies(param: SyncDependenciesParam) {
   debug({resultDeepJsonDependencies: deepJson.dependencies})
   debug({resultPackageJsonDependencies: packageJson.dependencies})
 
-  writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
-  writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
+  await writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
+  await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
 }
 
 async function syncDependenciesBasedOnDeepJson(param: {deepJsonDependencies: Exclude<Package['dependencies'], undefined>, packageJsonDependencies: Exclude<PackageJson['dependencies'], undefined>}) {
