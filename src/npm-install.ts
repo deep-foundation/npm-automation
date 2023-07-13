@@ -58,19 +58,22 @@ export async function npmInstall(param: NpmInstallParam) {
   if(!deepJson.dependencies) {
     deepJson.dependencies = []
   }
-  const deepJsonDependencyIndex = deepJson.dependencies.findIndex(
+  const deepJsonDependencies = Object.values(deepJson.dependencies);
+  const deepJsonDependencyIndex = deepJsonDependencies.findIndex(
     (dependency) => dependency.name === name
   );
   debug({ deepJsonDependencyIndex });
   if(deepJsonDependencyIndex === -1) {
-    deepJson.dependencies.push({
+    deepJsonDependencies.push({
       name,
       version: packageJsonDependencyVersion,
     })
   } else {
-    deepJson.dependencies[deepJsonDependencyIndex].version =
+    deepJsonDependencies[deepJsonDependencyIndex].version =
     packageJsonDependencyVersion;
   }
+
+  deepJson.dependencies = deepJsonDependencies;
 
   await writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
 }

@@ -3,7 +3,7 @@ import { writeFile } from 'fs/promises';
 import semver from 'semver'
 import { type PackageJson } from 'types-package-json';
 import createDebugMessages from 'debug';
-import { Package } from '@deep-foundation/deeplinks/imports/packager';
+import { Package, PackageIdentifier } from '@deep-foundation/deeplinks/imports/packager';
 
 export interface SyncDependenciesParam {
   /**
@@ -38,10 +38,11 @@ export async function syncDependencies(param: SyncDependenciesParam) {
   }
   if(!packageJson.dependencies) {
     packageJson.dependencies = {};
-  }
+  } 
+  const deepJsonDependencies = Object.values(deepJson.dependencies);
 
   const packageJsonMissingDependenciesFromDeepJson = await getPackageJsonMissingDependenciesFromDeepJson({
-    deepJsonDependencies: deepJson.dependencies,
+    deepJsonDependencies: deepJsonDependencies,
     packageJsonDependencies: packageJson.dependencies
   });
   debug({packageJsonMissingDependenciesFromDeepJson})
@@ -51,7 +52,7 @@ export async function syncDependencies(param: SyncDependenciesParam) {
   debug({packageJsonDependenciesAfterAddingMissingDependencies: packageJson.dependencies})
 
   const syncDependenciesBasedOnDeepJsonResult = await syncDependenciesBasedOnDeepJson({
-    deepJsonDependencies: deepJson.dependencies,
+    deepJsonDependencies: deepJsonDependencies,
     packageJsonDependencies: packageJson.dependencies
   })
   debug({syncDependenciesBasedOnDeepJsonResult})
@@ -60,7 +61,7 @@ export async function syncDependencies(param: SyncDependenciesParam) {
   debug({deepJsonDependenciesAfterMergingWithSyncDependenciesBasedOnDeepJsonResult: deepJson.dependencies});
   debug({packageJsonDependenciesAfterMergingWithSyncDependenciesBasedOnDeepJsonResult: packageJson.dependencies});
   const syncDependenciesBasedOnPackageJsonResult = await syncDependenciesBasedOnPackageJson({
-    deepJsonDependencies: deepJson.dependencies,
+    deepJsonDependencies: deepJsonDependencies,
     packageJsonDependencies: packageJson.dependencies
   })
   debug({syncDependenciesBasedOnPackageJsonResult})
@@ -76,7 +77,7 @@ export async function syncDependencies(param: SyncDependenciesParam) {
   await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
 }
 
-async function syncDependenciesBasedOnDeepJson(param: {deepJsonDependencies: Exclude<Package['dependencies'], undefined>, packageJsonDependencies: Exclude<PackageJson['dependencies'], undefined>}) {
+async function syncDependenciesBasedOnDeepJson(param: {deepJsonDependencies: Array<PackageIdentifier>, packageJsonDependencies: Exclude<PackageJson['dependencies'], undefined>}) {
   const debug = createDebugMessages(
     '@deep-foundation/npm-automation:syncDependenciesBasedOnDeepJson'
   );
@@ -116,7 +117,7 @@ async function syncDependenciesBasedOnDeepJson(param: {deepJsonDependencies: Exc
   return result
 }
 
-async function syncDependenciesBasedOnPackageJson(param: {deepJsonDependencies: Exclude<Package['dependencies'], undefined>, packageJsonDependencies: Exclude<PackageJson['dependencies'], undefined>}) {
+async function syncDependenciesBasedOnPackageJson(param: {deepJsonDependencies: Array<PackageIdentifier>, packageJsonDependencies: Exclude<PackageJson['dependencies'], undefined>}) {
   const debug = createDebugMessages(
     '@deep-foundation/npm-automation:syncDependenciesBasedOnPackageJson'
   );
@@ -160,12 +161,12 @@ async function syncDependenciesBasedOnPackageJson(param: {deepJsonDependencies: 
   return result
 }
 
-async function getPackageJsonMissingDependenciesFromDeepJson(param: {deepJsonDependencies: Exclude<Package['dependencies'], undefined>, packageJsonDependencies: Exclude<PackageJson['dependencies'], undefined>}): Promise<Exclude<Package['dependencies'], undefined>> {
+async function getPackageJsonMissingDependenciesFromDeepJson(param: {deepJsonDependencies: Array<PackageIdentifier>, packageJsonDependencies: Exclude<PackageJson['dependencies'], undefined>}): Promise<Array<PackageIdentifier>> {
   const debug = createDebugMessages(
     '@deep-foundation/npm-automation:getPackageJsonMissingDependenciesFromDeepJson'
   );
   const {deepJsonDependencies, packageJsonDependencies} = param;
-  const missingDependenciesFromDeepJson: Package['dependencies'] = deepJsonDependencies.filter((dependency) => packageJsonDependencies[dependency.name] === undefined);
+  const missingDependenciesFromDeepJson = deepJsonDependencies.filter((dependency) => packageJsonDependencies[dependency.name] === undefined);
   debug({missingDependenciesFromDeepJson})
   return missingDependenciesFromDeepJson
 }
