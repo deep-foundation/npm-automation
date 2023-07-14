@@ -17,6 +17,7 @@ npm install --save-dev @deep-foundation/npm-automation
 - [npm-release](https://deep-foundation.github.io/npm-automation/functions/npmRelease.html)
 - [npm-install](https://deep-foundation.github.io/npm-automation/functions/npmInstall.html)
 - [sync-dependencies](https://deep-foundation.github.io/npm-automation/functions/syncDependencies.html)
+- [generate-package-class](https://deep-foundation.github.io/npm-automation/functions/generatePackageClass.html)
 ## Cli
 ```
 npx npm-pull
