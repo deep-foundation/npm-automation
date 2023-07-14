@@ -17,7 +17,10 @@
     "npm-sync-dependencies": "./dist/npm-sync-dependencies-cli.js"
   },
   "scripts": {
-    "package:build": "npx fse remove dist --quiet && tsc && (npx prepend-file --file-path='./dist/npm-pull-cli.js' --content='#!/usr/bin/env node\n') &&(npx prepend-file --file-path='./dist/npm-release-cli.js' --content='#!/usr/bin/env node\n') && (npx prepend-file --file-path='./dist/npm-install-cli.js' --content='#!/usr/bin/env node\n') && (npx prepend-file --file-path='./dist/npm-sync-dependencies-cli.js' --content='#!/usr/bin/env node\n')",
+    "clean": "npx fse remove dist --quiet",
+    "package:clean-build": "npm run clean && npm run package:build",
+    "package:build": "tsc && npm run add-shebang",
+    "add-shebang": "npx ts-node --esm automation/add-shebang.ts",
     "test": "jest"
   },
   "main": "dist/main.js",
