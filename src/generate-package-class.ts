@@ -36,8 +36,8 @@ const ${ownedLinks[0].id}LinkId = await package.${ownedLinks[0].id}.id();
      */
     public name: string = '${packageName}';
 
-    constructor(deep: DeepClient) {
-      this.deep = deep;
+    constructor(param: PackageConstructorParam) {
+      this.deep = param.deep;
     }
   
     private createEntity(...names: string[]) {
@@ -62,6 +62,10 @@ const ${id}LinkId = await package.${id}.id();
      */
     public ${id} = this.createEntity("${id}");`)
   .join('')}
+
+  export interface PackageConstructorParam {
+    deep: DeepClient;
+  }
 
   }
 `;
