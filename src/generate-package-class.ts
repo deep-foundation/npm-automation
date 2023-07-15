@@ -43,7 +43,7 @@ const ${id}LinkId = await package.${id}.id();
 const package = new Package({deep});
 ${
   ownedLinks.map(({ id }) => `
-const ${id}LinkId = await package.${id}.localId();
+const ${id}LinkId = package.${id}.localId();
 `).join('')
 }
 \`\`\`
