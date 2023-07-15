@@ -14,6 +14,8 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
   );
   debug({ownedLinks})
   let classDefinition = `
+import {Package as BasePackage} from '@deep-foundation/deeplinks/imports/package';
+
 /**
  * Represents a deep package
  * 
@@ -21,51 +23,47 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
  * Contains name of the package and all the links as the objects with id method which returns the id of the link.
  * 
  * @example
+ * #### Use name field to get the name of the package
 \`\`\`ts
-const package = nwe Package({deep});
+const package = new Package({deep});
 const {name: packageName} = package;
-const ${ownedLinks[0].id}LinkId = await package.${ownedLinks[0].id}.id();
+\`\`\`
+ * #### Use id method to get the id of the link
+\`\`\`ts
+const package = new Package({deep});
+${
+  ownedLinks.map(({ id }) => `
+const ${id}LinkId = await package.${id}.id();
+`).join('')
+}
+\`\`\`
+  *
+  */ #### Use localId method to get the local id of the link
+\`\`\`ts
+const package = new Package({deep});
+${
+  ownedLinks.map(({ id }) => `
+const ${id}LinkId = await package.${id}.localId();
+`).join('')
+}
 \`\`\`
   */
-import { DeepClient } from '@deep-foundation/deeplinks/imports/client';
 
-export class Package {
-  private deep: DeepClient;
-  /**
-   * Name of the package
-   */
-  public name: string = '${packageName}';
-
-  constructor(param: PackageConstructorParam) {
-    this.deep = param.deep;
-  }
-
-  private createEntity(...names: string[]) {
-    return {
-      id: async () => {
-        return await this.id(this.name, ...names);
-      },
-      idLocal: async () => {
-        return await this.idLocal(this.name, ...names);
-      },
-    };
-  }
-
-  async id(...names: string[]) {
-    return await this.deep.id(this.name, ...names);
-  }
-
-  async idLocal(...names: string[]) {
-    return this.deep.idLocal(this.name, ...names);
-  }
+export class Package extends BasePackage {
 
 ${ownedLinks
 .map(({ id }) => `
   /**
    * @example
+   * #### Use id method to get the id of the link
 \`\`\`ts
 const package = new Package({deep});
 const ${id}LinkId = await package.${id}.id();
+\`\`\`
+    */ #### Use localId method to get the local id of the link
+\`\`\`ts
+const package = new Package({deep});
+const ${id}LinkId = await package.${id}.localId();
 \`\`\`
     */
   public ${id} = this.createEntity("${id}");`)
