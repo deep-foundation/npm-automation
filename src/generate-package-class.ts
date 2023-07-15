@@ -52,7 +52,15 @@ const nameTypeLinkId = await package.Name.id();
       return await this.deep.id(this.name, ...names);
     }
 ${ownedLinks
-  .map(({ id }) => `\n    public ${id} = this.createEntity("${id}");`)
+  .map(({ id }) => `
+  /**
+   * @example
+\`\`\`ts
+const package = new Package({deep});
+const ${id}LinkId = await package.${id}.id();
+\`\`\`
+   */
+    public ${id} = this.createEntity("${id}");`)
   .join('')}
 
   }
