@@ -24,7 +24,7 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
 \`\`\`ts
 const package = nwe Package({deep});
 const {name: packageName} = package;
-const nameTypeLinkId = await package.Name.id();
+const ${ownedLinks[0].id}LinkId = await package.${ownedLinks[0].id}.id();
 \`\`\`
    */
   import { DeepClient } from '@deep-foundation/deeplinks/imports/client';
