@@ -45,12 +45,20 @@ export class Package {
       id: async () => {
         return await this.id(this.name, ...names);
       },
+      idLocal: async () => {
+        return await this.idLocal(this.name, ...names);
+      },
     };
   }
 
   async id(...names: string[]) {
     return await this.deep.id(this.name, ...names);
   }
+
+  async idLocal(...names: string[]) {
+    return this.deep.idLocal(this.name, ...names);
+  }
+
 ${ownedLinks
 .map(({ id }) => `
   /**
