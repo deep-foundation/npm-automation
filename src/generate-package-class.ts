@@ -53,13 +53,13 @@ const ${ownedLinks[0].id}LinkId = await package.${ownedLinks[0].id}.id();
     }
 ${ownedLinks
   .map(({ id }) => `
-  /**
-   * @example
+    /**
+     * @example
 \`\`\`ts
 const package = new Package({deep});
 const ${id}LinkId = await package.${id}.id();
 \`\`\`
-   */
+     */
     public ${id} = this.createEntity("${id}");`)
   .join('')}
 
