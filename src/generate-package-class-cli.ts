@@ -5,10 +5,13 @@ import { program } from 'commander';
 import fsExtra from 'fs-extra';
 import path from 'path';
 import { generatePackageClass } from './generate-package-class.js';
+import createDebugger from 'debug'
 
 generatePackageClassCli();
 
 async function generatePackageClassCli() {
+  const debug = createDebugger('generatePackageClassCli');
+
   program
     .option('--package-name <name>', 'Package name')
     .option('--deep-json-file-path <path>', 'Path to deep.json file')
@@ -17,8 +20,10 @@ async function generatePackageClassCli() {
   program.parse();
 
   const options = program.opts();
+  debug({options})
 
   const currentWorkingDirectory = process.cwd();
+  debug({currentWorkingDirectory})
   const {
     packageName = await fsExtra
       .readJson(path.resolve(currentWorkingDirectory, 'package.json'), {
@@ -33,7 +38,9 @@ async function generatePackageClassCli() {
     deepJsonFilePath = path.resolve(currentWorkingDirectory, 'deep.json'),
     outputFilePath,
   } = options;
+  debug({packageName, deepJsonFilePath, outputFilePath})
   const isDeepJsonFilePathExists = await fsExtra.exists(deepJsonFilePath);
+  debug({isDeepJsonFilePathExists})
   if(!isDeepJsonFilePathExists) {
     throw new Error(
       deepJsonFilePath

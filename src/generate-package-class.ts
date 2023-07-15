@@ -1,17 +1,22 @@
 import { Package } from '@deep-foundation/deeplinks/imports/packager';
 import fsExtra from 'fs-extra';
+import createDebugger from 'debug';
 
 export async function generatePackageClass(param: GeneratePackageClassParam) {
+  const debug = createDebugger('generatePackageClass');
+  debug({param})
   const { deepJsonFilePath, outputFilePath, packageName } = param;
   const { default: deepJson }: { default: Package } = await fsExtra
     .readJson(deepJsonFilePath, { encoding: 'utf-8' })
     .catch(() => {
       throw new Error(`deep.json file does not exist in ${deepJsonFilePath}`);
     });
+  debug({deepJson})
 
   const ownedLinks = deepJson.data.filter(
     (link) => typeof link.id === 'string'
   );
+  debug({ownedLinks})
   let classDefinition = `
   import { DeepClient } from '@deep-foundation/deeplinks/imports/client';
 
@@ -40,6 +45,7 @@ ${ownedLinks
 
   }
 `;
+debug({classDefinition})
 
   await fsExtra.writeFile(outputFilePath, classDefinition);
 }
