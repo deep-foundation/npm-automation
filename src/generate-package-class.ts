@@ -38,12 +38,12 @@ const ${id}LinkId = await package.${id}.id();
 }
 \`\`\`
   *
-  */ #### Use localId method to get the local id of the link
+  */ #### Use idLocal method to get the local id of the link
 \`\`\`ts
 const package = new Package({deep});
 ${
   ownedLinks.map(({ id }) => `
-const ${id}LinkId = package.${id}.localId();
+const ${id}LinkId = package.${id}.idLocal();
 `).join('')
 }
 \`\`\`
