@@ -36,7 +36,7 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
       return await this.deep.id(this.name, ...names);
     }
 ${ownedLinks
-  .map(({ id }) => `\n  public ${id} = this.createEntity("${id}");`)
+  .map(({ id }) => `\n    public ${id} = this.createEntity("${id}");`)
   .join('')}
 
   }
