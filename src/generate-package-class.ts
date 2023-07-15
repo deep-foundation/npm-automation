@@ -6,11 +6,7 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
   const debug = createDebugger('generatePackageClass');
   debug({param})
   const { deepJsonFilePath, outputFilePath, packageName } = param;
-  const { default: deepJson }: { default: Package } = await fsExtra
-    .readJson(deepJsonFilePath, { encoding: 'utf-8' })
-    .catch(() => {
-      throw new Error(`deep.json file does not exist in ${deepJsonFilePath}`);
-    });
+  const { default: deepJson }: { default: Package } = await import(deepJsonFilePath, {assert: {type: 'json'}});
   debug({deepJson})
 
   const ownedLinks = deepJson.data.filter(
