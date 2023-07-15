@@ -31,6 +31,9 @@ const nameTypeLinkId = await package.Name.id();
 
   export class Package {
     private deep: DeepClient;
+    /**
+     * Name of the package
+     */
     public name: string = '${packageName}';
 
     constructor(deep: DeepClient) {
