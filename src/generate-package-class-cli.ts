@@ -15,7 +15,7 @@ async function generatePackageClassCli() {
   program
     .option('--package-name <name>', 'Package name')
     .option('--deep-json-file-path <path>', 'Path to deep.json file')
-    .requiredOption('--output-file-path <path>', 'Path to output file');
+    .option('--output-file-path <path>', 'Path to output file');
 
   program.parse();
 
@@ -36,7 +36,7 @@ async function generatePackageClassCli() {
         );
       }),
     deepJsonFilePath = path.resolve(currentWorkingDirectory, 'deep.json'),
-    outputFilePath,
+    outputFilePath = path.resolve(currentWorkingDirectory, 'src', 'package.ts'),
   } = options;
   debug({packageName, deepJsonFilePath, outputFilePath})
   const isDeepJsonFilePathExists = await fsExtra.exists(deepJsonFilePath);
