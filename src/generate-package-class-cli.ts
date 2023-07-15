@@ -4,7 +4,7 @@ import { program } from 'commander';
 // build.js
 import fsExtra from 'fs-extra';
 import path from 'path';
-import { generatePackageClass } from './generate-package-class';
+import { generatePackageClass } from './generate-package-class.js';
 
 generatePackageClassCli();
 
