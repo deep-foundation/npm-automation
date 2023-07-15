@@ -27,13 +27,13 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
     private createEntity(...names: string[]) {
       return {
         id: async () => {
-          await this.id(this.name, ...names);
+          return await this.id(this.name, ...names);
         },
       };
     }
   
     async id(...names: string[]) {
-      await this.deep.id(this.name, ...names);
+      return await this.deep.id(this.name, ...names);
     }
 ${ownedLinks
   .map(({ id }) => `\n  public ${id} = this.createEntity("${id}");`)
