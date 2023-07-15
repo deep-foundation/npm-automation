@@ -70,10 +70,6 @@ const ${id}LinkId = await package.${id}.localId();
 .join('')}
 
 }
-
-export interface PackageConstructorParam {
-  deep: DeepClient;
-}
 `;
 debug({classDefinition})
 
