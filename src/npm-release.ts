@@ -1,7 +1,7 @@
 import { syncDependencies } from './sync-dependencies.js';
 import createDebugMessages from 'debug';
 import { execa } from 'execa';
-import { writeFile } from 'fs-extra';
+import fsExtra from 'fs-extra';
 import { PackageJson } from 'types-package-json';
 
 /**
@@ -64,7 +64,7 @@ export async function npmRelease(param: NpmReleaseParam) {
 
     const {default: deepJson} = await import(deepJsonFilePath, {assert: {type: 'json'}});
     deepJson.package.version = npmVersionExecResult.stdout.trimEnd().slice(1);
-    await writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
+    await fsExtra.writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
   }
   
 }
