@@ -14,60 +14,60 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
   );
   debug({ownedLinks})
   let classDefinition = `
-  /**
-   * Represents a deep package
-   * 
-   * @remarks
-   * Contains name of the package and all the links as the objects with id method which returns the id of the link.
-   * 
-   * @example
+/**
+ * Represents a deep package
+ * 
+ * @remarks
+ * Contains name of the package and all the links as the objects with id method which returns the id of the link.
+ * 
+ * @example
 \`\`\`ts
 const package = nwe Package({deep});
 const {name: packageName} = package;
 const ${ownedLinks[0].id}LinkId = await package.${ownedLinks[0].id}.id();
 \`\`\`
+  */
+import { DeepClient } from '@deep-foundation/deeplinks/imports/client';
+
+export class Package {
+  private deep: DeepClient;
+  /**
+   * Name of the package
    */
-  import { DeepClient } from '@deep-foundation/deeplinks/imports/client';
+  public name: string = '${packageName}';
 
-  export class Package {
-    private deep: DeepClient;
-    /**
-     * Name of the package
-     */
-    public name: string = '${packageName}';
+  constructor(param: PackageConstructorParam) {
+    this.deep = param.deep;
+  }
 
-    constructor(param: PackageConstructorParam) {
-      this.deep = param.deep;
-    }
-  
-    private createEntity(...names: string[]) {
-      return {
-        id: async () => {
-          return await this.id(this.name, ...names);
-        },
-      };
-    }
-  
-    async id(...names: string[]) {
-      return await this.deep.id(this.name, ...names);
-    }
+  private createEntity(...names: string[]) {
+    return {
+      id: async () => {
+        return await this.id(this.name, ...names);
+      },
+    };
+  }
+
+  async id(...names: string[]) {
+    return await this.deep.id(this.name, ...names);
+  }
 ${ownedLinks
-  .map(({ id }) => `
-    /**
-     * @example
+.map(({ id }) => `
+  /**
+   * @example
 \`\`\`ts
 const package = new Package({deep});
 const ${id}LinkId = await package.${id}.id();
 \`\`\`
-     */
-    public ${id} = this.createEntity("${id}");`)
-  .join('')}
+    */
+  public ${id} = this.createEntity("${id}");`)
+.join('')}
 
-  export interface PackageConstructorParam {
-    deep: DeepClient;
-  }
+}
 
-  }
+export interface PackageConstructorParam {
+  deep: DeepClient;
+}
 `;
 debug({classDefinition})
 
