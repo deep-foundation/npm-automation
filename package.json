@@ -3,7 +3,7 @@
   "keywords": [
     "deep-package"
   ],
-  "version": "5.2.0",
+  "version": "5.2.1",
   "type": "module",
   "description": "A package that will help you to automate actions related to npm and your deep package.",
   "repository": {
