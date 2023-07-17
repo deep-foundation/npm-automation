@@ -16,7 +16,7 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
   let classDefinition = `
 import {
   Package as BasePackage,
-  PackageConstructorParam as BasePackageConstructorParam,
+  PackageOptions as BasePackageConstructorParam,
 } from '@deep-foundation/deeplinks/imports/package';
 
 /**
@@ -52,7 +52,7 @@ const ${id}LinkId = package.${id}.idLocal();
 
 export class Package extends BasePackage {
 
-  constructor(param: PackageConstructorParam) {
+  constructor(param: PackageOptions) {
     super({
       ...param,
       name: 'Device',
@@ -79,7 +79,7 @@ const ${id}LinkId = await package.${id}.localId();
 
 }
 
-export type PackageConstructorParam = Omit<BasePackageConstructorParam, 'name'>;
+export type PackageOptions = Omit<BasePackageConstructorParam, 'name'>;
 `;
 debug({classDefinition})
 
