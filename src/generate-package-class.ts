@@ -14,7 +14,10 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
   );
   debug({ownedLinks})
   let classDefinition = `
-import {Package as BasePackage} from '@deep-foundation/deeplinks/imports/package';
+import {
+  Package as BasePackage,
+  PackageConstructorParam as BasePackageConstructorParam,
+} from '@deep-foundation/deeplinks/imports/package';
 
 /**
  * Represents a deep package
@@ -49,6 +52,13 @@ const ${id}LinkId = package.${id}.idLocal();
 
 export class Package extends BasePackage {
 
+  constructor(param: BasePackageConstructorParam) {
+    super({
+      ...param,
+      name: 'Device',
+    });
+  }
+
 ${ownedLinks
 .map(({ id }) => `
   /**
@@ -68,6 +78,8 @@ const ${id}LinkId = await package.${id}.localId();
 .join('')}
 
 }
+
+export type ${packageName}PackageConstructorParam = Omit<BasePackageConstructorParam, 'name'>;
 `;
 debug({classDefinition})
 
