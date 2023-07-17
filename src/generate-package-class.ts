@@ -43,9 +43,7 @@ ${
 \`\`\`ts
 const package = new Package({deep});
 ${
-  ownedLinks.map(({ id }) => `
-const ${id}LinkId = package.${id}.idLocal();
-`).join('')
+  ownedLinks.map(({ id }) => `\nconst ${id}LinkId = package.${id}.idLocal();`).join('')
 }
 \`\`\`
   */
