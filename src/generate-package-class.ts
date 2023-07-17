@@ -58,7 +58,7 @@ ${ownedLinks
 const package = new Package({deep});
 const ${id}LinkId = await package.${id}.id();
 \`\`\`
-    */ #### Use localId method to get the local id of the link
+    * #### Use localId method to get the local id of the link
 \`\`\`ts
 const package = new Package({deep});
 const ${id}LinkId = await package.${id}.localId();
