@@ -52,7 +52,7 @@ const ${id}LinkId = package.${id}.idLocal();
 
 export class Package extends BasePackage {
 
-  constructor(param: BasePackageConstructorParam) {
+  constructor(param: PackageConstructorParam) {
     super({
       ...param,
       name: 'Device',
