@@ -79,7 +79,7 @@ const ${id}LinkId = await package.${id}.localId();
 
 }
 
-export type ${packageName}PackageConstructorParam = Omit<BasePackageConstructorParam, 'name'>;
+export type PackageConstructorParam = Omit<BasePackageConstructorParam, 'name'>;
 `;
 debug({classDefinition})
 
