@@ -35,7 +35,7 @@ const {name: packageName} = package;
 \`\`\`ts
 const package = new Package({deep});
 ${
-  ownedLinks.map(({ id }) => `\nconst ${id}LinkId = await package.${id}.id();`).join('\n')
+  ownedLinks.map(({ id }) => `\nconst ${id}LinkId = await package.${id}.id();`).join('')
 }
 \`\`\`
   *
