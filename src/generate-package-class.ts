@@ -29,12 +29,12 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
       entitiesString.push(`
       /**
       @example
-      #### Use id method to get the id of the link
+      #### Use id method to get the id of the ${idString} link
       \`\`\`ts
       const package = new Package({deep});
       const ${variableName} = await package.${idString}.id();
       \`\`\`
-      #### Use localId method to get the local id of the link
+      #### Use localId method to get the local id of the ${idString} link
       \`\`\`ts
       const package = new Package({deep});
       const ${variableName} = await package.${idString}.localId();
