@@ -13,6 +13,38 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
     (link) => typeof link.id === 'string'
   );
   debug({ownedLinks})
+
+    let idExamples: Array<string> = [];
+    let IdLocalExamplesString: Array<string> = [];
+    let entitiesString: Array<string> = [];
+
+    for (const ownedLink of ownedLinks) {
+      const idString = ownedLink.id.toString();
+      const isType = idString[0] === idString[0].toUpperCase();
+      const variableNameFirstPart = idString.charAt(0).toLowerCase() + idString.slice(1);
+      const variableNameSecondPart = isType ? 'TypeLinkId' : 'LinkId';
+      const variableName = `${variableNameFirstPart}${variableNameSecondPart}`;
+      idExamples.push(`\nconst ${variableName} = await package.${ownedLink.id}.id();`)
+      IdLocalExamplesString.push(`\nconst ${variableName} = package.${ownedLink.id}.idLocal();`)
+      entitiesString.push(`
+      /**
+       * @example
+       * #### Use id method to get the id of the link
+    \`\`\`ts
+    const package = new Package({deep});
+    const ${variableName} = await package.${idString}.id();
+    \`\`\`
+        * #### Use localId method to get the local id of the link
+    \`\`\`ts
+    const package = new Package({deep});
+    const ${variableName} = await package.${idString}.localId();
+    \`\`\`
+        */
+      public ${idString} = this.createEntity("${idString}");`)
+    }
+
+
+
   let classDefinition = `
 import {
   Package as BasePackage,
@@ -35,12 +67,7 @@ const {name: packageName} = package;
 \`\`\`ts
 const package = new Package({deep});
 ${
-  ownedLinks.map(({ id }) => {
-    const idString = id.toString();
-    const isType = idString[0] === idString[0].toUpperCase();
-    const variableName = isType ? `${idString}TypeLinkId` : `${idString}LinkId`;
-    return `\nconst ${variableName} = await package.${id}.id();`
-  }).join('')
+  idExamples.join('')
 }
 \`\`\`
   *
@@ -48,12 +75,7 @@ ${
 \`\`\`ts
 const package = new Package({deep});
 ${
-  ownedLinks.map(({ id }) => {
-    const idString = id.toString();
-    const isType = idString[0] === idString[0].toUpperCase();
-    const variableName = isType ? `${idString}TypeLinkId` : `${idString}LinkId`;
-    return `\nconst ${variableName} = package.${id}.idLocal();`
-  }).join('')
+  IdLocalExamplesString.join('')
 }
 \`\`\`
   */
@@ -67,28 +89,7 @@ export class Package extends BasePackage {
     });
   }
 
-${ownedLinks
-.map(({ id }) => {
-  const idString = id.toString();
-  const isType = idString[0] === idString[0].toUpperCase();
-  const variableName = isType ? `${idString}TypeLinkId` : `${idString}LinkId`;
-  return `
-  /**
-   * @example
-   * #### Use id method to get the id of the link
-\`\`\`ts
-const package = new Package({deep});
-const ${variableName} = await package.${idString}.id();
-\`\`\`
-    * #### Use localId method to get the local id of the link
-\`\`\`ts
-const package = new Package({deep});
-const ${variableName} = await package.${idString}.localId();
-\`\`\`
-    */
-  public ${idString} = this.createEntity("${idString}");`
-})
-.join('')}
+${entitiesString.join('')}
 
 }
 
