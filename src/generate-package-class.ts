@@ -24,22 +24,22 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
       const variableNameFirstPart = idString.charAt(0).toLowerCase() + idString.slice(1);
       const variableNameSecondPart = isType ? 'TypeLinkId' : 'LinkId';
       const variableName = `${variableNameFirstPart}${variableNameSecondPart}`;
-      idExamples.push(`\nconst ${variableName} = await package.${ownedLink.id}.id();`)
-      IdLocalExamplesString.push(`\nconst ${variableName} = package.${ownedLink.id}.idLocal();`)
+      idExamples.push(`const ${variableName} = await package.${ownedLink.id}.id();`)
+      IdLocalExamplesString.push(`const ${variableName} = package.${ownedLink.id}.idLocal();`)
       entitiesString.push(`
       /**
-        @example
-        #### Use id method to get the id of the link
-        \`\`\`ts
-        const package = new Package({deep});
-        const ${variableName} = await package.${idString}.id();
-        \`\`\`
-        #### Use localId method to get the local id of the link
-        \`\`\`ts
-        const package = new Package({deep});
-        const ${variableName} = await package.${idString}.localId();
-        \`\`\`
-        */
+      @example
+      #### Use id method to get the id of the link
+      \`\`\`ts
+      const package = new Package({deep});
+      const ${variableName} = await package.${idString}.id();
+      \`\`\`
+      #### Use localId method to get the local id of the link
+      \`\`\`ts
+      const package = new Package({deep});
+      const ${variableName} = await package.${idString}.localId();
+      \`\`\`
+      */
       public ${idString} = this.createEntity("${idString}");`)
     }
 
@@ -52,34 +52,33 @@ import {
 } from '@deep-foundation/deeplinks/imports/package';
 
 /**
-  Represents a deep package
-  
-  @remarks
-  Contains name of the package and all the links as the objects with id method which returns the id of the link.
-  
-  @example
-  #### Use name field to get the name of the package
-  \`\`\`ts
-  const package = new Package({deep});
-  const {name: packageName} = package;
-  \`\`\`
-  #### Use id method to get the id of the link
-  \`\`\`ts
-  const package = new Package({deep});
-  ${
-    idExamples.join('')
-  }
-  \`\`\`
-  
-  #### Use idLocal method to get the local id of the link
-  \`\`\`ts
-  const package = new Package({deep});
-  ${
-    IdLocalExamplesString.join('')
-  }
-  \`\`\`
-  */
+Represents a deep package
 
+@remarks
+Contains name of the package and all the links as the objects with id method which returns the id of the link.
+
+@example
+#### Use name field to get the name of the package
+\`\`\`ts
+const package = new Package({deep});
+const {name: packageName} = package;
+\`\`\`
+#### Use id method to get the id of the link
+\`\`\`ts
+const package = new Package({deep});
+${
+  idExamples.join('\n').trimEnd()
+}
+\`\`\`
+
+#### Use idLocal method to get the local id of the link
+\`\`\`ts
+const package = new Package({deep});
+${
+  IdLocalExamplesString.join('\n').trimEnd()
+}
+\`\`\`
+*/
 export class Package extends BasePackage {
 
   constructor(param: PackageOptions) {
