@@ -35,7 +35,12 @@ const {name: packageName} = package;
 \`\`\`ts
 const package = new Package({deep});
 ${
-  ownedLinks.map(({ id }) => `\nconst ${id}LinkId = await package.${id}.id();`).join('')
+  ownedLinks.map(({ id }) => {
+    const idString = id.toString();
+    const isType = idString[0] === idString[0].toUpperCase();
+    const variableName = isType ? `${idString}TypeLinkId` : `${idString}LinkId`;
+    return `\nconst ${variableName} = await package.${id}.id();`
+  }).join('')
 }
 \`\`\`
   *
@@ -43,7 +48,12 @@ ${
 \`\`\`ts
 const package = new Package({deep});
 ${
-  ownedLinks.map(({ id }) => `\nconst ${id}LinkId = package.${id}.idLocal();`).join('')
+  ownedLinks.map(({ id }) => {
+    const idString = id.toString();
+    const isType = idString[0] === idString[0].toUpperCase();
+    const variableName = isType ? `${idString}TypeLinkId` : `${idString}LinkId`;
+    return `\nconst ${variableName} = package.${id}.idLocal();`
+  }).join('')
 }
 \`\`\`
   */
@@ -53,26 +63,31 @@ export class Package extends BasePackage {
   constructor(param: PackageOptions) {
     super({
       ...param,
-      name: 'Device',
+      name: '${packageName}',
     });
   }
 
 ${ownedLinks
-.map(({ id }) => `
+.map(({ id }) => {
+  const idString = id.toString();
+  const isType = idString[0] === idString[0].toUpperCase();
+  const variableName = isType ? `${idString}TypeLinkId` : `${idString}LinkId`;
+  return `
   /**
    * @example
    * #### Use id method to get the id of the link
 \`\`\`ts
 const package = new Package({deep});
-const ${id}LinkId = await package.${id}.id();
+const ${variableName} = await package.${idString}.id();
 \`\`\`
     * #### Use localId method to get the local id of the link
 \`\`\`ts
 const package = new Package({deep});
-const ${id}LinkId = await package.${id}.localId();
+const ${variableName} = await package.${idString}.localId();
 \`\`\`
     */
-  public ${id} = this.createEntity("${id}");`)
+  public ${idString} = this.createEntity("${idString}");`
+})
 .join('')}
 
 }
