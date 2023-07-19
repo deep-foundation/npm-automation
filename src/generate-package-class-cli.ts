@@ -6,21 +6,40 @@ import fsExtra from 'fs-extra';
 import path from 'path';
 import { generatePackageClass } from './generate-package-class.js';
 import createDebugger from 'debug'
+import yargs from 'yargs/yargs.js';
+import { hideBin } from 'yargs/helpers';
+
 
 generatePackageClassCli();
 
 async function generatePackageClassCli() {
   const debug = createDebugger('generatePackageClassCli');
 
-  program
-    .option('--package-name <name>', 'Package name')
-    .option('--deep-json-file-path <path>', 'Path to deep.json file')
-    .option('--output-file-path <path>', 'Path to output file');
+  const args = yargs(hideBin(process.argv))
+  .option('package-name', {
+    demandOption: false,
+    describe: 'Package name',
+    type: 'string'
+  })
+  .option(
+    'deep-json-file-path',
+    {
+      demandOption: false,
+      describe: 'Path to deep.json file',
+      type: 'string'
+    },
+  )
+  .option(
+    'output-file-path',
+    {
+      demandOption: false,
+      describe: 'Path to output file',
+      type: 'string'
+    },
+  )
+  .parseSync();
 
-  program.parse();
-
-  const options = program.opts();
-  debug({options})
+  debug({args})
 
   const currentWorkingDirectory = process.cwd();
   debug({currentWorkingDirectory})
@@ -37,7 +56,7 @@ async function generatePackageClassCli() {
       }),
     deepJsonFilePath = path.resolve(currentWorkingDirectory, 'deep.json'),
     outputFilePath = path.resolve(currentWorkingDirectory, 'src', 'package.ts'),
-  } = options;
+  } = args;
   debug({packageName, deepJsonFilePath, outputFilePath})
   const isDeepJsonFilePathExists = await fsExtra.exists(deepJsonFilePath);
   debug({isDeepJsonFilePathExists})

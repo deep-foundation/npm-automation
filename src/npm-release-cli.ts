@@ -1,43 +1,55 @@
 import path from 'path';
 import { program } from 'commander';
 import { npmRelease } from './npm-release.js';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers.js';
+import  createLogger from 'debug';
 
-main();
+npmReleaseCli();
 
-async function main() {
-  program
-    .name('npm-release')
-    .description('Release a package to npm')
-    .addHelpText(
-      'after',
-      `
-   
-   Before releaseing deep.json version syncronizes with package.json version. Package will not be releaseed if there are newer version in npm`
-    );
+async function npmReleaseCli() {
+  const debug = createLogger(
+    '@deep-foundation/npm-automation:npmReleaseCli'
+  );
 
-  program
-    .option('--new-version <new_version>', 'New version to release')
+  const cliOptions = yargs(hideBin(process.argv))
+    .command(`npm-release`, `Releases a package version`)
+    .epilog(`Before releaseing deep.json version syncronizes with package.json version. Package will not be releaseed if there are newer version in npm`)
+    .option('new-version', {
+      demandOption: false,
+      describe: 'New version to release',
+      type: 'string'
+    })
     .option(
-      '--package-json-file-path <package_json_file_path>',
-      'package.json file path'
+      'package-json-file-path',
+      {
+        demandOption: false,
+        describe: 'package.json file path',
+        type: 'string'
+      },
     )
     .option(
-      '--deep-json-file-path <deep_json_file_path>',
-      'deep.json file path'
-    );
+      'deep-json-file-path',
+      {
+        demandOption: false,
+        describe: 'deep.json file path',
+        type: 'string'
+      },
+    )
+    .parseSync();
 
-  program.parse(process.argv);
+  debug({cliOptions})
 
   const currentDir = process.cwd();
   const {
     newVersion = 'patch',
-    packageJsonPath = path.join(currentDir,'package.json'),
+    packageJsonFilePath = path.join(currentDir,'package.json'),
     deepJsonFilePath = path.join(currentDir,'deep.json'),
-  } = program.opts();
+  } = cliOptions;
 
   await npmRelease({
     deepJsonFilePath,
     newVersion,
-    packageJsonFilePath: packageJsonPath,
+    packageJsonFilePath,
   });
 }

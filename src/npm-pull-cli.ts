@@ -1,43 +1,48 @@
 import { program } from 'commander';
 import path from 'path';
 import { npmPull } from './npm-pull.js';
-import  createDebugMessages from 'debug';
+import  createLogger from 'debug';
 import {fileURLToPath} from 'url'
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers.js';
 
 
-main();
+npmPullCli();
 
-async function main() {
-  const debug = createDebugMessages(
-    '@deep-foundation/npm-automation:npm-pull-cli'
+async function npmPullCli() {
+  const debug = createLogger(
+    '@deep-foundation/npm-automation:npmPullCli'
   );
-  program
-    .name('npm-pull')
-    .description('Pull latest version of a package from npm')
-    .addHelpText(
-      'after',
-      `
-   
-   Before pulling, if there are unstaged changes, it throws an error that tells you to stash (git stash) or commit (git commit) your changes.`
-    );
 
-  program.option('--package-name <name>', 'Package name');
-  program.option('--package-version <version>', 'Package version');
+  const cliOptions = yargs(hideBin(process.argv))
+  .command(`npm-pull`, `Pulls latest version of a package from npm`)
+  .epilog(`Before pulling, if there are unstaged changes, it throws an error that tells you to stash (git stash) or commit (git commit) your changes.`)
+  .option('package-name', {
+    demandOption: false,
+    describe: 'Package name',
+    type: 'string'
+  })
+  .option(
+    'package-version',
+    {
+      demandOption: false,
+      describe: 'Package version',
+      type: 'string'
+    },
+  )
+  .parseSync();
 
-  program.parse(process.argv);
-
-  let options = program.opts();
-  debug({options})
-
+  debug({cliOptions})
+  
   const currentDir = process.cwd();
   const packageJsonFilePath = path.join(currentDir,'package.json');
   debug({packageJsonFilePath})
   const {default: packageJson} = await import(packageJsonFilePath, {assert: {type: 'json'}});
   debug({packageJson})
-  if(!options.packageName && !packageJson.name) {
+  if(!cliOptions.packageName && !packageJson.name) {
     throw new Error(`--package-name option is not provided and package.json file does not exist in ${packageJsonFilePath}`);
   }
-  const packageName = options.packageName ?? packageJson.name;
+  const packageName = cliOptions.packageName ?? packageJson.name;
   debug({packageName})
   if(!packageName) {
     throw new Error(`Failed to find package name in ${packageJsonFilePath}`);
@@ -45,6 +50,6 @@ async function main() {
 
   await npmPull({
     packageName,
-    packageVersion: options.packageVersion,
+    packageVersion: cliOptions.packageVersion,
   });
 }

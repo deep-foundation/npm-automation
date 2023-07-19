@@ -3,30 +3,37 @@ import { program } from 'commander';
 import { npmRelease } from './npm-release.js';
 import { npmInstall } from './npm-install.js';
 import { syncDependencies } from './sync-dependencies.js';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers.js';
+import createLogger from 'debug';
 
-main();
+npmSyncDependenciesCli();
 
-async function main() {
-  program
-    .name('npm-sync-versions')
-    .description('Syncronized deep.json and package.json dependencies')
+async function npmSyncDependenciesCli() {
+  const debug = createLogger(
+    '@deep-foundation/npm-automation:npmSyncDependenciesCli'
+  );
 
-  program
-    .option(
-      '--deep-json-file-path <deep_json_file_path>',
-      'deep.json file path'
-    )
-    .option(
-      '--package-json-file-path <package_json_file_path>',
-      'package.json file path'
-    )
+  const cliOptions = yargs(hideBin(process.argv))
+  .command(`npm-sync-versions`, `Syncronizes deep.json and package.json dependencies`)
+  .option(`deep-json-file-path`, {
+    demandOption: false,
+    describe: 'deep.json file path',
+    type: 'string'
+    })
+  .option(`package-json-file-path`, {
+    demandOption: false,
+    describe: 'package.json file path',
+    type: 'string'
+    })
+  .parseSync();
 
-  program.parse(process.argv);
+  debug({cliOptions})
 
   const {
     packageJsonFilePath = path.resolve('package.json'),
     deepJsonFilePath = path.resolve('deep.json'),
-  } = program.opts();
+  } = cliOptions;
 
   await syncDependencies({
     packageJsonFilePath,

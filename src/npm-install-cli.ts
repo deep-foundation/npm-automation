@@ -2,30 +2,51 @@ import path from 'path';
 import { program } from 'commander';
 import { npmRelease } from './npm-release.js';
 import { npmInstall } from './npm-install.js';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers.js';
+import createLogger from 'debug';
 
-main();
+npmInstallCli();
 
-async function main() {
-  program
-    .name('npm-install')
-    .description('Installs a package and syncronizes deep.json and package.json dependencies')
+async function npmInstallCli() {
+  const debug = createLogger(
+    '@deep-foundation/npm-automation:npmInstallCli'
+  );
 
-  program
-    .requiredOption('--name <name>', 'Package name to install')
-    .requiredOption(
-      '--version <version>',
-      'Version to install'
-    )
-    .option(
-      '--deep-json-file-path <deep_json_file_path>',
-      'deep.json file path'
-    )
-    .option(
-      '--package-json-file-path <package_json_file_path>',
-      'package.json file path'
-    )
+  const cliOptions = yargs(hideBin(process.argv))
+  .describe(`npm-install`, `Installs a package and syncronizes deep.json and package.json dependencies`)
+  .option('name', {
+    demandOption: true,
+    describe: 'Package name to install',
+    type: 'string'
+  })
+  .option(
+    'version',
+    {
+      demandOption: true,
+      describe: 'Version to install',
+      type: 'string'
+    },
+  )
+  .option(
+    'deep-json-file-path',
+    {
+      demandOption: false,
+      describe: 'deep.json file path',
+      type: 'string'
+    },
+  )
+  .option(
+    'package-json-file-path',
+    {
+      demandOption: false,
+      describe: 'package.json file path',
+      type: 'string'
+    },
+  )
+  .parseSync();
 
-  program.parse(process.argv);
+  debug({cliOptions})
 
   const currentDir = process.cwd();
   const {
@@ -33,7 +54,7 @@ async function main() {
     version,
     packageJsonFilePath = path.join(currentDir,'package.json'),
     deepJsonFilePath = path.join(currentDir,'deep.json'),
-  } = program.opts();
+  } = cliOptions;
 
   await npmInstall({
     name: name,
