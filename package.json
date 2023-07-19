@@ -20,8 +20,7 @@
   "scripts": {
     "clean": "npx fse remove dist --quiet",
     "package:clean-build": "npm run clean && npm run package:build",
-    "package:build": "tsc && npm run add-shebang",
-    "add-shebang": "npx ts-node --esm automation/add-shebang.ts",
+    "package:build": "tsc",
     "test": "jest"
   },
   "main": "dist/main.js",
