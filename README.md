@@ -19,27 +19,22 @@ npm install --save-dev @deep-foundation/npm-automation
 - [sync-dependencies](https://deep-foundation.github.io/npm-automation/functions/syncDependencies.html)
 - [generate-package-class](https://deep-foundation.github.io/npm-automation/functions/generatePackageClass.html)
 ## Cli
+### `npm-pull`
 ```
-npx npm-pull
-```
-
-```
-npx npm-release 
-[--new-version=<NEW_VERSION>] 
-[--package-json-file-path=<PACKAGE_JSON_FILE_PATH>] 
-[--deep-json-file-path=<DEEP_JSON_FILE_PATH>]
+<!-- NPM_PULL_HELP_PLACEHOLDER -->
 ```
 
+### `npm-release`
 ```
-npx npm-install 
---name=<NAME> 
---version=<VERSION> 
-[--package-json-file-path=<PACKAGE_JSON_FILE_PATH>] 
-[--deep-json-file-path=<DEEP_JSON_FILE_PATH>]
+<!-- NPM_RELEASE_HELP_PLACEHOLDER -->
 ```
 
+### `npm-install`
 ```
-npx sync-dependencies 
-[--package-json-file-path=<PACKAGE_JSON_FILE_PATH>] 
-[--deep-json-file-path=<DEEP_JSON_FILE_PATH>]
+<!-- NPM_INSTALL_HELP_PLACEHOLDER -->
+```
+
+### `npm-sync-dependencies`
+```
+<!-- NPM_SYNC_DEPENDENCIES_HELP_PLACEHOLDER -->
 ```
