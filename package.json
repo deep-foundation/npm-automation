@@ -18,6 +18,7 @@
     "generate-package-class": "./dist/cli/generate-package-class-cli.js"
   },
   "scripts": {
+    "prepublishOnly": "npm run generate-help-of-cli-apps-to-readme",
     "clean": "npx fse remove dist --quiet",
     "package:clean-build": "npm run clean && npm run package:build",
     "package:build": "tsc",
