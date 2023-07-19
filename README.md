@@ -18,9 +18,10 @@ npm install --save-dev @deep-foundation/npm-automation
 - [npm-install](https://deep-foundation.github.io/npm-automation/functions/npmInstall.html)
 - [sync-dependencies](https://deep-foundation.github.io/npm-automation/functions/syncDependencies.html)
 - [generate-package-class](https://deep-foundation.github.io/npm-automation/functions/generatePackageClass.html)
-## Cli
+
 <!-- Do not remove these comments. They are used for automated generation -->
 <!-- CLI_HELP_START -->
+## Cli
 
 ### `npm-sync-dependencies`
 ```
