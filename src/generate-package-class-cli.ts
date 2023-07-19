@@ -16,6 +16,7 @@ async function generatePackageClassCli() {
   const debug = createDebugger('generatePackageClassCli');
 
   const args = yargs(hideBin(process.argv))
+  .describe('generate-package-class', 'Generates a package class which extends Package class from `@deep-foundation/deeplinks/imports/package` and have fields for each link in the package and each that field is an object with id method which returns the id of the link and idLocal method which returns the local id of the link.')
   .option('package-name', {
     demandOption: false,
     describe: 'Package name',

@@ -15,7 +15,7 @@ async function npmPullCli() {
   );
 
   const cliOptions = yargs(hideBin(process.argv))
-  .command(`npm-pull`, `Pulls latest version of a package from npm`)
+  .describe(`npm-pull`, `Pulls latest version of a package from npm`)
   .epilog(`Before pulling, if there are unstaged changes, it throws an error that tells you to stash (git stash) or commit (git commit) your changes.`)
   .option('package-name', {
     demandOption: false,

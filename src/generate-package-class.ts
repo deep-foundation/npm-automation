@@ -3,7 +3,7 @@ import fsExtra from 'fs-extra';
 import createDebugger from 'debug';
 
 /**
-Generates package class which extends Package class from `@deep-foundation/deeplinks/imports/package` and have fields for each link in the package and each that field is an object with id method which returns the id of the link and idLocal method which returns the local id of the link.
+Generates a package class which extends Package class from `@deep-foundation/deeplinks/imports/package` and have fields for each link in the package and each that field is an object with id method which returns the id of the link and idLocal method which returns the local id of the link.
  */
 export async function generatePackageClass(param: GeneratePackageClassParam) {
   const debug = createDebugger('generatePackageClass');
