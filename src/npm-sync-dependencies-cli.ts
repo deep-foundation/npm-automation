@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import path from 'path';
 import { program } from 'commander';
 import { npmRelease } from './npm-release.js';

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { DeepClient } from '@deep-foundation/deeplinks/imports/client';
 import { Package } from '@deep-foundation/deeplinks/imports/packager';
 import { program } from 'commander';
