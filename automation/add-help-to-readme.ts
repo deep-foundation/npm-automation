@@ -33,12 +33,6 @@ async function main() {
 
     // Replace the markdown section in the README with the updated help message
     readmeContent = readmeContent.replace(markdownSectionRegExp, `$1\n${helpMessage}\n$3`);
-
-    // Replace the utility script file name with its command
-    readmeContent = readmeContent.replace(
-      new RegExp(cliUtilityFileName, 'g'),
-      cliUtilityName
-    );
   }
 
   // Write the updated README back to disk
