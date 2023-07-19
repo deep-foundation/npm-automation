@@ -3,9 +3,9 @@ import path from 'path';
 import { execa } from 'execa';
 import { glob } from 'glob';
 
-addHelpToReadme();
+main();
 
-async function addHelpToReadme() {
+async function main() {
   // Find all the CLI utility files in the dist folder
   const cliUtilityFiles = await glob('./dist/*-cli.js', { absolute: true });
 
@@ -13,7 +13,7 @@ async function addHelpToReadme() {
   let readmeContent = fs.readFileSync('./README.md', { encoding: 'utf-8' });
 
   // This will hold all the help messages
-  let allHelpMessages = "";
+  let allHelpMessages = "## Cli\n";
 
   // Iterate over the CLI utilities
   for (const cliUtilityFile of cliUtilityFiles) {
