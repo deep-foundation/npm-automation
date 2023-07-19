@@ -2,7 +2,7 @@ import {lstat} from 'fs/promises';
 import path from 'path';
 import fs from 'fs';
 import { glob } from 'glob';
-import { move } from 'fs-extra';
+import fsExtra from 'fs-extra';
 import createDebugMessages from 'debug';
 import {fileURLToPath} from 'url'
 import { execa } from 'execa';
@@ -61,7 +61,7 @@ export async function npmPull(param: NpmPullParam) {
         nodeModuleFilePath.fullpath().replace(nodeModuleDirectoryPath, '')
       );
       debug({moveDestination})
-      return await move(
+      return await fsExtra.move(
         moveSrc,
         moveDestination,
         {
