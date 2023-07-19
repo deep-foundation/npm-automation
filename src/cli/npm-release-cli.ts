@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import path from 'path';
 import { program } from 'commander';
-import { npmRelease } from './npm-release.js';
+import { npmRelease } from '../npm-release.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import  createLogger from 'debug';

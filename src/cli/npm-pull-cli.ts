@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { program } from 'commander';
 import path from 'path';
-import { npmPull } from './npm-pull.js';
+import { npmPull } from '../npm-pull.js';
 import  createLogger from 'debug';
 import {fileURLToPath} from 'url'
 import yargs from 'yargs';

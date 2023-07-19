@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import path from 'path';
 import { program } from 'commander';
-import { npmRelease } from './npm-release.js';
-import { npmInstall } from './npm-install.js';
-import { syncDependencies } from './sync-dependencies.js';
+import { npmRelease } from '../npm-release.js';
+import { npmInstall } from '../npm-install.js';
+import { syncDependencies } from '../sync-dependencies.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import createLogger from 'debug';
