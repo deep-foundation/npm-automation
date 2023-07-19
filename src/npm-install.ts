@@ -7,7 +7,7 @@ const debug = createDebugMessages(
   '@deep-foundation/npm-automation:npm-install'
 );
 import { Package } from "@deep-foundation/deeplinks/imports/packager";
-import { writeFile } from 'fs-extra';
+import fsExtra from 'fs-extra';
 
 
 /**
@@ -75,7 +75,7 @@ export async function npmInstall(param: NpmInstallParam) {
 
   deepJson.dependencies = deepJsonDependencies;
 
-  await writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
+  await fsExtra.writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
 }
 
 export interface NpmInstallParam {
