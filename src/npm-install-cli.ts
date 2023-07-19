@@ -3,7 +3,7 @@ import { program } from 'commander';
 import { npmRelease } from './npm-release.js';
 import { npmInstall } from './npm-install.js';
 import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers.js';
+import { hideBin } from 'yargs/helpers';
 import createLogger from 'debug';
 
 npmInstallCli();

@@ -6,7 +6,7 @@ import fsExtra from 'fs-extra';
 import path from 'path';
 import { generatePackageClass } from './generate-package-class.js';
 import createDebugger from 'debug'
-import yargs from 'yargs/yargs.js';
+import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 

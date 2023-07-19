@@ -4,7 +4,7 @@ import { npmPull } from './npm-pull.js';
 import  createLogger from 'debug';
 import {fileURLToPath} from 'url'
 import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers.js';
+import { hideBin } from 'yargs/helpers';
 
 
 npmPullCli();
