@@ -19,7 +19,7 @@ jobs:
         echo "PWD: ${PWD}"
         (cd src && tree)
         (cat src/main.ts)
-        "${{ vars.GENERATE_DOCUMENTATION_COMMAND }}"
+        ${{ vars.GENERATE_DOCUMENTATION_COMMAND }}
         git config --global user.name 'Deep Foundation'
         git config --global user.email 'deepfoundation@gmail.com'
         npm run generate-help-of-cli-apps-to-readme
