@@ -12,11 +12,11 @@ See [Documentation] for examples and API
 
 <!-- Do not remove these comments. They are used for automated generation -->
 <!-- CLI_HELP_START -->
-## Cli
+## Cli Usage
 
 ### `npm-sync-dependencies`
 ```
-npm-sync-dependencies.js [Options]
+npm-sync-dependencies [Options]
 
 Syncronizes deep.json and package.json dependencies
 
@@ -29,7 +29,7 @@ Options:
 
 ### `npm-release`
 ```
-npm-release.js [Options]
+npm-release [Options]
 
 Releases a package version. Before releaseing deep.json version syncronizes with
  package.json version. Package will not be releaseed if there are newer version
@@ -45,7 +45,7 @@ Options:
 
 ### `npm-pull`
 ```
-npm-pull.js [Options]
+npm-pull [Options]
 
 Pulls latest version of a package from npm. Before pulling, if there are unstage
 d changes, it throws an error that tells you to stash (git stash) or commit (git
@@ -60,7 +60,7 @@ Options:
 
 ### `npm-install`
 ```
-npm-install.js [Options]
+npm-install [Options]
 
 Installs a package and syncronizes deep.json and package.json dependencies
 
@@ -74,7 +74,7 @@ Options:
 
 ### `generate-package-class`
 ```
-generate-package-class.js [Options]
+generate-package-class [Options]
 
 Generates a package class which extends Package class from `@deep-foundation/dee
 plinks/imports/package` and have fields for each link in the package and each th
