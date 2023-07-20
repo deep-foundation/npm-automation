@@ -11,11 +11,11 @@
     "url": "https://github.com/deep-foundation/npm-automation"
   },
   "bin": {
-    "npm-release": "./dist/cli/npm-release-cli.js",
-    "npm-pull": "./dist/cli/npm-pull-cli.js",
-    "npm-install": "./dist/cli/npm-install-cli.js",
-    "npm-sync-dependencies": "./dist/cli/npm-sync-dependencies-cli.js",
-    "generate-package-class": "./dist/cli/generate-package-class-cli.js"
+    "npm-release": "./dist/cli/npm-release.js",
+    "npm-pull": "./dist/cli/npm-pull.js",
+    "npm-install": "./dist/cli/npm-install.js",
+    "npm-sync-dependencies": "./dist/cli/npm-sync-dependencies.js",
+    "generate-package-class": "./dist/cli/generate-package-class.js"
   },
   "scripts": {
     "clean": "npx fse remove dist --quiet",
