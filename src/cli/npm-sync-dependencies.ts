@@ -16,7 +16,7 @@ async function npmSyncDependenciesCli() {
   );
 
   const cliOptions = yargs(hideBin(process.argv))
-  .describe(`$0 [Options]`, `Syncronizes deep.json and package.json dependencies`)
+  .usage(`$0 [Options]`, `Syncronizes deep.json and package.json dependencies`)
   .option(`deep-json-file-path`, {
     demandOption: false,
     describe: 'deep.json file path',
