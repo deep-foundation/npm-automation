@@ -14,8 +14,7 @@ async function npmReleaseCli() {
   );
 
   const cliOptions = yargs(hideBin(process.argv))
-    .describe(`npm-release`, `Releases a package version`)
-    .epilog(`Before releaseing deep.json version syncronizes with package.json version. Package will not be releaseed if there are newer version in npm`)
+    .usage(`npm-release [Options]`, `Releases a package version. Before releaseing deep.json version syncronizes with package.json version. Package will not be releaseed if there are newer version in npm`)
     .option('new-version', {
       demandOption: false,
       describe: 'New version to release',
