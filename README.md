@@ -4,7 +4,7 @@
 
 Automates actions that you do in your deep package when you use npm
 
-[**Documentaiton**](https://deep-foundation.github.io/npm-automation/)
+**[Documentaiton]**
 
 ## Prereqisitions
 Install package
@@ -13,11 +13,7 @@ npm install --save-dev @deep-foundation/npm-automation
 ```
 # Using
 ## Library
-- [npm-pull](https://deep-foundation.github.io/npm-automation/functions/npmPull.html)
-- [npm-release](https://deep-foundation.github.io/npm-automation/functions/npmRelease.html)
-- [npm-install](https://deep-foundation.github.io/npm-automation/functions/npmInstall.html)
-- [sync-dependencies](https://deep-foundation.github.io/npm-automation/functions/syncDependencies.html)
-- [generate-package-class](https://deep-foundation.github.io/npm-automation/functions/generatePackageClass.html)
+See [Documentation] for examples and API
 
 <!-- Do not remove these comments. They are used for automated generation -->
 <!-- CLI_HELP_START -->
@@ -88,3 +84,5 @@ Options:
   --output-file-path        Path to output file                         [string]
 ```
 <!-- CLI_HELP_END -->
+
+[Documentation]: https://deep-foundation.github.io/npm-automation/
