@@ -16,6 +16,8 @@ jobs:
       npm-token: ${{ secrets.NPM_TOKEN }}
     with:
       generate-documentation-command: |
+        echo "PWD: ${PWD}"
+        ls
         "${{ vars.GENERATE_DOCUMENTATION_COMMAND }}"
         git config --global user.name 'Deep Foundation'
         git config --global user.email 'deepfoundation@gmail.com'
