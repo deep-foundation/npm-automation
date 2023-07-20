@@ -15,7 +15,7 @@ async function npmInstallCli() {
   );
 
   const cliOptions = yargs(hideBin(process.argv))
-  .usage(`npm-install [Options]`, `Installs a package and syncronizes deep.json and package.json dependencies`)
+  .usage(`$0 [Options]`, `Installs a package and syncronizes deep.json and package.json dependencies`)
   .option('name', {
     demandOption: true,
     describe: 'Package name to install',
