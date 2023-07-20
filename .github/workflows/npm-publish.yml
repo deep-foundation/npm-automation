@@ -17,14 +17,14 @@ jobs:
     with:
       generate-documentation-command: |
         ${{ vars.GENERATE_DOCUMENTATION_COMMAND }}
-        git config --global user.name 'Deep Foundation'
-        git config --global user.email 'deepfoundation@gmail.com'
         npm run generate-help-of-cli-apps-to-readme
         git add README.md
         if git diff --staged --quiet
         then
           echo "No changes to commit"
         else
+          git config --global user.name 'Deep Foundation'
+          git config --global user.email 'deepfoundation@gmail.com'
           git commit -m 'docs: update README.md'
           git push origin main
         fi
