@@ -16,10 +16,13 @@ See [Documentation] for examples and API
 
 ### `npm-sync-dependencies`
 ```
+npm-sync-dependencies.js [Options]
+
+Syncronizes deep.json and package.json dependencies
+
 Options:
   --help                    Show help                                  [boolean]
   --version                 Show version number                        [boolean]
-  --$0 [Options]            Syncronizes deep.json and package.json dependencies
   --deep-json-file-path     deep.json file path                         [string]
   --package-json-file-path  package.json file path                      [string]
 ```
