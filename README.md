@@ -6,11 +6,6 @@ Automates actions that you do in your deep package when you use npm
 
 **[Documentaiton]**
 
-## Prereqisitions
-Install package
-```
-npm install --save-dev @deep-foundation/npm-automation
-```
 # Using
 ## Library
 See [Documentation] for examples and API
