@@ -23,8 +23,7 @@ jobs:
         then
           echo "No changes to commit"
         else
-          git config --global user.name 'Deep Foundation'
-          git config --global user.email 'deepfoundation@gmail.com'
+          git config --global user.name 'Github Actions'
           git commit -m 'docs: update README.md'
           git push origin main
         fi
