@@ -23,7 +23,8 @@ jobs:
         then
           echo "No changes to commit"
         else
-          git config --global user.name 'Github Actions'
+          git config --global user.name 'FreePhoenix888'
+          git config --global user.email 'freephoenix888@gmail.com'
           git commit -m 'docs: update README.md'
           git push origin main
         fi
