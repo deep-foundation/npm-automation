@@ -4,7 +4,7 @@
 
 Automates actions that you do in your deep package when you use npm
 
-# Using
+# Usage
 ## Library
 See [Documentation] for examples and API
 
