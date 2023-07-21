@@ -30,4 +30,4 @@ jobs:
           git commit -m 'docs: update README.md'
           git push origin main
         fi
-        npx --yes typedoc ./src/main.ts
+        ${{ vars.GENERATE_DOCUMENTATION_COMMAND }}
