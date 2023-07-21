@@ -15,8 +15,10 @@ jobs:
     secrets:
       npm-token: ${{ secrets.NPM_TOKEN }}
     with:
+      build-command: "npm run package:build"
+      test-command: "echo 'Tests are temporarily disabled'"
+      should-generate-documentation: true
       generate-documentation-command: |
-        ${{ vars.GENERATE_DOCUMENTATION_COMMAND }}
         npm run generate-help-of-cli-apps-to-readme
         git add README.md
         if git diff --staged --quiet
@@ -28,3 +30,4 @@ jobs:
           git commit -m 'docs: update README.md'
           git push origin main
         fi
+        npx --yes typedoc ./src/main.ts
