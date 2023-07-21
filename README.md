@@ -4,8 +4,6 @@
 
 Automates actions that you do in your deep package when you use npm
 
-**[Documentation]**
-
 # Using
 ## Library
 See [Documentation] for examples and API
