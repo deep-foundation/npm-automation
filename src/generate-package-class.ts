@@ -77,6 +77,7 @@ ${
 #### Use idLocal method to get the local id of the link
 \`\`\`ts
 const package = new Package({deep});
+await package.applyMinilinks();
 ${
   IdLocalExamplesString.join('\n').trimEnd()
 }
