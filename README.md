@@ -5,7 +5,7 @@
 Automates actions that you do in your deep package when you use npm
 
 # Usage
-## Library
+## Library Usage
 See [Documentation] for examples and API
 
 <!-- Do not remove these comments. They are used for automated generation -->
