@@ -4,10 +4,8 @@
 
 Automates actions that you do in your deep package when you use npm
 
-**[Documentation]**
-
-# Using
-## Library
+# Usage
+## Library Usage
 See [Documentation] for examples and API
 
 <!-- Do not remove these comments. They are used for automated generation -->
