@@ -1,7 +1,24 @@
 {
   "name": "@deep-foundation/npm-automation",
   "keywords": [
-    "deep-package"
+    "deep",
+    "package",
+    "npm",
+    "automation",
+    "release",
+    "pull",
+    "install",
+    "sync",
+    "dependencies",
+    "generate",
+    "package",
+    "class",
+    "sync-dependencies",
+    "synchronize-dependencies",
+    "synchronize",
+    "generate-package-class",
+    "generate-package",
+    "generate-class"
   ],
   "version": "10.0.18-dev.1",
   "type": "module",
