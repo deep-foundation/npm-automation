@@ -22,7 +22,7 @@
   ],
   "version": "10.0.18",
   "type": "module",
-  "description": "A package that will help you to automate actions related to npm and your deep package.",
+  "description": "Automates actions that you do in your deep package when you use npm",
   "repository": {
     "type": "git",
     "url": "https://github.com/deep-foundation/npm-automation"
