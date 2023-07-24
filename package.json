@@ -20,7 +20,7 @@
     "generate-package",
     "generate-class"
   ],
-  "version": "10.0.18",
+  "version": "11.0.0",
   "type": "module",
   "description": "Automates actions that you do in your deep package when you use npm",
   "repository": {
