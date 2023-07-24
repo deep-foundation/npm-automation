@@ -31,7 +31,8 @@
     "npm-release": "./dist/cli/npm-release.js",
     "npm-pull": "./dist/cli/npm-pull.js",
     "npm-install": "./dist/cli/npm-install.js",
-    "npm-sync-dependencies": "./dist/cli/npm-sync-dependencies.js"
+    "npm-sync-dependencies": "./dist/cli/npm-sync-dependencies.js",
+    "generate-package-class": "./dist/cli/generate-package-class.js"
   },
   "scripts": {
     "clean": "npx fse remove dist --quiet",
