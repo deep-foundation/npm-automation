@@ -36,8 +36,8 @@
   },
   "scripts": {
     "clean": "npx fse remove dist --quiet",
-    "package:clean-build": "npm run clean && npm run package:build",
-    "package:build": "tsc",
+    "clean-build": "npm run clean && npm run build",
+    "build": "tsc",
     "test": "jest"
   },
   "main": "dist/main.js",
