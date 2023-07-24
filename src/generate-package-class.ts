@@ -20,27 +20,35 @@ export async function generatePackageClass(param: GeneratePackageClassParam) {
     let idExamples: Array<string> = [];
     let IdLocalExamplesString: Array<string> = [];
     let entitiesString: Array<string> = [];
+    let nameExamplesString: Array<string> = [];
 
     for (const ownedLink of ownedLinks) {
       const idString = ownedLink.id.toString();
       const isType = idString[0] === idString[0].toUpperCase();
-      const variableNameFirstPart = idString.charAt(0).toLowerCase() + idString.slice(1);
-      const variableNameSecondPart = isType ? 'TypeLinkId' : 'LinkId';
-      const variableName = `${variableNameFirstPart}${variableNameSecondPart}`;
-      idExamples.push(`const ${variableName} = await package["${ownedLink.id}"].id();`)
-      IdLocalExamplesString.push(`const ${variableName} = package["${ownedLink.id}"].idLocal();`)
+      const linkIdVariableNameFirstPart = idString.charAt(0).toLowerCase() + idString.slice(1);
+      const linkIdVariableNameSecondPart = isType ? 'TypeLinkId' : 'LinkId';
+      const linkIdVariableName = `${linkIdVariableNameFirstPart}${linkIdVariableNameSecondPart}`;
+      idExamples.push(`const ${linkIdVariableName} = await package["${ownedLink.id}"].id();`)
+      IdLocalExamplesString.push(`const ${linkIdVariableName} = package["${ownedLink.id}"].idLocal();`)
+      const linkNameVariableName = idString[0].toLowerCase() + idString.slice(1);
+      nameExamplesString.push(`const ${linkNameVariableName} = package["${ownedLink.id}"].name;`)
       entitiesString.push(`
       /**
       @example
       #### Use id method to get the id of the ${idString} link
       \`\`\`ts
       const package = new Package({deep});
-      const ${variableName} = await package["${idString}"].id();
+      const ${linkIdVariableName} = await package["${idString}"].id();
       \`\`\`
       #### Use localId method to get the local id of the ${idString} link
       \`\`\`ts
       const package = new Package({deep});
-      const ${variableName} = await package["${idString}"].localId();
+      const ${linkIdVariableName} = await package["${idString}"].localId();
+      \`\`\`
+      #### Use name field to get the name of the ${idString} link
+      \`\`\`ts
+      const package = new Package({deep});
+      const ${linkNameVariableName} = await package["${idString}"].name;
       \`\`\`
       */
       public "${idString}" = this.createEntity("${idString}");`)
@@ -80,6 +88,13 @@ const package = new Package({deep});
 await package.applyMinilinks();
 ${
   IdLocalExamplesString.join('\n').trimEnd()
+}
+\`\`\`
+#### Use name field to get the name of the link
+\`\`\`ts
+const package = new Package({deep});
+${
+  nameExamplesString.join('\n').trimEnd()
 }
 \`\`\`
 */
