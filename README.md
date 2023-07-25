@@ -118,6 +118,7 @@ npx --yes --package @deep-foundation/npm-automation npm-release
 npx --yes --package @deep-foundation/npm-automation npm-pull
 npx --yes --package @deep-foundation/npm-automation npm-install
 npx --yes --package @deep-foundation/npm-automation npm-sync-dependencies
+npx --yes --package @deep-foundation/npm-automation generate-package-class
 ```
 
 #### Global Installation
@@ -128,6 +129,7 @@ npm-release
 npm-pull
 npm-install
 npm-sync-dependencies
+generate-package-class
 ```
 
 ##### Global installation and running using npx
@@ -137,6 +139,7 @@ npx npm-release
 npx npm-pull
 npx npm-install
 npx npm-sync-dependencies
+npx generate-package-class
 ```
 
 #### Local installation
@@ -148,6 +151,7 @@ npx npm-release
 npx npm-pull
 npx npm-install
 npx npm-sync-dependencies
+npx generate-package-class
 ```
 
 ##### Local installation and running using npm script
@@ -161,7 +165,8 @@ Add npm script to package.json. Note that you can name  your script as you want 
     "npm-release": "npm-release",
     "npm-pull": "npm-pull",
     "npm-install": "npm-install",
-    "npm-sync-dependencies": "npm-sync-dependencies"
+    "npm-sync-dependencies": "npm-sync-dependencies",
+    "generate-package-class": "generate-package-class"
   }
 }
 ```
@@ -171,6 +176,7 @@ npm run npm-release
 npm run npm-pull
 npm run npm-install
 npm run npm-sync-dependencies
+npm run generate-package-class
 ```
 <!-- CLI_USAGE_WAYS_END -->
 
