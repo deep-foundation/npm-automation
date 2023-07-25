@@ -15,36 +15,8 @@ jobs:
     secrets:
       npm-token: ${{ secrets.NPM_TOKEN }}
     with:
-      build-command: "npm run build"
+      build-command: "npm run library:build:dirty"
       test-command: "echo 'Tests are temporarily disabled'"
       should-generate-documentation: true
-      generate-documentation-command: |
-        find ./dist/cli/ -name "*.js" -exec chmod +x {} \;
-
-        cli_help=$(npx --yes @freephoenix888/generate-help-of-cli-apps-in-markdown-format --cli-app-file-paths $(find ./dist/cli/*.js) --root-header-level 2)
-        pattern="(<!-- CLI_HELP_START -->)[\\S\\s]*(<!-- CLI_HELP_END -->)"
-        replacement=$'$1\n'"${cli_help}"$'\n$2'
-        npx --yes replace "$pattern" "$replacement" README.md
-
-        cli_usage_ways=$(npx --yes @freephoenix888/generate-usage-ways-of-npm-cli-apps-in-markdown-format  --root-header-level 2)
-        pattern="(<!-- CLI_USAGE_WAYS_START -->)[\\S\\s]*(<!-- CLI_USAGE_WAYS_END -->)"
-        replacement=$'$1\n'"${cli_usage_ways}"$'\n$2'
-        npx --yes replace "$pattern" "$replacement" README.md
-
-        table_of_contents=$(npx markdown-toc README.md)
-        pattern="(<!-- TABLE_OF_CONTENTS_START -->)[\\S\\s]*(<!-- TABLE_OF_CONTENTS_END -->)"
-        replacement=$'$1\n'"${table_of_contents}"$'\n$2'
-        npx replace "$pattern" "$replacement" README.md
-
-        git add README.md
-        if git diff --staged --quiet
-        then
-          echo "No changes to commit"
-        else
-          git config --global user.name 'FreePhoenix888'
-          git config --global user.email 'freephoenix888@gmail.com'
-          git commit -m 'docs: update README.md'
-          git push origin main
-        fi
+      generate-documentation-command: "npm run documentation:generate"
         
-        npx --yes typedoc ./src/main.ts

@@ -35,9 +35,13 @@
     "generate-package-class": "./dist/cli/generate-package-class.js"
   },
   "scripts": {
-    "clean": "npx fse remove dist --quiet",
-    "clean-build": "npm run clean && npm run build",
-    "build": "tsc",
+    "library:build:clean": "fse remove dist && npm run library:build:dirty",
+    "library:build:dirty": "ts-node --esm ./automation/library/build.ts",
+    "npm-pull": "npm-pull",
+    "npm-release": "npm-release",
+    "library:build:generate-package-class": "generate-package-class",
+    "documentation:generate": "ts-node --esm ./automation/documentation/generate.ts",
+    "library:documentation:generate": "typedoc ./src/main.ts",
     "test": "jest"
   },
   "main": "dist/main.js",
