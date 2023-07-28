@@ -2,7 +2,7 @@ import { execa } from 'execa';
 import fsExtra from 'fs-extra';
 import {
   generateHelpOfCliAppsInMarkdownFormat,
-  GenerateHelpOfNpmCliBinariesOptions,
+  GenerateHelpOfCliAppsInMarkdownFormatOptions,
 } from '@freephoenix888/generate-help-of-cli-apps-in-markdown-format';
 import {
   generateUsageWaysOfNpmCliAppsInMarkdownFormat,
@@ -70,10 +70,11 @@ async function updateReadme({
           options.generateCliAppsHelpInReadmeOptions
         );
       debug({helpOfCliAppsInMarkdownFormat})
-      const readmeContentWithHelpOfCliAppsInMarkdownFormat = readmeContents.replace(
-        /(?<start><!-- CLI_HELP_START -->)[\S\s]*(?<end><!-- CLI_HELP_END -->)/g,
-        `$<start>\n${helpOfCliAppsInMarkdownFormat}\n$<end>`
-      )
+      const readmeContentWithHelpOfCliAppsInMarkdownFormat = await replacePlaceholder({
+        content: readmeContents,
+        placeholder: 'CLI_HELP',
+        replacement: helpOfCliAppsInMarkdownFormat
+      })
       debug({readmeContentWithHelpOfCliAppsInMarkdownFormat})
       readmeContents = readmeContentWithHelpOfCliAppsInMarkdownFormat;
     }
@@ -83,14 +84,11 @@ async function updateReadme({
           options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions
         );
       debug({usageWaysOfNpmCliAppsInMarkdownFormat})
-      const {placeholder = 'TABLE_OF_CONTENTS'} = options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions;
-      const startTag = `<!-- ${placeholder}_START -->`;
-      const endTag = `<!-- ${placeholder}_END -->`;
-      const pattern = new RegExp(`(?<start>${startTag})[\\S\\s]*(?<end>${endTag})`, 'g');
-      const redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat = readmeContents.replace(
-          pattern,
-          `$<start>\n${usageWaysOfNpmCliAppsInMarkdownFormat}\n$<end>`
-      );
+      const redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat = await replacePlaceholder({
+        content: readmeContents,
+        placeholder: 'CLI_USAGE_WAYS',
+        replacement: usageWaysOfNpmCliAppsInMarkdownFormat
+      });
       debug({redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat})
       readmeContents = redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat;
     }
@@ -99,14 +97,11 @@ async function updateReadme({
         options.generateTableOfContentsForMarkdownOptions
       );
       debug({tableOfContents})
-      const {placeholder = 'TABLE_OF_CONTENTS'} = options.generateTableOfContentsForMarkdownOptions;
-      const startTag = `<!-- ${placeholder}_START -->`;
-      const endTag = `<!-- ${placeholder}_END -->`;
-      const pattern = new RegExp(`(?<start>${startTag})[\\S\\s]*(?<end>${endTag})`, 'g');
-      const readmeContentWithTableOfContents = readmeContents.replace(
-          pattern,
-          `$<start>\n${tableOfContents}\n$<end>`
-      );
+      const readmeContentWithTableOfContents = await replacePlaceholder({
+        content: readmeContents,
+        placeholder: 'TABLE_OF_CONTENTS',
+        replacement: tableOfContents
+      });
       debug({readmeContentWithTableOfContents})
       readmeContents = readmeContentWithTableOfContents;
     }
@@ -183,8 +178,19 @@ async function generateTypescriptDocumentation() {
   await execa('git', ['checkout', 'main'], {  verbose: true });
 }
 
+async function replacePlaceholder({content, placeholder, replacement}: {content: string, placeholder: string, replacement: string}) {
+  const placeholderStart = `<!-- ${placeholder}_START -->`;
+  const placeholderEnd = `<!-- ${placeholder}_END -->`;
+  const pattern = new RegExp(`(?<start>${placeholderStart})[\\S\\s]*(?<end>${placeholderEnd})`, 'g');
+  content.replace(
+    pattern,
+    `$<start>\n${replacement}\n$<end>`
+  )
+  return content
+}
+
 export type GenerateDocumentationOptions = {
-  generateCliAppsHelpInReadmeOptions?: GenerateHelpOfNpmCliBinariesOptions & {
+  generateCliAppsHelpInReadmeOptions?: GenerateHelpOfCliAppsInMarkdownFormatOptions & {
     placeholder?: string;
   };
   generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions?: GenerateUsageWaysOfNpmCliAppsInMarkdownFormatOptions & {
