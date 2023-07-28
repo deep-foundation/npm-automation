@@ -47,7 +47,7 @@ async function updateReadme({
         );
       debug({helpOfCliAppsInMarkdownFormat})
       const readmeContentWithHelpOfCliAppsInMarkdownFormat = await replacePlaceholder({
-        content: readmeContents,
+        content: newReadmeContents,
         placeholder: 'CLI_HELP',
         replacement: helpOfCliAppsInMarkdownFormat
       })
@@ -61,7 +61,7 @@ async function updateReadme({
         );
       debug({usageWaysOfNpmCliAppsInMarkdownFormat})
       const redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat = await replacePlaceholder({
-        content: readmeContents,
+        content: newReadmeContents,
         placeholder: 'CLI_USAGE_WAYS',
         replacement: usageWaysOfNpmCliAppsInMarkdownFormat
       });
@@ -74,7 +74,7 @@ async function updateReadme({
       );
       debug({tableOfContents})
       const readmeContentWithTableOfContents = await replacePlaceholder({
-        content: readmeContents,
+        content: newReadmeContents,
         placeholder: 'TABLE_OF_CONTENTS',
         replacement: tableOfContents
       });
