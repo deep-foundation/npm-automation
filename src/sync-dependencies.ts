@@ -5,7 +5,7 @@ import { type PackageJson } from 'types-package-json';
 import createDebugMessages from 'debug';
 import { Package, PackageIdentifier } from '@deep-foundation/deeplinks/imports/packager';
 
-export interface SyncDependenciesParam {
+export interface SyncDependenciesOptions {
   /**
    * Path to deep.json
    */
@@ -17,9 +17,9 @@ export interface SyncDependenciesParam {
 }
 
 /**
- * Syncronizes dependencies between {@link SyncDependenciesParam.deepJsonFilePath} and {@link SyncDependenciesParam.packageJsonFilePath}
+ * Syncronizes dependencies between {@link SyncDependenciesOptions.deepJsonFilePath} and {@link SyncDependenciesOptions.packageJsonFilePath}
  */
-export async function syncDependencies(param: SyncDependenciesParam) {
+export async function syncDependencies(param: SyncDependenciesOptions) {
   const debug = createDebugMessages(
     '@deep-foundation/npm-automation:syncDependencies'
   );

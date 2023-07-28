@@ -13,6 +13,7 @@ import {
   GenerateTableOfContentsForMarkdownOptions,
 } from '@freephoenix888/generate-table-of-contents-for-markdown';
 import createDebugMessages from 'debug'
+import { ensureGitIsConfigured } from './ensure-git-is-configured';
 
 export async function generateDocumentation(
   options: GenerateDocumentationOptions
@@ -20,32 +21,6 @@ export async function generateDocumentation(
   await ensureGitIsConfigured();
   await updateReadme({ options });
   await generateTypescriptDocumentation();
-}
-
-async function ensureGitIsConfigured() {
-  const debug = createDebugMessages('npm-automation:generateDocumentation:ensureGitIsConfigured')
-  const { stdout: username } = await execa(
-    'git',
-    ['config', '--global', 'user.name'],
-    { reject: false,  verbose: true }
-  );
-  debug({username})
-  if (!username) {
-    throw new Error(
-      `Please set your git username using the command: git config --global user.name "Your Name"`
-    );
-  }
-  const { stdout: email } = await execa(
-    'git',
-    ['config', '--global', 'user.email'],
-    { reject: false,  verbose: true }
-  );
-  debug({email})
-  if (!email) {
-    throw new Error(
-      `Please set your git email using the command: git config --global user.email "Your email"`
-    );
-  }
 }
 
 async function updateReadme({

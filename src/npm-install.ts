@@ -26,7 +26,7 @@ await npmInstall({
 })
 ```
  */
-export async function npmInstall(param: NpmInstallParam) {
+export async function npmInstall(param: NpmInstallOptions) {
   debug({ param });
   const { name: name, version, deepJsonFilePath, packageJsonFilePath } = param;
 
@@ -78,7 +78,7 @@ export async function npmInstall(param: NpmInstallParam) {
   await fsExtra.writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
 }
 
-export interface NpmInstallParam {
+export interface NpmInstallOptions {
   /**
    * Package name to install
    */

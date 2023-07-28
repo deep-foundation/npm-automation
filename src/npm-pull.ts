@@ -21,7 +21,7 @@ await npmPull({
 ```
  * 
  */
-export async function npmPull(param: NpmPullParam) {
+export async function npmPull(param: NpmPullOptions) {
   const debug = createDebugMessages(
     '@deep-foundation/npm-automation:npm-pull'
   );
@@ -72,7 +72,7 @@ export async function npmPull(param: NpmPullParam) {
   );
 }
 
-export interface NpmPullParam {
+export interface NpmPullOptions {
   /**
    * Name of the npm package
    */

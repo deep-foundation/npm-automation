@@ -5,9 +5,9 @@ import fsExtra from 'fs-extra';
 import { PackageJson } from 'types-package-json';
 
 /**
- * Releases a new version of the deep npm package and syncronizes the version and dependencies between {@link NpmReleaseParam.deepJsonFilePath} and {@link NpmReleaseParam.packageJsonFilePath}
+ * Releases a new version of the deep npm package and syncronizes the version and dependencies between {@link NpmReleaseOptions.deepJsonFilePath} and {@link NpmReleaseOptions.packageJsonFilePath}
  * 
- * @throws {@link Error} if the version in {@link NpmReleaseParam.packageJsonFilePath} is outdated
+ * @throws {@link Error} if the version in {@link NpmReleaseOptions.packageJsonFilePath} is outdated
  * 
  * @example
 ```typescript
@@ -19,7 +19,7 @@ await npmRelease({
 ```
  * 
  */
-export async function npmRelease(param: NpmReleaseParam) {
+export async function npmRelease(param: NpmReleaseOptions) {
   const debug = createDebugMessages(
     '@deep-foundation/npm-automation:npm-release'
   );
@@ -69,7 +69,7 @@ export async function npmRelease(param: NpmReleaseParam) {
   
 }
 
-export interface NpmReleaseParam {
+export interface NpmReleaseOptions {
   /**
    * New version to release
    * 

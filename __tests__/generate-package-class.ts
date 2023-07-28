@@ -1,4 +1,4 @@
-import { generatePackageClass, GeneratePackageClassParam } from '../src/generate-package-class';
+import { generatePackageClass, GeneratePackageClassOptions } from '../src/generate-package-class';
 import fs from 'fs-extra';
 import mockFs from 'mock-fs';
 
@@ -24,7 +24,7 @@ describe('generatePackageClass', () => {
   });
 
   it('should throw an error if the deep.json file does not exist', async () => {
-    const params: GeneratePackageClassParam = {
+    const params: GeneratePackageClassOptions = {
       deepJsonFilePath: 'path/to/nonexistent/deepJson',
       outputFilePath: 'path/to/output',
       packageName: 'testPackage',
@@ -36,7 +36,7 @@ describe('generatePackageClass', () => {
   });
 
   it('should generate a package class and write it to the output file', async () => {
-    const params: GeneratePackageClassParam = {
+    const params: GeneratePackageClassOptions = {
       deepJsonFilePath: 'path/to/deepJson',
       outputFilePath: 'path/to/output',
       packageName: 'testPackage',

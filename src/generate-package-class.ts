@@ -5,10 +5,10 @@ import createDebugger from 'debug';
 /**
 Generates a package class which extends Package class from `@deep-foundation/deeplinks/imports/package` and have fields for each link in the package and each that field is an object with id method which returns the id of the link and idLocal method which returns the local id of the link.
  */
-export async function generatePackageClass(param: GeneratePackageClassParam) {
+export async function generatePackageClass(param: GeneratePackageClassOptions) {
   const debug = createDebugger('generatePackageClass');
   debug({param})
-  const { deepJsonFilePath, outputFilePath, packageName } = param;
+  const { deepJsonFilePath = 'deep.json', outputFilePath, packageName } = param;
   const { default: deepJson }: { default: Package } = await import(deepJsonFilePath, {assert: {type: 'json'}});
   debug({deepJson})
 
@@ -115,11 +115,14 @@ export type PackageOptions = Omit<BasePackageOptions, 'name'>;
 `;
 debug({classDefinition})
 
-  await fsExtra.writeFile(outputFilePath, classDefinition);
+  if(outputFilePath) {
+    await fsExtra.writeFile(outputFilePath, classDefinition);
+  }
+  return classDefinition;
 }
 
-export interface GeneratePackageClassParam {
-  deepJsonFilePath: string;
-  outputFilePath: string;
+export interface GeneratePackageClassOptions {
+  deepJsonFilePath?: string;
+  outputFilePath?: string;
   packageName: string;
 }
