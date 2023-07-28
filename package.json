@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@atao60/fse-cli": "^0.1.7",
-    "@freephoenix888/generate-help-of-cli-apps-in-markdown-format": "^1.0.9",
+    "@freephoenix888/generate-help-of-cli-apps-in-markdown-format": "^2.0.0",
     "@freephoenix888/generate-usage-ways-of-npm-cli-apps-in-markdown-format": "^3.0.0",
     "@freephoenix888/prepend-file": "^1.0.0",
     "@types/debug": "^4.1.8",
