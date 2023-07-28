@@ -38,6 +38,7 @@ async function updateReadme({
     const readmeFilePath = 'README.md';
     debug({readmeFilePath})
     let readmeContents = await fsExtra.readFile(readmeFilePath, 'utf8');
+    let newReadmeContents = readmeContents;
     debug({readmeContents})
     if (options.generateCliAppsHelpInReadmeOptions) {
       const helpOfCliAppsInMarkdownFormat =
@@ -51,7 +52,7 @@ async function updateReadme({
         replacement: helpOfCliAppsInMarkdownFormat
       })
       debug({readmeContentWithHelpOfCliAppsInMarkdownFormat})
-      readmeContents = readmeContentWithHelpOfCliAppsInMarkdownFormat;
+      newReadmeContents = readmeContentWithHelpOfCliAppsInMarkdownFormat;
     }
     if (options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions) {
       const usageWaysOfNpmCliAppsInMarkdownFormat =
@@ -65,7 +66,7 @@ async function updateReadme({
         replacement: usageWaysOfNpmCliAppsInMarkdownFormat
       });
       debug({redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat})
-      readmeContents = redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat;
+      newReadmeContents = redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat;
     }
     if (options.generateTableOfContentsForMarkdownOptions) {
       const tableOfContents = await generateTableOfContentsForMarkdown(
@@ -78,12 +79,11 @@ async function updateReadme({
         replacement: tableOfContents
       });
       debug({readmeContentWithTableOfContents})
-      readmeContents = readmeContentWithTableOfContents;
+      newReadmeContents = readmeContentWithTableOfContents;
     }
     await fsExtra.writeFile(readmeFilePath, readmeContents);
-    await execa(`git`, ['add', readmeFilePath], {
-      
-    });
+    const gitAddExecResult = await execa(`git`, ['add', readmeFilePath]);
+    debug({gitAddExecResult})
     const execResultAfterReadmeUpdate = await execa(
       'git',
       ['diff', '--staged', '--quiet'],
