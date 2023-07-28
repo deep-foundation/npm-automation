@@ -83,9 +83,13 @@ async function updateReadme({
           options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions
         );
       debug({usageWaysOfNpmCliAppsInMarkdownFormat})
+      const {placeholder = 'TABLE_OF_CONTENTS'} = options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions;
+      const startTag = `<!-- ${placeholder}_START -->`;
+      const endTag = `<!-- ${placeholder}_END -->`;
+      const pattern = new RegExp(`(?<start>${startTag})[\\S\\s]*(?<end>${endTag})`, 'g');
       const redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat = readmeContents.replace(
-        /(?<start><!-- CLI_USAGE_WAYS_START -->)[\S\s]*(?<end><!-- CLI_USAGE_WAYS_END -->)/g,
-        `$<start>\n${usageWaysOfNpmCliAppsInMarkdownFormat}\n$<end>`
+          pattern,
+          `$<start>\n${usageWaysOfNpmCliAppsInMarkdownFormat}\n$<end>`
       );
       debug({redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat})
       readmeContents = redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat;
@@ -95,9 +99,13 @@ async function updateReadme({
         options.generateTableOfContentsForMarkdownOptions
       );
       debug({tableOfContents})
+      const {placeholder = 'TABLE_OF_CONTENTS'} = options.generateTableOfContentsForMarkdownOptions;
+      const startTag = `<!-- ${placeholder}_START -->`;
+      const endTag = `<!-- ${placeholder}_END -->`;
+      const pattern = new RegExp(`(?<start>${startTag})[\\S\\s]*(?<end>${endTag})`, 'g');
       const readmeContentWithTableOfContents = readmeContents.replace(
-        /(?<start><!-- TABLE_OF_CONTENTS_START -->)[\S\s]*(?<end><!-- TABLE_OF_CONTENTS_END -->)/g,
-        `$<start>\n${tableOfContents}\n$<end>`
+          pattern,
+          `$<start>\n${tableOfContents}\n$<end>`
       );
       debug({readmeContentWithTableOfContents})
       readmeContents = readmeContentWithTableOfContents;
