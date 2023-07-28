@@ -2,7 +2,6 @@ import { glob } from 'glob';
 import {generateDocumentation} from '../../src/generate-documentation.js'
 import path from 'path';
 import fsExtra from 'fs-extra';
-import { execa } from 'execa';
 
 main();
 

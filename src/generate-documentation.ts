@@ -3,15 +3,15 @@ import fsExtra from 'fs-extra';
 import {
   generateHelpOfCliAppsInMarkdownFormat,
   GenerateHelpOfCliAppsInMarkdownFormatOptions,
-} from '@freephoenix888/generate-help-of-cli-apps-in-markdown-format';
+} from '@freephoenix888/generate-help-of-cli-apps-in-markdown-format/dist/main.js';
 import {
   generateUsageWaysOfNpmCliAppsInMarkdownFormat,
   GenerateUsageWaysOfNpmCliAppsInMarkdownFormatOptions,
-} from '@freephoenix888/generate-usage-ways-of-npm-cli-apps-in-markdown-format';
+} from '@freephoenix888/generate-usage-ways-of-npm-cli-apps-in-markdown-format/dist/main.js';
 import {
   generateTableOfContentsForMarkdown,
   GenerateTableOfContentsForMarkdownOptions,
-} from '@freephoenix888/generate-table-of-contents-for-markdown';
+} from '@freephoenix888/generate-table-of-contents-for-markdown/dist/main.js';
 import createDebugMessages from 'debug'
 import { ensureGitIsConfigured } from './ensure-git-is-configured.js';
 
