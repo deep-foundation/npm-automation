@@ -157,14 +157,19 @@ async function generateTypescriptDocumentation() {
 }
 
 async function replacePlaceholder({content, placeholder, replacement}: {content: string, placeholder: string, replacement: string}) {
+  const debug = createDebugMessages('npm-automation:generateDocumentation:replacePlaceholder')
   const placeholderStart = `<!-- ${placeholder}_START -->`;
+  debug({placeholderStart})
   const placeholderEnd = `<!-- ${placeholder}_END -->`;
+  debug({placeholderEnd})
   const pattern = new RegExp(`(?<start>${placeholderStart})[\\S\\s]*(?<end>${placeholderEnd})`, 'g');
-  content.replace(
+  debug({pattern})
+  const newContent = content.replace(
     pattern,
     `$<start>\n${replacement}\n$<end>`
   )
-  return content
+  debug({newContent})
+  return newContent
 }
 
 export type GenerateDocumentationOptions = {
