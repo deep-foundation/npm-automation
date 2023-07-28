@@ -17,9 +17,11 @@ async function main() {
     },
     generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions: {
       cliUtilityNames: cliAppFilePaths.map(cliAppFilePath => path.basename(cliAppFilePath, '.js')),
+      rootHeaderLevel: 2
     },
     generateTableOfContentsForMarkdownOptions: {
       markdownFilePath: './README.md',
+      rootHeaderLevel: 1
     } 
   })
 };
