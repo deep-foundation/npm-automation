@@ -82,22 +82,22 @@ async function updateReadme({
     }
     await fsExtra.writeFile(readmeFilePath, readmeContents);
     await execa(`git`, ['add', readmeFilePath], {
-      verbose: true,
+      
     });
     const execResultAfterReadmeUpdate = await execa(
       'git',
       ['diff', '--staged', '--quiet'],
-      { reject: false,  verbose: true }
+      { reject: false,   }
     );
     debug({execResultAfterReadmeUpdate})
     if (execResultAfterReadmeUpdate.exitCode === 0) {
       console.log('No changes to commit');
     } else {
       await execa('git', ['commit', '-m', 'Update README.md'], {
-        verbose: true,
+        
       });
       await execa('git', ['push', 'origin', 'main'], {
-        verbose: true,
+        
       });
     }
   }
@@ -107,51 +107,51 @@ async function generateTypescriptDocumentation() {
   const debug = createDebugMessages('npm-automation:generateDocumentation:generateTypescriptDocumentation')
   // Generate the docs first
   await execa('npx', ['typedoc', './src/main.ts'], {
-    verbose: true,
+    
   });
 
   // Stage and commit the docs in the main branch
-  await execa('git', ['add', 'docs'], {  verbose: true });
+  await execa('git', ['add', 'docs'], {   });
   await execa('git', ['commit', '-m', 'Update documentation'], {
-    verbose: true,
+    
   });
 
-  await execa('git', ['fetch'], { verbose: true });
+  await execa('git', ['fetch'], {  });
   // Check if the gh-pages branch exists
   const { stdout: ghPagesBranchExists } = await execa(
     'git',
     ['branch', '-r', '--list', 'origin/gh-pages'],
-    { reject: false,  verbose: true }
+    { reject: false,   }
   );
   debug({ghPagesBranchExists})
 
   if (!ghPagesBranchExists) {
     // If it doesn't exist, create it as an orphan branch
     await execa('git', ['checkout', '--orphan', 'gh-pages'], {
-      verbose: true,
+      
     });
   } else {
     // If it does exist, just checkout to it
     await execa('git', ['checkout', 'gh-pages'], {
-      verbose: true,
+      
     });
   }
 
   // Checkout the docs from the main branch to the gh-pages branch
   await execa('git', ['checkout', 'main', '--', 'docs'], {
-    verbose: true,
+    
   });
 
   // Commit and push the changes
   await execa('git', ['commit', '-m', 'Update documentation'], {
-    verbose: true,
+    
   });
   await execa('git', ['push', 'origin', 'gh-pages'], {
-    verbose: true,
+    
   });
 
   // Switch back to the main branch
-  await execa('git', ['checkout', 'main'], {  verbose: true });
+  await execa('git', ['checkout', 'main'], {   });
 }
 
 async function replacePlaceholder({content, placeholder, replacement}: {content: string, placeholder: string, replacement: string}) {
