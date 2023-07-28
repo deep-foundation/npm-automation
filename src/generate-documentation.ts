@@ -84,10 +84,12 @@ async function updateReadme({
     await fsExtra.writeFile(readmeFilePath, readmeContents);
     const gitAddExecResult = await execa(`git`, ['add', readmeFilePath]);
     debug({gitAddExecResult})
+    const gitStatusExecResult = await execa(`git`, ['status']);
+    debug({gitStatusExecResult})
     const execResultAfterReadmeUpdate = await execa(
       'git',
       ['diff', '--staged', '--quiet'],
-      { reject: false,   }
+      { reject: false,   } 
     );
     debug({execResultAfterReadmeUpdate})
     if (execResultAfterReadmeUpdate.exitCode === 0) {
