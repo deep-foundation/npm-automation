@@ -15,8 +15,14 @@ jobs:
     secrets:
       npm-token: ${{ secrets.NPM_TOKEN }}
     with:
-      build-command: "npm run library:build:dirty"
+      build-command: |
+        git config --global user.email "freephoenix888@gmail.com"
+        git config --global user.name "freephoenix888"
+        npm run library:build:dirty
       test-command: "echo 'Tests are temporarily disabled'"
       should-generate-documentation: true
-      generate-documentation-command: "npm run documentation:generate"
+      generate-documentation-command: |
+        git config --global user.email "freephoenix888@gmail.com"
+        git config --global user.name "freephoenix888"
+        npm run documentation:generate
         
