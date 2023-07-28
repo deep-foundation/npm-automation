@@ -81,7 +81,7 @@ async function updateReadme({
       debug({readmeContentWithTableOfContents})
       newReadmeContents = readmeContentWithTableOfContents;
     }
-    await fsExtra.writeFile(readmeFilePath, readmeContents);
+    await fsExtra.writeFile(readmeFilePath, newReadmeContents);
     const gitAddExecResult = await execa(`git`, ['add', readmeFilePath]);
     debug({gitAddExecResult})
     const gitStatusExecResult = await execa(`git`, ['status']);
