@@ -40,7 +40,7 @@
     "npm-pull": "npm-pull",
     "npm-release": "npm-release",
     "library:build:generate-package-class": "generate-package-class",
-    "documentation:generate": "ts-node --esm ./automation/documentation/generate.ts",
+    "documentation:generate": "cross-env DEBUG=* ts-node --esm ./automation/documentation/generate.ts",
     "library:documentation:generate": "typedoc ./src/main.ts",
     "test": "jest"
   },
@@ -71,6 +71,7 @@
     "@types/mock-fs": "^4.13.1",
     "@types/semver": "^7.5.0",
     "@types/yargs": "^17.0.24",
+    "cross-env": "^7.0.3",
     "glob": "^10.3.3",
     "jest": "^29.6.1",
     "mock-fs": "^5.2.0",
