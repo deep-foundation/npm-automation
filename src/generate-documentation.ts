@@ -141,6 +141,7 @@ async function generateTypescriptDocumentation() {
     verbose: true,
   });
 
+  await execa('git', ['fetch'], { verbose: true });
   // Check if the gh-pages branch exists
   const { stdout: ghPagesBranchExists } = await execa(
     'git',
