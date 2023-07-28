@@ -3,3 +3,4 @@ export { syncDependencies, type SyncDependenciesParam } from './sync-dependencie
 export { npmRelease, type NpmReleaseParam } from './npm-release.js';
 export { npmPull, type NpmPullParam } from './npm-pull.js';
 export {generatePackageClass, type GeneratePackageClassParam} from './generate-package-class.js'
+export {generateDocumentation, type GenerateDocumentationOptions} from './generate-documentation.js'
