@@ -6,6 +6,13 @@ Automates actions that you do in your deep package when you use npm
 
 # Table Of Contents
 <!-- TABLE_OF_CONTENTS_START -->
+# Table of Contents
+- [Table Of Contents](#table-of-contents)
+- [Library](#library)
+- [Cli](#cli)
+  - [Cli Usage](#cli-usage)
+  - [Cli Usage Ways](#cli-usage-ways)
+
 <!-- TABLE_OF_CONTENTS_END -->
 
 # Library
