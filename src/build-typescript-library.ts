@@ -3,7 +3,7 @@ import { ensureGitIsConfigured } from './ensure-git-is-configured.js';
 import {
   GeneratePackageClassOptions,
   generatePackageClass,
-} from './generate-package-class';
+} from './generate-package-class.js';
 
 export async function buildTypescriptLibrary(
   options: BuildTypescriptLibraryOptions
