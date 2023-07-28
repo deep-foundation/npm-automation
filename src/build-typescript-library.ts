@@ -1,5 +1,5 @@
 import { execa } from 'execa';
-import { ensureGitIsConfigured } from './ensure-git-is-configured';
+import { ensureGitIsConfigured } from './ensure-git-is-configured.js';
 import {
   GeneratePackageClassOptions,
   generatePackageClass,

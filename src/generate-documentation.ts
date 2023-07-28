@@ -13,7 +13,7 @@ import {
   GenerateTableOfContentsForMarkdownOptions,
 } from '@freephoenix888/generate-table-of-contents-for-markdown';
 import createDebugMessages from 'debug'
-import { ensureGitIsConfigured } from './ensure-git-is-configured';
+import { ensureGitIsConfigured } from './ensure-git-is-configured.js';
 
 export async function generateDocumentation(
   options: GenerateDocumentationOptions
