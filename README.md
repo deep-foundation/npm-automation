@@ -6,6 +6,24 @@ Automates actions that you do in your deep package when you use npm
 
 # Table Of Contents
 <!-- TABLE_OF_CONTENTS_START -->
+- [Table Of Contents](#table-of-contents)
+- [Library](#library)
+- [Cli](#cli)
+  - [Cli Usage](#cli-usage)
+    - [`npm-sync-dependencies`](#`npm-sync-dependencies`)
+    - [`npm-release`](#`npm-release`)
+    - [`npm-pull`](#`npm-pull`)
+    - [`npm-install`](#`npm-install`)
+    - [`generate-package-class`](#`generate-package-class`)
+  - [Cli Usage Ways](#cli-usage-ways)
+  - [Directly running using npx](#directly-running-using-npx)
+  - [Global Installation](#global-installation)
+    - [Global installation and running using binary name](#global-installation-and-running-using-binary-name)
+    - [Global installation and running using npx](#global-installation-and-running-using-npx)
+  - [Local installation](#local-installation)
+    - [Local installation and running using npx](#local-installation-and-running-using-npx)
+    - [Local installation and running using npm script](#local-installation-and-running-using-npm-script)
+
 <!-- TABLE_OF_CONTENTS_END -->
 
 # Library
