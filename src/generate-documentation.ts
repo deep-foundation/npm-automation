@@ -32,9 +32,9 @@ async function updateReadme({
   const debug = createDebugMessages('npm-automation:generateDocumentation:updateReadme')
   debug({options})
   if (
-    options.generateCliAppsHelpInReadmeOptions ||
-    options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions ||
-    options.generateTableOfContentsForMarkdownOptions
+    options.generateCliAppsHelpInReadmeOptions !== null ||
+    options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions !== null ||
+    options.generateTableOfContentsForMarkdownOptions !== null
   ) {
     const readmeFilePath = options.readmeFilePath ?? './README.md';
     debug({readmeFilePath})
