@@ -21,7 +21,6 @@ async function main() {
     },
     generateTableOfContentsForMarkdownOptions: {
       markdownFilePath: './README.md',
-      rootHeaderLevel: 1
     } 
   })
 };
