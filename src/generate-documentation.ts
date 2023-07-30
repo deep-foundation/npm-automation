@@ -42,12 +42,11 @@ async function updateReadmeIfNeeded({
     let newReadmeContents = readmeContents;
     debug({readmeContents})
     if (options.generateCliAppsHelpInReadmeOptions !== null) {
-      const {generateCliAppsHelpInReadmeOptions} = options;
+      const {generateCliAppsHelpInReadmeOptions = {
+        cliAppFilePaths: await glob(`./dist/cli/*.js`, {absolute: true}),
+      }} = options;
       const helpOfCliAppsInMarkdownFormat =
-        await generateHelpOfCliAppsInMarkdownFormat({
-          cliAppFilePaths: generateCliAppsHelpInReadmeOptions?.cliAppFilePaths ?? await glob(`./dist/cli/*.js`, {absolute: true}),
-          rootHeaderLevel: generateCliAppsHelpInReadmeOptions?.rootHeaderLevel
-        });
+        await generateHelpOfCliAppsInMarkdownFormat(generateCliAppsHelpInReadmeOptions);
       debug({helpOfCliAppsInMarkdownFormat})
       const readmeContentWithHelpOfCliAppsInMarkdownFormat = await replacePlaceholder({
         content: newReadmeContents,
@@ -58,12 +57,11 @@ async function updateReadmeIfNeeded({
       newReadmeContents = readmeContentWithHelpOfCliAppsInMarkdownFormat;
     }
     if (options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions !== null) {
-      const {generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions} = options;
+      const {generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions = {
+        cliUtilityNames: await glob(`./dist/cli/*.js`, {absolute: true}).then(cliAppFilePaths => cliAppFilePaths.map(cliAppFilePath => cliAppFilePath.replace(/\.js$/, ''))),
+      }} = options;
       const usageWaysOfNpmCliAppsInMarkdownFormat =
-        await generateUsageWaysOfNpmCliAppsInMarkdownFormat({
-          cliUtilityNames: generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions?.cliUtilityNames ?? await glob(`./dist/cli/*.js`, {absolute: true}).then(cliAppFilePaths => cliAppFilePaths.map(cliAppFilePath => cliAppFilePath.replace(/\.js$/, ''))),
-          rootHeaderLevel: generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions?.rootHeaderLevel
-        });
+        await generateUsageWaysOfNpmCliAppsInMarkdownFormat(generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions);
       debug({usageWaysOfNpmCliAppsInMarkdownFormat})
       const redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat = await replacePlaceholder({
         content: newReadmeContents,
@@ -74,11 +72,10 @@ async function updateReadmeIfNeeded({
       newReadmeContents = redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat;
     }
     if (options.generateTableOfContentsForMarkdownOptions!==null) {
-      const {generateTableOfContentsForMarkdownOptions} = options;
-      const tableOfContents = await generateTableOfContentsForMarkdown({
-        markdownFilePath: generateTableOfContentsForMarkdownOptions?.markdownFilePath ?? readmeFilePath,
-        rootHeaderLevel: generateTableOfContentsForMarkdownOptions?.rootHeaderLevel
-      });
+      const {generateTableOfContentsForMarkdownOptions = {
+        markdownFilePath: readmeFilePath,
+      }} = options;
+      const tableOfContents = await generateTableOfContentsForMarkdown(generateTableOfContentsForMarkdownOptions);
       debug({tableOfContents})
       const readmeContentWithTableOfContents = await replacePlaceholder({
         content: newReadmeContents,
