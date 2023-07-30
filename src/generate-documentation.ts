@@ -14,6 +14,7 @@ import {
 } from '@freephoenix888/generate-table-of-contents-for-markdown/dist/main.js';
 import createDebugMessages from 'debug'
 import { ensureGitIsConfigured } from './ensure-git-is-configured.js';
+import { glob } from 'glob';
 
 export async function generateDocumentation(
   options: GenerateDocumentationOptions
@@ -35,16 +36,18 @@ async function updateReadme({
     options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions ||
     options.generateTableOfContentsForMarkdownOptions
   ) {
-    const readmeFilePath = 'README.md';
+    const readmeFilePath = options.readmeFilePath ?? './README.md';
     debug({readmeFilePath})
     let readmeContents = await fsExtra.readFile(readmeFilePath, 'utf8');
     let newReadmeContents = readmeContents;
     debug({readmeContents})
-    if (options.generateCliAppsHelpInReadmeOptions) {
+    if (options.generateCliAppsHelpInReadmeOptions !== null) {
+      const {generateCliAppsHelpInReadmeOptions} = options;
       const helpOfCliAppsInMarkdownFormat =
-        await generateHelpOfCliAppsInMarkdownFormat(
-          options.generateCliAppsHelpInReadmeOptions
-        );
+        await generateHelpOfCliAppsInMarkdownFormat({
+          cliAppFilePaths: generateCliAppsHelpInReadmeOptions?.cliAppFilePaths ?? await glob(`./dist/cli/*.js`, {absolute: true}),
+          rootHeaderLevel: generateCliAppsHelpInReadmeOptions?.rootHeaderLevel
+        });
       debug({helpOfCliAppsInMarkdownFormat})
       const readmeContentWithHelpOfCliAppsInMarkdownFormat = await replacePlaceholder({
         content: newReadmeContents,
@@ -54,11 +57,13 @@ async function updateReadme({
       debug({readmeContentWithHelpOfCliAppsInMarkdownFormat})
       newReadmeContents = readmeContentWithHelpOfCliAppsInMarkdownFormat;
     }
-    if (options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions) {
+    if (options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions !== null) {
+      const {generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions} = options;
       const usageWaysOfNpmCliAppsInMarkdownFormat =
-        await generateUsageWaysOfNpmCliAppsInMarkdownFormat(
-          options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions
-        );
+        await generateUsageWaysOfNpmCliAppsInMarkdownFormat({
+          cliUtilityNames: generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions?.cliUtilityNames ?? await glob(`./dist/cli/*.js`, {absolute: true}).then(cliAppFilePaths => cliAppFilePaths.map(cliAppFilePath => cliAppFilePath.replace(/\.js$/, ''))),
+          rootHeaderLevel: generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions?.rootHeaderLevel
+        });
       debug({usageWaysOfNpmCliAppsInMarkdownFormat})
       const redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat = await replacePlaceholder({
         content: newReadmeContents,
@@ -68,10 +73,12 @@ async function updateReadme({
       debug({redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat})
       newReadmeContents = redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat;
     }
-    if (options.generateTableOfContentsForMarkdownOptions) {
-      const tableOfContents = await generateTableOfContentsForMarkdown(
-        options.generateTableOfContentsForMarkdownOptions
-      );
+    if (options.generateTableOfContentsForMarkdownOptions!==null) {
+      const {generateTableOfContentsForMarkdownOptions} = options;
+      const tableOfContents = await generateTableOfContentsForMarkdown({
+        markdownFilePath: generateTableOfContentsForMarkdownOptions?.markdownFilePath ?? readmeFilePath,
+        rootHeaderLevel: generateTableOfContentsForMarkdownOptions?.rootHeaderLevel
+      });
       debug({tableOfContents})
       const readmeContentWithTableOfContents = await replacePlaceholder({
         content: newReadmeContents,
@@ -84,8 +91,6 @@ async function updateReadme({
     await fsExtra.writeFile(readmeFilePath, newReadmeContents);
     const gitAddExecResult = await execa(`git`, ['add', readmeFilePath]);
     debug({gitAddExecResult})
-    const gitStatusExecResult = await execa(`git`, ['status']);
-    debug({gitStatusExecResult})
     const execResultAfterReadmeUpdate = await execa(
       'git',
       ['diff', '--staged', '--quiet'],
@@ -95,12 +100,8 @@ async function updateReadme({
     if (execResultAfterReadmeUpdate.exitCode === 0) {
       console.log('No changes to commit');
     } else {
-      await execa('git', ['commit', '-m', 'Update README.md'], {
-        
-      });
-      await execa('git', ['push', 'origin', 'main'], {
-        
-      });
+      await execa('git', ['commit', '-m', 'Update README.md']);
+      await execa('git', ['push', 'origin', 'main']);
     }
   }
 }
@@ -173,13 +174,14 @@ async function replacePlaceholder({content, placeholder, replacement}: {content:
 }
 
 export type GenerateDocumentationOptions = {
-  generateCliAppsHelpInReadmeOptions?: GenerateHelpOfCliAppsInMarkdownFormatOptions & {
+  generateCliAppsHelpInReadmeOptions?: undefined|null|(GenerateHelpOfCliAppsInMarkdownFormatOptions & {
     placeholder?: string;
-  };
-  generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions?: GenerateUsageWaysOfNpmCliAppsInMarkdownFormatOptions & {
+  });
+  generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions?: undefined|null|(GenerateUsageWaysOfNpmCliAppsInMarkdownFormatOptions & {
     placeholder?: string;
-  };
-  generateTableOfContentsForMarkdownOptions?: GenerateTableOfContentsForMarkdownOptions & {
+  });
+  generateTableOfContentsForMarkdownOptions?: undefined|null|(GenerateTableOfContentsForMarkdownOptions & {
     placeholder?: string;
-  };
+  });
+  readmeFilePath?: string;
 };

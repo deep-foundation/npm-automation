@@ -4,16 +4,23 @@ import {
   GeneratePackageClassOptions,
   generatePackageClass,
 } from './generate-package-class.js';
+import fsExtra from 'fs-extra'
 
 export async function buildTypescriptLibrary(
   options: BuildTypescriptLibraryOptions
 ) {
   await ensureGitIsConfigured();
-  if (options.generatePackageClassOptions) {
-    const {outputFilePath = './src/package.ts'} = options.generatePackageClassOptions;
+  if (options.generatePackageClassOptions !== null) {
+    const { generatePackageClassOptions } = options;
+    const outputFilePath = generatePackageClassOptions?.outputFilePath ?? './src/package.ts';
+    const deepJsonFilePath = generatePackageClassOptions?.deepJsonFilePath ?? './deep.json';
+    const packageName = generatePackageClassOptions?.packageName ?? await fsExtra.readJson('./package.json').then(packageJson => packageJson.name).catch((error) => {
+      throw new Error(`Either specify packageName in generatePackageClassOptions or ensure that package.json exists in the current working directory. Error: ${error}`)
+    });
     await generatePackageClass({
-      ...options.generatePackageClassOptions,
-      outputFilePath 
+      packageName,
+      deepJsonFilePath,
+      outputFilePath
     });
     // git add
     await execa('git', ['add', outputFilePath]);
@@ -34,5 +41,5 @@ export async function buildTypescriptLibrary(
 }
 
 export interface BuildTypescriptLibraryOptions {
-  generatePackageClassOptions?: GeneratePackageClassOptions;
+  generatePackageClassOptions?: GeneratePackageClassOptions|undefined|null;
 }
