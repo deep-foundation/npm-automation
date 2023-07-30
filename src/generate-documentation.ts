@@ -31,75 +31,65 @@ async function updateReadmeIfNeeded({
 }) {
   const debug = createDebugMessages('npm-automation:generateDocumentation:updateReadme')
   debug({options})
-  if (
-    options.generateCliAppsHelpInReadmeOptions !== null ||
-    options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions !== null ||
-    options.generateTableOfContentsForMarkdownOptions !== null
-  ) {
-    const readmeFilePath = options.readmeFilePath ?? './README.md';
-    debug({readmeFilePath})
-    let readmeContents = await fsExtra.readFile(readmeFilePath, 'utf8');
-    let newReadmeContents = readmeContents;
-    debug({readmeContents})
-    if (options.generateCliAppsHelpInReadmeOptions !== null) {
-      const {generateCliAppsHelpInReadmeOptions = {
-        cliAppFilePaths: await glob(`./dist/cli/*.js`, {absolute: true}),
-      }} = options;
-      const helpOfCliAppsInMarkdownFormat =
-        await generateHelpOfCliAppsInMarkdownFormat(generateCliAppsHelpInReadmeOptions);
-      debug({helpOfCliAppsInMarkdownFormat})
-      const readmeContentWithHelpOfCliAppsInMarkdownFormat = await replacePlaceholder({
-        content: newReadmeContents,
-        placeholder: 'CLI_HELP',
-        replacement: helpOfCliAppsInMarkdownFormat
-      })
-      debug({readmeContentWithHelpOfCliAppsInMarkdownFormat})
-      newReadmeContents = readmeContentWithHelpOfCliAppsInMarkdownFormat;
-    }
-    if (options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions !== null) {
-      const {generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions = {
-        cliUtilityNames: await glob(`./dist/cli/*.js`, {absolute: true}).then(cliAppFilePaths => cliAppFilePaths.map(cliAppFilePath => cliAppFilePath.replace(/\.js$/, ''))),
-      }} = options;
-      const usageWaysOfNpmCliAppsInMarkdownFormat =
-        await generateUsageWaysOfNpmCliAppsInMarkdownFormat(generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions);
-      debug({usageWaysOfNpmCliAppsInMarkdownFormat})
-      const redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat = await replacePlaceholder({
-        content: newReadmeContents,
-        placeholder: 'CLI_USAGE_WAYS',
-        replacement: usageWaysOfNpmCliAppsInMarkdownFormat
-      });
-      debug({redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat})
-      newReadmeContents = redmiContentWithUsageWaysOfNpmCliAppsInMarkdownFormat;
-    }
-    if (options.generateTableOfContentsForMarkdownOptions!==null) {
-      const {generateTableOfContentsForMarkdownOptions = {
-        markdownFilePath: readmeFilePath,
-      }} = options;
-      const tableOfContents = await generateTableOfContentsForMarkdown(generateTableOfContentsForMarkdownOptions);
-      debug({tableOfContents})
-      const readmeContentWithTableOfContents = await replacePlaceholder({
-        content: newReadmeContents,
-        placeholder: 'TABLE_OF_CONTENTS',
-        replacement: tableOfContents
-      });
-      debug({readmeContentWithTableOfContents})
-      newReadmeContents = readmeContentWithTableOfContents;
-    }
-    await fsExtra.writeFile(readmeFilePath, newReadmeContents);
-    const gitAddExecResult = await execa(`git`, ['add', readmeFilePath]);
-    debug({gitAddExecResult})
-    const execResultAfterReadmeUpdate = await execa(
-      'git',
-      ['diff', '--staged', '--quiet'],
-      { reject: false,   } 
-    );
-    debug({execResultAfterReadmeUpdate})
-    if (execResultAfterReadmeUpdate.exitCode === 0) {
-      console.log('No changes to commit');
-    } else {
-      await execa('git', ['commit', '-m', 'Update README.md']);
-      await execa('git', ['push', 'origin', 'main']);
-    }
+  const readmeFilePath = options.readmeFilePath ?? './README.md';
+  if (options.generateCliAppsHelpInReadmeOptions !== null) {
+    const {generateCliAppsHelpInReadmeOptions = {
+      cliAppFilePaths: await glob(`./dist/cli/*.js`, {absolute: true}),
+      output: {
+        writeMode: 'replace-placeholder',
+        placeholder: {
+          start: `<!-- CLI_HELP_START -->`,
+          end: `<!-- CLI_HELP_END -->`,
+        },
+        filePath: readmeFilePath
+      }
+    }} = options;
+    const helpOfCliAppsInMarkdownFormat = await generateHelpOfCliAppsInMarkdownFormat(generateCliAppsHelpInReadmeOptions);
+    debug({helpOfCliAppsInMarkdownFormat})
+  }
+  if (options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions !== null) {
+    const {generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions = {
+      cliUtilityNames: await glob(`./dist/cli/*.js`, {absolute: true}).then(cliAppFilePaths => cliAppFilePaths.map(cliAppFilePath => cliAppFilePath.replace(/\.js$/, ''))),
+      output: {
+        writeMode: 'replace-placeholder',
+        placeholder: {
+          start: `<!-- CLI_USAGE_WAYS_START -->`,
+          end: `<!-- CLI_USAGE_WAYS_END -->`,
+        },
+        filePath: readmeFilePath
+      }
+    }} = options;
+    const usageWaysOfNpmCliAppsInMarkdownFormat = await generateUsageWaysOfNpmCliAppsInMarkdownFormat(generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions);
+    debug({usageWaysOfNpmCliAppsInMarkdownFormat})
+  }
+  if (options.generateTableOfContentsForMarkdownOptions!==null) {
+    const {generateTableOfContentsForMarkdownOptions = {
+      markdownFilePath: readmeFilePath,
+      output: {
+        writeMode: 'replace-placeholder',
+        placeholder: {
+          start: `<!-- TABLE_OF_CONTENTS_START -->`,
+          end: `<!-- TABLE_OF_CONTENTS_END -->`,
+        },
+        filePath: readmeFilePath
+      }
+    }} = options;
+    const tableOfContents = await generateTableOfContentsForMarkdown(generateTableOfContentsForMarkdownOptions);
+    debug({tableOfContents})
+  }
+  const gitAddExecResult = await execa(`git`, ['add', readmeFilePath]);
+  debug({gitAddExecResult})
+  const execResultAfterReadmeUpdate = await execa(
+    'git',
+    ['diff', '--staged', '--quiet'],
+    { reject: false,   } 
+  );
+  debug({execResultAfterReadmeUpdate})
+  if (execResultAfterReadmeUpdate.exitCode === 0) {
+    console.log('No changes to commit');
+  } else {
+    await execa('git', ['commit', '-m', 'Update README.md']);
+    await execa('git', ['push', 'origin', 'main']);
   }
 }
 
