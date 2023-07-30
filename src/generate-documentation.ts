@@ -20,11 +20,11 @@ export async function generateDocumentation(
   options: GenerateDocumentationOptions
 ) {
   await ensureGitIsConfigured();
-  await updateReadme({ options });
+  await updateReadmeIfNeeded({ options });
   await generateTypescriptDocumentation();
 }
 
-async function updateReadme({
+async function updateReadmeIfNeeded({
   options,
 }: {
   options: GenerateDocumentationOptions;
