@@ -2,7 +2,7 @@ import { execa } from "execa";
 import createDebugMessages from "debug";
 
 export async function ensureGitIsConfigured() {
-  const log = createDebugMessages('npm-automation:generateDocumentation:ensureGitIsConfigured')
+  const log = createDebugMessages(`npm-automation:generateDocumentation:${ensureGitIsConfigured}`)
   const { stdout: username } = await execa(
     'git',
     ['config', '--global', 'user.name'],

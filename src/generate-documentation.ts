@@ -29,7 +29,7 @@ async function updateReadmeIfNeeded({
 }: {
   options: GenerateDocumentationOptions;
 }) {
-  const log = debug('npm-automation:generateDocumentation:updateReadme')
+  const log = debug(`npm-automation:generateDocumentation:${updateReadmeIfNeeded.name}`)
   log({options})
   const readmeFilePath = options.readmeFilePath ?? './README.md';
   if (options.generateCliAppsHelpInReadmeOptions !== null) {
@@ -94,8 +94,8 @@ async function updateReadmeIfNeeded({
 }
 
 async function generateTypescriptDocumentation() {
-  const log = debug('npm-automation:generateDocumentation:generateTypescriptDocumentation')
-
+  const log = debug(`npm-automation:generateDocumentation:${generateTypescriptDocumentation.name}`)
+module.filename
   await execa('npx', ['typedoc', './src/main.ts']);
   await execa(`git`, [`fetch`, `origin`, `gh-pages`]);
   await execa('git', ['checkout', '--orphan', 'gh-pages']);
