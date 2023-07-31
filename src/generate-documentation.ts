@@ -21,7 +21,11 @@ export async function generateDocumentation(
 ) {
   await ensureGitIsConfigured();
   await updateReadmeIfNeeded({ options });
-  await generateTypescriptDocumentation();
+  if(options.generateTypescriptDocumentation) {
+    await options.generateTypescriptDocumentation();
+  } else {
+    await generateTypescriptDocumentation();
+  }
 }
 
 async function updateReadmeIfNeeded({
@@ -96,7 +100,7 @@ async function updateReadmeIfNeeded({
 async function generateTypescriptDocumentation() {
   const log = debug(`npm-automation:generateDocumentation:${generateTypescriptDocumentation.name}`)
   await execa('git', ['checkout', 'main'], {stdio: 'inherit'});
-  await execa('npx', ['typedoc', './src', '--out', './newDocs'], {stdio: 'inherit'});
+  await execa('npx', ['typedoc', './src/main.ts', '--out', './newDocs'], {stdio: 'inherit'});
   await execa('git', ['switch', '--orphan', 'gh-pages'], {stdio: 'inherit'});
   await execa('git', ['pull', 'origin', 'gh-pages'], {stdio: 'inherit'});
   await fsExtra.copy('./newDocs', './docs', {overwrite: true});
@@ -119,4 +123,5 @@ export type GenerateDocumentationOptions = {
     placeholder?: string;
   });
   readmeFilePath?: string;
+  generateTypescriptDocumentation?: () => Promise<void>;
 };
