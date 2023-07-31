@@ -95,7 +95,6 @@ async function updateReadmeIfNeeded({
 
 async function generateTypescriptDocumentation() {
   const log = debug(`npm-automation:generateDocumentation:${generateTypescriptDocumentation.name}`)
-module.filename
   await execa('npx', ['typedoc', './src/main.ts']);
   await execa(`git`, [`fetch`, `origin`, `gh-pages`]);
   await execa('git', ['checkout', '--orphan', 'gh-pages']);
