@@ -11,7 +11,7 @@ import { hideBin } from 'yargs/helpers';
 npmPullCli();
 
 async function npmPullCli() {
-  const debug = createLogger(
+  const log = createLogger(
     '@deep-foundation/npm-automation:npmPullCli'
   );
 
@@ -32,18 +32,18 @@ async function npmPullCli() {
   )
   .parseSync();
 
-  debug({cliOptions})
+  log({cliOptions})
   
   const currentDir = process.cwd();
   const packageJsonFilePath = path.join(currentDir,'package.json');
-  debug({packageJsonFilePath})
+  log({packageJsonFilePath})
   const {default: packageJson} = await import(packageJsonFilePath, {assert: {type: 'json'}});
-  debug({packageJson})
+  log({packageJson})
   if(!cliOptions.packageName && !packageJson.name) {
     throw new Error(`--package-name option is not provided and package.json file does not exist in ${packageJsonFilePath}`);
   }
   const packageName = cliOptions.packageName ?? packageJson.name;
-  debug({packageName})
+  log({packageName})
   if(!packageName) {
     throw new Error(`Failed to find package name in ${packageJsonFilePath}`);
   }

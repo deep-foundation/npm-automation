@@ -10,7 +10,7 @@ import createLogger from 'debug';
 npmInstallCli();
 
 async function npmInstallCli() {
-  const debug = createLogger(
+  const log = createLogger(
     '@deep-foundation/npm-automation:npmInstallCli'
   );
 
@@ -47,7 +47,7 @@ async function npmInstallCli() {
   )
   .parseSync();
 
-  debug({cliOptions})
+  log({cliOptions})
 
   const currentDir = process.cwd();
   const {

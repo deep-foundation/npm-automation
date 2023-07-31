@@ -14,7 +14,7 @@ import { hideBin } from 'yargs/helpers';
 generatePackageClassCli();
 
 async function generatePackageClassCli() {
-  const debug = createDebugger('generatePackageClassCli');
+  const log = createDebugger('generatePackageClassCli');
 
   const args = yargs(hideBin(process.argv))
   .usage(`$0 [Options]`, 'Generates a package class which extends Package class from `@deep-foundation/deeplinks/imports/package` and have fields for each link in the package and each that field is an object with id method which returns the id of the link and idLocal method which returns the local id of the link.')
@@ -41,10 +41,10 @@ async function generatePackageClassCli() {
   )
   .parseSync();
 
-  debug({args})
+  log({args})
 
   const currentWorkingDirectory = process.cwd();
-  debug({currentWorkingDirectory})
+  log({currentWorkingDirectory})
   const {
     packageName = await fsExtra
       .readJson(path.resolve(currentWorkingDirectory, 'package.json'), {
@@ -59,9 +59,9 @@ async function generatePackageClassCli() {
     deepJsonFilePath = path.resolve(currentWorkingDirectory, 'deep.json'),
     outputFilePath = path.resolve(currentWorkingDirectory, 'src', 'package.ts'),
   } = args;
-  debug({packageName, deepJsonFilePath, outputFilePath})
+  log({packageName, deepJsonFilePath, outputFilePath})
   const isDeepJsonFilePathExists = await fsExtra.exists(deepJsonFilePath);
-  debug({isDeepJsonFilePathExists})
+  log({isDeepJsonFilePathExists})
   if(!isDeepJsonFilePathExists) {
     throw new Error(
       deepJsonFilePath

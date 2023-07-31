@@ -11,7 +11,7 @@ import createLogger from 'debug';
 npmSyncDependenciesCli();
 
 async function npmSyncDependenciesCli() {
-  const debug = createLogger(
+  const log = createLogger(
     '@deep-foundation/npm-automation:npmSyncDependenciesCli'
   );
 
@@ -29,7 +29,7 @@ async function npmSyncDependenciesCli() {
     })
   .parseSync();
 
-  debug({cliOptions})
+  log({cliOptions})
 
   const {
     packageJsonFilePath = path.resolve('package.json'),

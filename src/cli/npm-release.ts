@@ -9,7 +9,7 @@ import  createLogger from 'debug';
 npmReleaseCli();
 
 async function npmReleaseCli() {
-  const debug = createLogger(
+  const log = createLogger(
     '@deep-foundation/npm-automation:npmReleaseCli'
   );
 
@@ -38,7 +38,7 @@ async function npmReleaseCli() {
     )
     .parseSync();
 
-  debug({cliOptions})
+  log({cliOptions})
 
   const currentDir = process.cwd();
   const {

@@ -20,10 +20,10 @@ await npmRelease({
  * 
  */
 export async function npmRelease(param: NpmReleaseOptions) {
-  const debug = createDebugMessages(
+  const log = createDebugMessages(
     '@deep-foundation/npm-automation:npm-release'
   );
-  debug({ param });
+  log({ param });
   const {
     deepJsonFilePath,
     newVersion,
@@ -32,32 +32,32 @@ export async function npmRelease(param: NpmReleaseOptions) {
   await syncDependencies({ deepJsonFilePath, packageJsonFilePath: packageJsonFilePath });
   
   const {default: packageJson}: {default: Partial<PackageJson>} = await import(packageJsonFilePath, {assert: {type: 'json'}});
-  debug({packageJson})
+  log({packageJson})
 
   if(!packageJson.name) {
     throw new Error(`package.json does not have a name property`)
   }
   const npmViewExecResult = await execa(`npm`, [`view`, `${packageJson.name}`, `version`]);
-  debug({npmViewExecResult})
+  log({npmViewExecResult})
   if(!npmViewExecResult.stdout) {
     throw new Error(`${npmViewExecResult.command} output is empty`)
   }
   const npmLatestPackageJsonVersion = npmViewExecResult.stdout.toString().trim();
-  debug({npmLatestPackageJsonVersion})
+  log({npmLatestPackageJsonVersion})
 
   if(!packageJson.version) {
     throw new Error(`package.json does not have a version property`)
   }
   const packageJsonVersion = packageJson.version;
   const isPackageJsonVersionOutdated = npmLatestPackageJsonVersion > packageJsonVersion;
-  debug({isPackageJsonVersionOutdated})
+  log({isPackageJsonVersionOutdated})
   if (isPackageJsonVersionOutdated) {
     throw new Error(
       `Version ${packageJson.version} in ${packageJsonFilePath} is outdated. Latest version in npm is ${npmLatestPackageJsonVersion}. Execute npm-pull`
     );
   } else {
     const npmVersionExecResult = await execa(`npm`,  [`version`, `--allow-same-version`, `--no-git-tag-version`, newVersion]);
-    debug({npmVersionExecResult})
+    log({npmVersionExecResult})
     if(!npmVersionExecResult.stdout) {
       throw new Error(`${npmVersionExecResult.command} output is empty`)
     }

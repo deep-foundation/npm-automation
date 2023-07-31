@@ -22,13 +22,13 @@ await npmPull({
  * 
  */
 export async function npmPull(param: NpmPullOptions) {
-  const debug = createDebugMessages(
+  const log = createDebugMessages(
     '@deep-foundation/npm-automation:npm-pull'
   );
-  debug({param})
+  log({param})
   const { packageName ,packageVersion = 'latest'} = param;
   const gitDiffExecResult = await execa(`git`, ['diff']);
-  debug({gitDiffExecResult})
+  log({gitDiffExecResult})
   if (gitDiffExecResult.stdout) {
     throw new Error(
       'You have unstaged changes. Stash (git stash) or commit (git commit) them'
@@ -38,29 +38,29 @@ export async function npmPull(param: NpmPullOptions) {
   const npmInstallExecResult = await execa(
     `npm`, [`install`, `${packageName}@${packageVersion}`, `--no-save`]
   );
-  debug({npmInstallExecResult})
+  log({npmInstallExecResult})
   const currentDir = process.cwd();
-  debug({currentDir})
+  log({currentDir})
   const nodeModuleDirectoryPath = path.join(
     path.resolve(currentDir, `node_modules`),
     packageName
   );
-  debug({nodeModuleDirectoryPath})
+  log({nodeModuleDirectoryPath})
   const nodeModuleFilePaths = await glob(`${nodeModuleDirectoryPath}/**/*`, {
     ignore: [`dist`, `node_modules`],
     withFileTypes: true,
   });
-  debug({nodeModuleFilePaths})
+  log({nodeModuleFilePaths})
   await Promise.all(
     nodeModuleFilePaths.map(async (nodeModuleFilePath) => {
       if (!nodeModuleFilePath.isFile()) return;
       const moveSrc = nodeModuleFilePath.fullpath();
-      debug({moveSrc})
+      log({moveSrc})
       const moveDestination = path.join(
         currentDir,
         nodeModuleFilePath.fullpath().replace(nodeModuleDirectoryPath, '')
       );
-      debug({moveDestination})
+      log({moveDestination})
       return await fsExtra.move(
         moveSrc,
         moveDestination,

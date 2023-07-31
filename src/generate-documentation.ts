@@ -12,7 +12,7 @@ import {
   generateTableOfContentsForMarkdown,
   GenerateTableOfContentsForMarkdownOptions,
 } from '@freephoenix888/generate-table-of-contents-for-markdown/dist/main.js';
-import createDebugMessages from 'debug'
+import debug from 'debug'
 import { ensureGitIsConfigured } from './ensure-git-is-configured.js';
 import { glob } from 'glob';
 
@@ -29,8 +29,8 @@ async function updateReadmeIfNeeded({
 }: {
   options: GenerateDocumentationOptions;
 }) {
-  const debug = createDebugMessages('npm-automation:generateDocumentation:updateReadme')
-  debug({options})
+  const log = debug('npm-automation:generateDocumentation:updateReadme')
+  log({options})
   const readmeFilePath = options.readmeFilePath ?? './README.md';
   if (options.generateCliAppsHelpInReadmeOptions !== null) {
     const {generateCliAppsHelpInReadmeOptions = {
@@ -45,7 +45,7 @@ async function updateReadmeIfNeeded({
       }
     }} = options;
     const helpOfCliAppsInMarkdownFormat = await generateHelpOfCliAppsInMarkdownFormat(generateCliAppsHelpInReadmeOptions);
-    debug({helpOfCliAppsInMarkdownFormat})
+    log({helpOfCliAppsInMarkdownFormat})
   }
   if (options.generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions !== null) {
     const {generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions = {
@@ -60,7 +60,7 @@ async function updateReadmeIfNeeded({
       }
     }} = options;
     const usageWaysOfNpmCliAppsInMarkdownFormat = await generateUsageWaysOfNpmCliAppsInMarkdownFormat(generateUsageWaysOfNpmCliAppsInMarkdownFormatOptions);
-    debug({usageWaysOfNpmCliAppsInMarkdownFormat})
+    log({usageWaysOfNpmCliAppsInMarkdownFormat})
   }
   if (options.generateTableOfContentsForMarkdownOptions!==null) {
     const {generateTableOfContentsForMarkdownOptions = {
@@ -75,16 +75,16 @@ async function updateReadmeIfNeeded({
       }
     }} = options;
     const tableOfContents = await generateTableOfContentsForMarkdown(generateTableOfContentsForMarkdownOptions);
-    debug({tableOfContents})
+    log({tableOfContents})
   }
   const gitAddExecResult = await execa(`git`, ['add', readmeFilePath]);
-  debug({gitAddExecResult})
+  log({gitAddExecResult})
   const execResultAfterReadmeUpdate = await execa(
     'git',
     ['diff', '--staged', '--quiet'],
     { reject: false,   } 
   );
-  debug({execResultAfterReadmeUpdate})
+  log({execResultAfterReadmeUpdate})
   if (execResultAfterReadmeUpdate.exitCode === 0) {
     console.log('No changes to commit');
   } else {
@@ -94,70 +94,15 @@ async function updateReadmeIfNeeded({
 }
 
 async function generateTypescriptDocumentation() {
-  const debug = createDebugMessages('npm-automation:generateDocumentation:generateTypescriptDocumentation')
-  // Generate the docs first
-  await execa('npx', ['typedoc', './src/main.ts'], {
-    
-  });
+  const log = debug('npm-automation:generateDocumentation:generateTypescriptDocumentation')
 
-  // Stage and commit the docs in the main branch
-  await execa('git', ['add', 'docs'], {   });
-  await execa('git', ['commit', '-m', 'Update documentation'], {
-    
-  });
-
-  await execa('git', ['fetch'], {  });
-  // Check if the gh-pages branch exists
-  const { stdout: ghPagesBranchExists } = await execa(
-    'git',
-    ['branch', '-r', '--list', 'origin/gh-pages'],
-    { reject: false,   }
-  );
-  debug({ghPagesBranchExists})
-
-  if (!ghPagesBranchExists) {
-    // If it doesn't exist, create it as an orphan branch
-    await execa('git', ['checkout', '--orphan', 'gh-pages'], {
-      
-    });
-  } else {
-    // If it does exist, just checkout to it
-    await execa('git', ['checkout', 'gh-pages'], {
-      
-    });
-  }
-
-  // Checkout the docs from the main branch to the gh-pages branch
-  await execa('git', ['checkout', 'main', '--', 'docs'], {
-    
-  });
-
-  // Commit and push the changes
-  await execa('git', ['commit', '-m', 'Update documentation'], {
-    
-  });
-  await execa('git', ['push', 'origin', 'gh-pages'], {
-    
-  });
-
-  // Switch back to the main branch
-  await execa('git', ['checkout', 'main'], {   });
-}
-
-async function replacePlaceholder({content, placeholder, replacement}: {content: string, placeholder: string, replacement: string}) {
-  const debug = createDebugMessages('npm-automation:generateDocumentation:replacePlaceholder')
-  const placeholderStart = `<!-- ${placeholder}_START -->`;
-  debug({placeholderStart})
-  const placeholderEnd = `<!-- ${placeholder}_END -->`;
-  debug({placeholderEnd})
-  const pattern = new RegExp(`(?<start>${placeholderStart})[\\S\\s]*(?<end>${placeholderEnd})`, 'g');
-  debug({pattern})
-  const newContent = content.replace(
-    pattern,
-    `$<start>\n${replacement}\n$<end>`
-  )
-  debug({newContent})
-  return newContent
+  await execa('npx', ['typedoc', './src/main.ts']);
+  await execa(`git`, [`fetch`, `origin`, `gh-pages`]);
+  await execa('git', ['checkout', '--orphan', 'gh-pages']);
+  await execa('git', ['add', 'docs']);
+  await execa('git', ['commit', '-m', 'Update documentation']);
+  await execa('git', ['push', 'origin', 'gh-pages']);
+  await execa('git', ['checkout', 'main']);
 }
 
 export type GenerateDocumentationOptions = {

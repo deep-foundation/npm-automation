@@ -3,7 +3,7 @@ import semver from 'semver';
 import { type PackageJson } from 'types-package-json';
 import createDebugMessages from 'debug';
 import { execa } from 'execa';
-const debug = createDebugMessages(
+const log = createDebugMessages(
   '@deep-foundation/npm-automation:npm-install'
 );
 import { Package } from "@deep-foundation/deeplinks/imports/packager";
@@ -27,11 +27,11 @@ await npmInstall({
 ```
  */
 export async function npmInstall(param: NpmInstallOptions) {
-  debug({ param });
+  log({ param });
   const { name: name, version, deepJsonFilePath, packageJsonFilePath } = param;
 
   const isVersionValid = version && semver.validRange(version);
-  debug({ isVersionValid });
+  log({ isVersionValid });
   if (!isVersionValid) {
     throw new Error(`Invalid version ${version}`);
   }
@@ -41,20 +41,20 @@ export async function npmInstall(param: NpmInstallOptions) {
   } else {
     npmInstallCommandArgs.push(name);
   }
-  debug({ npmInstallCommandArgs });
+  log({ npmInstallCommandArgs });
   await execa(`npm`, npmInstallCommandArgs);
 
   const { default: packageJson }: { default: Partial<PackageJson> } =
     await import(packageJsonFilePath, { assert: { type: 'json' } });
-  debug({ packageJson });
+  log({ packageJson });
   const packageJsonDependencyVersion = packageJson.dependencies![name];
-  debug({ packageJsonDependencyVersion });
+  log({ packageJsonDependencyVersion });
 
   const { default: deepJson }: { default: Package } = await import(
     deepJsonFilePath,
     { assert: { type: 'json' } }
   );
-  debug({ deepJson });
+  log({ deepJson });
   if(!deepJson.dependencies) {
     deepJson.dependencies = []
   }
@@ -62,7 +62,7 @@ export async function npmInstall(param: NpmInstallOptions) {
   const deepJsonDependencyIndex = deepJsonDependencies.findIndex(
     (dependency) => dependency.name === name
   );
-  debug({ deepJsonDependencyIndex });
+  log({ deepJsonDependencyIndex });
   if(deepJsonDependencyIndex === -1) {
     deepJsonDependencies.push({
       name,
