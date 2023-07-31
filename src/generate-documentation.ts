@@ -95,9 +95,9 @@ async function updateReadmeIfNeeded({
 
 async function generateTypescriptDocumentation() {
   const log = debug(`npm-automation:generateDocumentation:${generateTypescriptDocumentation.name}`)
-  await execa('git', ['switch', '--orphan', 'gh-pages'], {stdio: 'inherit', verbose: true});
-  await execa('git', ['pull', 'origin', 'gh-pages'], {stdio: 'inherit', verbose: true});
+  await execa('git', ['fetch', 'origin', 'gh-pages'], {stdio: 'inherit', verbose: true});
   await execa('npx', ['typedoc', './src/main.ts'], {stdio: 'inherit', verbose: true});
+  await execa('git', ['switch', '--orphan', 'gh-pages'], {stdio: 'inherit', verbose: true});
   await execa('git', ['add', 'docs'], {stdio: 'inherit', verbose: true});
   await execa('git', ['commit', '-m', 'Update documentation'], {stdio: 'inherit', verbose: true});
   await execa('git', ['push', 'origin', 'gh-pages'], {stdio: 'inherit', verbose: true});
