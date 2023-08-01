@@ -102,7 +102,11 @@ async function generateTypescriptDocumentation() {
   await execa('git', ['checkout', 'main'], {stdio: 'inherit'});
   await execa('npx', ['typedoc', './src/main.ts', '--out', './newDocs'], {stdio: 'inherit'});
   await execa('git', ['switch', '--orphan', 'gh-pages'], {stdio: 'inherit'});
-  await execa('git', ['pull', 'origin', 'gh-pages'], {stdio: 'inherit'});
+  const lsRemote = await execa('git', ['ls-remote', '--heads', 'origin', 'gh-pages'], {verbose: true});
+  console.log(lsRemote.stdout)
+  if(lsRemote.stdout) {
+    await execa('git', ['pull', 'origin', 'gh-pages'], {stdio: 'inherit'});
+  }
   await fsExtra.copy('./newDocs', './docs', {overwrite: true});
   await execa('git', ['add', './docs'], {stdio: 'inherit'});
   await execa('git', ['commit', '-m', 'Update documentation'], {stdio: 'inherit'});
