@@ -59,7 +59,7 @@ export async function npmRelease(param: NpmReleaseOptions) {
   } else {
     const npmVersionExecResult = await execa(`npm`,  [`version`, `--allow-same-version`, `--no-git-tag-version`, param.newVersion]);
     log({npmVersionExecResult})
-    const newVersion = npmVersionExecResult.stdout;
+    const newVersion = npmVersionExecResult.stdout.slice(1);
     if(!newVersion) {
       throw new Error(`${npmVersionExecResult.command} output is empty`)
     }
