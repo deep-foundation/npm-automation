@@ -44,16 +44,13 @@ export async function npmInstall(param: NpmInstallOptions) {
   log({ npmInstallCommandArgs });
   await execa(`npm`, npmInstallCommandArgs);
 
-  const { default: packageJson }: { default: Partial<PackageJson> } =
-    await import(packageJsonFilePath, { assert: { type: 'json' } });
+  const packageJson: Partial<PackageJson> =
+    await fsExtra.readJson(packageJsonFilePath);
   log({ packageJson });
   const packageJsonDependencyVersion = packageJson.dependencies![name];
   log({ packageJsonDependencyVersion });
 
-  const { default: deepJson }: { default: Package } = await import(
-    deepJsonFilePath,
-    { assert: { type: 'json' } }
-  );
+  const deepJson: Package = await fsExtra.readJson(deepJsonFilePath);
   log({ deepJson });
   if(!deepJson.dependencies) {
     deepJson.dependencies = []

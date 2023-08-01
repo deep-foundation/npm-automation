@@ -4,6 +4,7 @@ import semver from 'semver'
 import { type PackageJson } from 'types-package-json';
 import createDebugMessages from 'debug';
 import { Package, PackageIdentifier } from '@deep-foundation/deeplinks/imports/packager';
+import fsExtra from 'fs-extra'
 
 export interface SyncDependenciesOptions {
   /**
@@ -28,9 +29,9 @@ export async function syncDependencies(param: SyncDependenciesOptions) {
     deepJsonFilePath,
     packageJsonFilePath: packageJsonPath,
   } = param;
-  const {default: deepJson}: {default: Package} = await import(deepJsonFilePath, {assert: {type: 'json'}}) ;
+  const deepJson: Package = await fsExtra.readJson(deepJsonFilePath) ;
   log({deepJson})
-  const {default: packageJson}: {default: Partial<PackageJson>} = await import(packageJsonPath, {assert: {type: 'json'}});
+  const packageJson:  Partial<PackageJson> = await fsExtra.readJson(packageJsonPath);
   log({packageJson})
 
   if(!deepJson.dependencies) {

@@ -1,3 +1,4 @@
+import { Package } from '@deep-foundation/deeplinks/imports/packager.js';
 import { syncDependencies } from './sync-dependencies.js';
 import createDebugMessages from 'debug';
 import { execa } from 'execa';
@@ -31,7 +32,7 @@ export async function npmRelease(param: NpmReleaseOptions) {
   } = param;
   await syncDependencies({ deepJsonFilePath, packageJsonFilePath: packageJsonFilePath });
   
-  const {default: packageJson}: {default: Partial<PackageJson>} = await import(packageJsonFilePath, {assert: {type: 'json'}});
+  const packageJson: Partial<PackageJson>= await fsExtra.readJson(packageJsonFilePath);
   log({packageJson})
 
   if(!packageJson.name) {
@@ -62,7 +63,7 @@ export async function npmRelease(param: NpmReleaseOptions) {
       throw new Error(`${npmVersionExecResult.command} output is empty`)
     }
 
-    const {default: deepJson} = await import(deepJsonFilePath, {assert: {type: 'json'}});
+    const deepJson: Package = await fsExtra.readJson(deepJsonFilePath);
     deepJson.package.version = npmVersionExecResult.stdout.trimEnd().slice(1);
     await fsExtra.writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
 

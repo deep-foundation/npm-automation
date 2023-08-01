@@ -6,6 +6,7 @@ import  createLogger from 'debug';
 import {fileURLToPath} from 'url'
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import fsExtra from 'fs-extra';
 
 
 npmPullCli();
@@ -37,7 +38,7 @@ async function npmPullCli() {
   const currentDir = process.cwd();
   const packageJsonFilePath = path.join(currentDir,'package.json');
   log({packageJsonFilePath})
-  const {default: packageJson} = await import(packageJsonFilePath, {assert: {type: 'json'}});
+  const {default: packageJson} = await fsExtra.readJson(packageJsonFilePath);
   log({packageJson})
   if(!cliOptions.packageName && !packageJson.name) {
     throw new Error(`--package-name option is not provided and package.json file does not exist in ${packageJsonFilePath}`);
