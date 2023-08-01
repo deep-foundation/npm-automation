@@ -4,6 +4,7 @@ import createDebugMessages from 'debug';
 import { execa } from 'execa';
 import fsExtra from 'fs-extra';
 import { PackageJson } from 'types-package-json';
+import semver from 'semver';
 
 /**
  * Releases a new version of the deep npm package and syncronizes the version and dependencies between {@link NpmReleaseOptions.deepJsonFilePath} and {@link NpmReleaseOptions.packageJsonFilePath}
@@ -49,7 +50,7 @@ export async function npmRelease(param: NpmReleaseOptions) {
     throw new Error(`package.json does not have a version property`)
   }
   const packageJsonVersion = packageJson.version;
-  const isPackageJsonVersionOutdated = npmLatestPackageJsonVersion > packageJsonVersion;
+  const isPackageJsonVersionOutdated = semver.gt(npmLatestPackageJsonVersion, packageJsonVersion);
   log({isPackageJsonVersionOutdated})
   if (isPackageJsonVersionOutdated) {
     throw new Error(
