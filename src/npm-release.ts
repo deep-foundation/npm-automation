@@ -27,7 +27,6 @@ export async function npmRelease(param: NpmReleaseOptions) {
   log({ param });
   const {
     deepJsonFilePath,
-    newVersion,
     packageJsonFilePath,
   } = param;
   await syncDependencies({ deepJsonFilePath, packageJsonFilePath: packageJsonFilePath });
@@ -57,14 +56,15 @@ export async function npmRelease(param: NpmReleaseOptions) {
       `Version ${packageJson.version} in ${packageJsonFilePath} is outdated. Latest version in npm is ${npmLatestPackageJsonVersion}. Execute npm-pull`
     );
   } else {
-    const npmVersionExecResult = await execa(`npm`,  [`version`, `--allow-same-version`, `--no-git-tag-version`, newVersion]);
+    const npmVersionExecResult = await execa(`npm`,  [`version`, `--allow-same-version`, `--no-git-tag-version`, param.newVersion]);
     log({npmVersionExecResult})
-    if(!npmVersionExecResult.stdout) {
+    const newVersion = npmVersionExecResult.stdout;
+    if(!newVersion) {
       throw new Error(`${npmVersionExecResult.command} output is empty`)
     }
 
     const deepJson: Package = await fsExtra.readJson(deepJsonFilePath);
-    deepJson.package.version = npmVersionExecResult.stdout.trimEnd().slice(1);
+    deepJson.package.version = newVersion.trimEnd().slice(1);
     await fsExtra.writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
 
     const packageLockJsonFilePath = packageJsonFilePath.replace(/\.json$/, '-lock.json');
