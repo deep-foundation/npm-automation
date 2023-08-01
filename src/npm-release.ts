@@ -65,6 +65,11 @@ export async function npmRelease(param: NpmReleaseOptions) {
     const {default: deepJson} = await import(deepJsonFilePath, {assert: {type: 'json'}});
     deepJson.package.version = npmVersionExecResult.stdout.trimEnd().slice(1);
     await fsExtra.writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
+
+    const packageLockJsonFilePath = packageJsonFilePath.replace(/\.json$/, '.lock.json');
+    await execa(`git`, [`add`, deepJsonFilePath, packageJsonFilePath, packageLockJsonFilePath], {stdio: 'inherit', verbose: true});
+    await execa(`git`, [`commit`, `-m`, newVersion], {stdio: 'inherit', verbose: true});
+    await execa(`git`, [`push`, `origin`, `main`], {stdio: 'inherit', verbose: true});
   }
   
 }
