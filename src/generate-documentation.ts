@@ -108,7 +108,6 @@ async function generateTypescriptDocumentation() {
   await execa('git', ['commit', '-m', 'Update documentation'], {stdio: 'inherit'});
   await execa('git', ['push', 'origin', 'gh-pages'], {stdio: 'inherit'});
   await execa('git', ['checkout', 'main'], {stdio: 'inherit'});
-  // delete tempDocs
   await fsExtra.remove('./tempDocs');
 }
 
