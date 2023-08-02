@@ -30,7 +30,7 @@ export async function npmInstall(param: NpmInstallOptions) {
   log({ param });
   const { name: name, version, deepJsonFilePath, packageJsonFilePath } = param;
 
-  const isVersionValid = version && semver.validRange(version);
+  const isVersionValid = version && (version === 'latest' || semver.validRange(version));
   log({ isVersionValid });
   if (!isVersionValid) {
     throw new Error(`Invalid version ${version}`);
