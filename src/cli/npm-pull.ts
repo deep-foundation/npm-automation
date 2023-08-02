@@ -35,22 +35,8 @@ async function npmPullCli() {
 
   log({cliOptions})
   
-  const currentDir = process.cwd();
-  const packageJsonFilePath = path.join(currentDir,'package.json');
-  log({packageJsonFilePath})
-  const {default: packageJson} = await fsExtra.readJson(packageJsonFilePath);
-  log({packageJson})
-  if(!cliOptions.packageName && !packageJson.name) {
-    throw new Error(`--package-name option is not provided and package.json file does not exist in ${packageJsonFilePath}`);
-  }
-  const packageName = cliOptions.packageName ?? packageJson.name;
-  log({packageName})
-  if(!packageName) {
-    throw new Error(`Failed to find package name in ${packageJsonFilePath}`);
-  }
-
   await npmPull({
-    packageName,
+    packageName: cliOptions.packageName,
     packageVersion: cliOptions.packageVersion,
   });
 }

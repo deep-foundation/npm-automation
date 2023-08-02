@@ -6,6 +6,7 @@ import fsExtra from 'fs-extra';
 import createDebugMessages from 'debug';
 import {fileURLToPath} from 'url'
 import { execa } from 'execa';
+import { PackageJson } from 'types-package-json';
 
 /**
  * Pulls the latest version of the npm package and copies it to the root folder
@@ -26,7 +27,14 @@ export async function npmPull(param: NpmPullOptions) {
     '@deep-foundation/npm-automation:npm-pull'
   );
   log({param})
-  const { packageName ,packageVersion = 'latest'} = param;
+  const currentDir = process.cwd();
+  const packageJsonFilePath = path.join(currentDir,'package.json');
+  log({packageJsonFilePath})
+  const { packageName = await fsExtra.readJson(packageJsonFilePath).catch(error => {
+    throw new Error(`Either packageName must be passed or package.json must exist in the current directory. Error: ${error.message}`)
+  }),
+    packageVersion = 'latest'
+  } = param;
   const gitDiffExecResult = await execa(`git`, ['diff']);
   log({gitDiffExecResult})
   if (gitDiffExecResult.stdout) {
@@ -39,7 +47,6 @@ export async function npmPull(param: NpmPullOptions) {
     `npm`, [`install`, `${packageName}@${packageVersion}`, `--no-save`]
   );
   log({npmInstallExecResult})
-  const currentDir = process.cwd();
   log({currentDir})
   const nodeModuleDirectoryPath = path.join(
     path.resolve(currentDir, `node_modules`),
@@ -76,7 +83,7 @@ export interface NpmPullOptions {
   /**
    * Name of the npm package
    */
-  packageName: string;
+  packageName?: string;
   /**
    * Version of the npm package
    * 
