@@ -45,22 +45,31 @@ async function npmInstallCli() {
       type: 'string'
     },
   )
+  .option(
+    'package-lock-json-file-path',
+    {
+      demandOption: false,
+      describe: 'package-lock.json file path',
+      type: 'string'
+    },
+  )
   .parseSync();
 
   log({cliOptions})
 
-  const currentDir = process.cwd();
   const {
     packageName,
     packageVersion,
-    packageJsonFilePath = path.join(currentDir,'package.json'),
-    deepJsonFilePath = path.join(currentDir,'deep.json'),
+    packageJsonFilePath,
+    deepJsonFilePath,
+    packageLockJsonFilePath
   } = cliOptions;
 
   await npmInstall({
     name: packageName,
     version: packageVersion,
     packageJsonFilePath,
-    deepJsonFilePath
+    deepJsonFilePath,
+    packageLockJsonFilePath
   });
 }

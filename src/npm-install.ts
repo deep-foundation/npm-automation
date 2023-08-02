@@ -8,6 +8,7 @@ const log = createDebugMessages(
 );
 import { Package } from "@deep-foundation/deeplinks/imports/packager";
 import fsExtra from 'fs-extra';
+import path from 'path';
 
 
 /**
@@ -28,7 +29,9 @@ await npmInstall({
  */
 export async function npmInstall(param: NpmInstallOptions) {
   log({ param });
-  const { name: name, version, deepJsonFilePath, packageJsonFilePath } = param;
+
+  const currentDir = process.cwd();
+  const { name: name, version, deepJsonFilePath = path.resolve(currentDir, 'deep.json'), packageJsonFilePath = path.resolve(currentDir, 'package.json'), packageLockJsonFilePath = path.resolve(currentDir, 'package-lock.json') } = param;
 
   const isVersionValid = version && (version === 'latest' || semver.validRange(version));
   log({ isVersionValid });
@@ -60,14 +63,18 @@ export async function npmInstall(param: NpmInstallOptions) {
     (dependency) => dependency.name === name
   );
   log({ deepJsonDependencyIndex });
+  const versionFromPackageLockJson = await fsExtra.readJson(packageLockJsonFilePath).then((packageLockJson: any) => {
+    return packageLockJson.packages[`node_modules/${name}`].version as string
+  });
+  log({ versionFromPackageLockJson });
   if(deepJsonDependencyIndex === -1) {
     deepJsonDependencies.push({
       name,
-      version: packageJsonDependencyVersion,
+      version: versionFromPackageLockJson,
     })
   } else {
     deepJsonDependencies[deepJsonDependencyIndex].version =
-    packageJsonDependencyVersion;
+    versionFromPackageLockJson;
   }
 
   deepJson.dependencies = deepJsonDependencies;
@@ -83,13 +90,17 @@ export interface NpmInstallOptions {
   /**
    * Path to package.json
    */
-  packageJsonFilePath: string;
+  packageJsonFilePath?: string;
   /**
    * Path to deep.json
    */
-  deepJsonFilePath: string;
+  deepJsonFilePath?: string;
   /**
    * Version to install
    */
   version: string;
+  /**
+   * Path to package-lock.json
+   */
+  packageLockJsonFilePath?: string;
 }
