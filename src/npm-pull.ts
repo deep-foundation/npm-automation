@@ -28,14 +28,17 @@ export async function npmPull(param: NpmPullOptions) {
   );
   log({param})
   const currentDir = process.cwd();
+  log({currentDir})
   const packageJsonFilePath = path.join(currentDir,'package.json');
   log({packageJsonFilePath})
-  const { packageName = await fsExtra.readJson(packageJsonFilePath).catch(error => {
+  const { packageName = await fsExtra.readJson(packageJsonFilePath).then((packageJson: PackageJson) => packageJson.name).catch(error => {
     throw new Error(`Either packageName must be passed or package.json must exist in the current directory. Error: ${error.message}`)
   }),
     packageVersion = 'latest'
   } = param;
-  const gitDiffExecResult = await execa(`git`, ['diff']);
+  log({packageName, packageVersion})
+  const gitDiffExecResult = await execa(`git`, ['diff'], {verbose: true});
+  console.log(gitDiffExecResult.stdout)
   log({gitDiffExecResult})
   if (gitDiffExecResult.stdout) {
     throw new Error(
@@ -44,39 +47,37 @@ export async function npmPull(param: NpmPullOptions) {
   }
 
   const npmInstallExecResult = await execa(
-    `npm`, [`install`, `${packageName}@${packageVersion}`, `--no-save`]
+    `npm`, [`install`, `${packageName}@${packageVersion}`, `--no-save`], {verbose: true}
   );
+  console.log(npmInstallExecResult.stdout)
   log({npmInstallExecResult})
-  log({currentDir})
-  const nodeModuleDirectoryPath = path.join(
-    path.resolve(currentDir, `node_modules`),
-    packageName
-  );
+  const nodeModuleDirectoryPath = path.resolve(currentDir, `node_modules`, packageName);
   log({nodeModuleDirectoryPath})
-  const nodeModuleFilePaths = await glob(`${nodeModuleDirectoryPath}/**/*`, {
-    ignore: [`dist`, `node_modules`],
-    withFileTypes: true,
-  });
-  log({nodeModuleFilePaths})
-  await Promise.all(
-    nodeModuleFilePaths.map(async (nodeModuleFilePath) => {
-      if (!nodeModuleFilePath.isFile()) return;
-      const moveSrc = nodeModuleFilePath.fullpath();
-      log({moveSrc})
-      const moveDestination = path.join(
-        currentDir,
-        nodeModuleFilePath.fullpath().replace(nodeModuleDirectoryPath, '')
-      );
-      log({moveDestination})
-      return await fsExtra.move(
-        moveSrc,
-        moveDestination,
-        {
-          overwrite: true,
-        }
-      );
-    })
-  );
+  await fsExtra.copy(nodeModuleDirectoryPath, currentDir, {overwrite: true})
+  // const nodeModuleFilePaths = await glob(`${nodeModuleDirectoryPath}/**/*`, {
+  //   ignore: [`dist`, `node_modules`],
+  //   withFileTypes: true,
+  // });
+  // log({nodeModuleFilePaths})
+  // await Promise.all(
+  //   nodeModuleFilePaths.map(async (nodeModuleFilePath) => {
+  //     if (!nodeModuleFilePath.isFile()) return;
+  //     const moveSrc = nodeModuleFilePath.fullpath();
+  //     log({moveSrc})
+  //     const moveDestination = path.join(
+  //       currentDir,
+  //       nodeModuleFilePath.fullpath().replace(nodeModuleDirectoryPath, '')
+  //     );
+  //     log({moveDestination})
+  //     return await fsExtra.move(
+  //       moveSrc,
+  //       moveDestination,
+  //       {
+  //         overwrite: true,
+  //       }
+  //     );
+  //   })
+  // );
 }
 
 export interface NpmPullOptions {
