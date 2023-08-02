@@ -56,9 +56,9 @@
     "glob": "^10.2.6",
     "semver": "^7.5.1",
     "yargs": "^17.7.2",
-    "@freephoenix888/generate-help-of-cli-apps-in-markdown-format": "^2.1.6",
+    "@freephoenix888/generate-help-of-cli-apps-in-markdown-format": "^3.0.0",
     "@freephoenix888/generate-table-of-contents-for-markdown": "^4.0.13",
-    "@freephoenix888/generate-usage-ways-of-npm-cli-apps-in-markdown-format": "^4.1.7"
+    "@freephoenix888/generate-usage-ways-of-npm-cli-apps-in-markdown-format": "^5.0.0"
   },
   "devDependencies": {
     "@atao60/fse-cli": "^0.1.7",
