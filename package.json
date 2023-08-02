@@ -20,7 +20,7 @@
     "generate-package",
     "generate-class"
   ],
-  "version": "18.1.1",
+  "version": "18.1.2",
   "type": "module",
   "description": "Automates actions that you do in your deep package when you use npm",
   "repository": {
