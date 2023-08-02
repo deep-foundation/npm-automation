@@ -16,13 +16,13 @@ async function npmInstallCli() {
 
   const cliOptions = yargs(hideBin(process.argv))
   .usage(`$0 [Options]`, `Installs a package and syncronizes deep.json and package.json dependencies`)
-  .option('name', {
+  .option('package-name', {
     demandOption: true,
     describe: 'Package name to install',
     type: 'string'
   })
   .option(
-    'version',
+    'package-version',
     {
       demandOption: true,
       describe: 'Version to install',
@@ -51,15 +51,15 @@ async function npmInstallCli() {
 
   const currentDir = process.cwd();
   const {
-    name,
-    version,
+    packageName,
+    packageVersion,
     packageJsonFilePath = path.join(currentDir,'package.json'),
     deepJsonFilePath = path.join(currentDir,'deep.json'),
   } = cliOptions;
 
   await npmInstall({
-    name: name,
-    version,
+    name: packageName,
+    version: packageVersion,
     packageJsonFilePath,
     deepJsonFilePath
   });
