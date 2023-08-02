@@ -65,7 +65,7 @@ export async function npmRelease(param: NpmReleaseOptions) {
     }
 
     const deepJson: Package = await fsExtra.readJson(deepJsonFilePath);
-    deepJson.package.version = newVersion.trimEnd().slice(1);
+    deepJson.package.version = newVersion.trimEnd();
     await fsExtra.writeFile(deepJsonFilePath, JSON.stringify(deepJson, null, 2));
 
     const packageLockJsonFilePath = packageJsonFilePath.replace(/\.json$/, '-lock.json');
