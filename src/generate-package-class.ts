@@ -65,7 +65,7 @@ export async function generatePackageClass(param: GeneratePackageClassOptions) {
 import {
   Package as BasePackage,
   PackageOptions as BasePackageOptions,
-} from '@deep-foundation/deeplinks/imports/package';
+} from '@deep-foundation/deeplinks/imports/package.js';
 
 /**
 Represents a deep package
