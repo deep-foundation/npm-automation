@@ -46,11 +46,9 @@ export async function npmPull(param: NpmPullOptions) {
     );
   }
 
-  const npmInstallExecResult = await execa(
-    `npm`, [`install`, `${packageName}@${packageVersion}`, `--no-save`], {verbose: true}
+  await execa(
+    `npm`, [`install`, `${packageName}@${packageVersion}`, `--no-save`], {verbose: true, stdio: 'inherit'}
   );
-  console.log(npmInstallExecResult.stdout)
-  log({npmInstallExecResult})
   const nodeModuleDirectoryPath = path.resolve(currentDir, `node_modules`, packageName);
   log({nodeModuleDirectoryPath})
   await fsExtra.copy(nodeModuleDirectoryPath, currentDir, {overwrite: true})
