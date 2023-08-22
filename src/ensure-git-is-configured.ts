@@ -6,7 +6,7 @@ export async function ensureGitIsConfigured() {
   const { stdout: username } = await execa(
     'git',
     ['config', '--global', 'user.name'],
-    { reject: false,  verbose: true }
+    { reject: false }
   );
   log({username})
   if (!username) {
@@ -17,7 +17,7 @@ export async function ensureGitIsConfigured() {
   const { stdout: email } = await execa(
     'git',
     ['config', '--global', 'user.email'],
-    { reject: false,  verbose: true }
+    { reject: false }
   );
   log({email})
   if (!email) {
