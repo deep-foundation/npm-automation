@@ -5,39 +5,52 @@ import {
   generatePackageClass,
 } from './generate-package-class.js';
 import fsExtra from 'fs-extra'
+import { debug } from './debug.js';
+
+const moduleLog = debug.extend('build-typescript-library');
 
 export async function buildTypescriptLibrary(
   options: BuildTypescriptLibraryOptions
 ) {
+  const log = moduleLog.extend(buildTypescriptLibrary.name);
+  log({options})
   await ensureGitIsConfigured();
   if (options.generatePackageClassOptions !== null) {
     const { generatePackageClassOptions } = options;
     const outputFilePath = generatePackageClassOptions?.outputFilePath ?? './src/package.ts';
+    log({outputFilePath})
     const deepJsonFilePath = generatePackageClassOptions?.deepJsonFilePath ?? './deep.json';
+    log({deepJsonFilePath})
     const packageName = generatePackageClassOptions?.packageName ?? await fsExtra.readJson('./package.json').then(packageJson => packageJson.name).catch((error) => {
       throw new Error(`Either specify packageName in generatePackageClassOptions or ensure that package.json exists in the current working directory. Error: ${error}`)
     });
+    log({packageName})
     await generatePackageClass({
       packageName,
       deepJsonFilePath,
       outputFilePath
     });
     // git add
-    await execa('git', ['add', outputFilePath]);
+    const gitAddResult = await execa('git', ['add', outputFilePath]);
+    log({gitAddResult})
 
-    const { exitCode } = await execa('git', ['diff', '--staged', '--quiet'], {
+    const gitDiffResult = await execa('git', ['diff', '--staged', '--quiet'], {
       reject: false,
     });
+    log({gitDiffResult})
 
-    if (exitCode === 0) {
+    if (gitDiffResult.exitCode === 0) {
       console.log('No changes to commit');
     } else {
-      await execa('git', ['commit', '-m', 'Generate new package class']);
-      await execa('git', ['push', 'origin', 'main']);
+      const gitCommitResult = await execa('git', ['commit', '-m', 'Generate new package class']);
+      log({gitCommitResult})
+      const gitPushResult = await execa('git', ['push', 'origin', 'main']);
+      log({gitPushResult})
     }
   }
 
-  await execa('tsc');
+  const tscResult = await execa('tsc');
+  log({tscResult})
 }
 
 export interface BuildTypescriptLibraryOptions {

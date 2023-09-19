@@ -2,15 +2,18 @@ import { Package } from '@deep-foundation/deeplinks/imports/packager';
 import fsExtra from 'fs-extra';
 import createDebugger from 'debug';
 
+const moduleLog = createDebugger('generate-package-class');
+
 /**
 Generates a package class which extends Package class from `@deep-foundation/deeplinks/imports/package` and have fields for each link in the package and each that field is an object with id method which returns the id of the link and idLocal method which returns the local id of the link.
  */
-export async function generatePackageClass(param: GeneratePackageClassOptions) {
-  const log = createDebugger('generatePackageClass');
-  log({param})
-  const { deepJsonFilePath = 'deep.json', outputFilePath, packageName } = param;
+export async function generatePackageClass(options: GeneratePackageClassOptions) {
+  const log = moduleLog.extend(generatePackageClass.name);
+  log({options: options})
+  const { deepJsonFilePath = 'deep.json', outputFilePath, packageName } = options;
+  log({deepJsonFilePath, outputFilePath, packageName})
   const deepJson: Package = await fsExtra.readJson(deepJsonFilePath).catch(error => {
-    if(!param.deepJsonFilePath) {
+    if(!options.deepJsonFilePath) {
       throw new Error(`Either deepJsonFilePath should be provided or there should be a deep.json file in the current directory. Error: ${error.message}`)
     }
     throw error;
@@ -29,13 +32,19 @@ export async function generatePackageClass(param: GeneratePackageClassOptions) {
 
     for (const ownedLink of ownedLinks) {
       const idString = ownedLink.id.toString();
+      log({idString})
       const isType = idString[0] === idString[0].toUpperCase();
+      log({isType})
       const linkIdVariableNameFirstPart = idString.charAt(0).toLowerCase() + idString.slice(1);
+      log({linkIdVariableNameFirstPart})
       const linkIdVariableNameSecondPart = isType ? 'TypeLinkId' : 'LinkId';
+      log({linkIdVariableNameSecondPart})
       const linkIdVariableName = `${linkIdVariableNameFirstPart}${linkIdVariableNameSecondPart}`;
+      log({linkIdVariableName})
       idExamples.push(`const ${linkIdVariableName} = await package["${ownedLink.id}"].id();`)
       IdLocalExamplesString.push(`const ${linkIdVariableName} = package["${ownedLink.id}"].idLocal();`)
       const linkNameVariableName = idString[0].toLowerCase() + idString.slice(1);
+      log({linkNameVariableName})
       nameExamplesString.push(`const ${linkNameVariableName} = package["${ownedLink.id}"].name;`)
       entitiesString.push(`
       /**
@@ -58,6 +67,7 @@ export async function generatePackageClass(param: GeneratePackageClassOptions) {
       */
       public "${idString}" = this.createEntity("${idString}");`)
     }
+    log({idExamples, IdLocalExamplesString, entitiesString, nameExamplesString})
 
 
 
@@ -122,6 +132,7 @@ log({classDefinition})
 
   if(outputFilePath) {
     await fsExtra.writeFile(outputFilePath, classDefinition);
+    log(`Wrote class definition to ${outputFilePath}`)
   }
   return classDefinition;
 }
