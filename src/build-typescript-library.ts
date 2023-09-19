@@ -25,25 +25,23 @@ export async function buildTypescriptLibrary(
       throw new Error(`Either specify packageName in generatePackageClassOptions or ensure that package.json exists in the current working directory. Error: ${error}`)
     });
     log({packageName})
+    
     await generatePackageClass({
       packageName,
       deepJsonFilePath,
       outputFilePath
     });
-    // git add
-    const gitAddResult = await execa('git', ['add', outputFilePath]);
-    log({gitAddResult})
 
-    const gitDiffResult = await execa('git', ['diff', '--staged', '--quiet'], {
-      reject: false,
-    });
-    log({gitDiffResult})
+    const gitStatusResult = await execa('git', ['status', '--porcelain', outputFilePath]);
+    log({gitStatusResult})
 
-    if (gitDiffResult.exitCode === 0) {
-      console.log('No changes to commit');
-    } else {
+    if(gitStatusResult.stdout !== '') {
+      const gitAddResult = await execa('git', ['add', outputFilePath]);
+      log({gitAddResult})
+
       const gitCommitResult = await execa('git', ['commit', '-m', 'Generate new package class']);
       log({gitCommitResult})
+
       const gitPushResult = await execa('git', ['push', 'origin', 'main']);
       log({gitPushResult})
     }
