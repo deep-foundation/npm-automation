@@ -54,7 +54,7 @@ export async function buildTypescriptLibrary(
 
       const gitCommitResult = await execa("git", [
         "commit",
-        "-m",
+        "--mesage",
         "Generate new package class",
       ]);
       log({ gitCommitResult });
