@@ -36,6 +36,7 @@ async function npmReleaseCli() {
         type: 'string'
       },
     )
+    .strict()
     .parseSync();
 
   log({cliOptions})

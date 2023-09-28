@@ -53,6 +53,7 @@ async function npmInstallCli() {
       type: 'string'
     },
   )
+  .strict()
   .parseSync();
 
   log({cliOptions})

@@ -31,6 +31,7 @@ async function npmPullCli() {
       type: 'string'
     },
   )
+  .strict()
   .parseSync();
 
   log({cliOptions})

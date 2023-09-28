@@ -39,6 +39,7 @@ async function generatePackageClassCli() {
       type: 'string'
     },
   )
+  .strict()
   .parseSync();
 
   log({args})
