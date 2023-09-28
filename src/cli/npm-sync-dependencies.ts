@@ -27,6 +27,7 @@ async function npmSyncDependenciesCli() {
     describe: 'package.json file path',
     type: 'string'
     })
+  .strict()
   .parseSync();
 
   log({cliOptions})
