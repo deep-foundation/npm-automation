@@ -51,7 +51,13 @@ export async function npmPull(param: NpmPullOptions) {
   );
   const nodeModuleDirectoryPath = path.resolve(currentDir, `node_modules`, packageName);
   log({nodeModuleDirectoryPath})
+  const nestedNoduModulesDirectoryPath = path.resolve(nodeModuleDirectoryPath, `node_modules`);
+  log(`Removing ${nestedNoduModulesDirectoryPath}`)
+  fsExtra.rmSync(nestedNoduModulesDirectoryPath, {recursive: true, force: true})
+  log(`Removed ${nestedNoduModulesDirectoryPath}`)
+  log(`Copying ${nodeModuleDirectoryPath} to ${currentDir}`)
   await fsExtra.copy(nodeModuleDirectoryPath, currentDir, {overwrite: true})
+  log(`Copied ${nodeModuleDirectoryPath} to ${currentDir}`)
   // const nodeModuleFilePaths = await glob(`${nodeModuleDirectoryPath}/**/*`, {
   //   ignore: [`dist`, `node_modules`],
   //   withFileTypes: true,
