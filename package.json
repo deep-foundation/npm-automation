@@ -60,7 +60,7 @@
     "yargs": "^17.7.2"
   },
   "peerDependencies": {
-    "@deep-foundation/deeplinks": "0.0.x"
+    "@deep-foundation/deeplinks": "0.0.*"
   },
   "devDependencies": {
     "@atao60/fse-cli": "^0.1.7",
